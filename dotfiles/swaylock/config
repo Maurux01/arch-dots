@@ -1,0 +1,12 @@
+# Appearance
+font=JetBrainsMono Nerd Font
+font-size=20
+indicator-radius=100
+indicator-thickness=20
+line-color=#1E1E2E
+ring-color=#89B4FA
+inside-color=#1E1E2E
+key-hl-color=#94E2D5
+separator-color=#89B4FA
+text-color=#CDD6F4
+text-caps-lock-color=
