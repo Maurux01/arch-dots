@@ -1,0 +1,36 @@
+/* Waybar style customization */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#waybar {
+    background-color: #282a36; /* Background color */
+    color: #f8f8f2; /* Text color */
+    font-family: "Fira Code", monospace; /* Font family */
+    height: 30px; /* Height of the bar */
+}
+
+#waybar .module {
+    padding: 0 10px; /* Padding for modules */
+}
+
+#waybar .module:hover {
+    background-color: #44475a; /* Hover effect */
+}
+
+#waybar .clock {
+    font-weight: bold; /* Bold clock text */
+}
+
+#waybar .battery {
+    color: #50fa7b; /* Battery color */
+}
+
+#waybar .network {
+    color: #8be9fd; /* Network color */
+}
+
+/* Add more styles as needed */
