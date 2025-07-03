@@ -18,7 +18,7 @@ fish -c "omf install bobthefish"
 # Copiar dotfiles
 mkdir -p ~/.config/kitty ~/.config/nvim ~/.config/fish ~/.tmux
 cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
-cp dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+cp -r dotfiles/nvim/* ~/.config/nvim/
 cp dotfiles/fish/config.fish ~/.config/fish/config.fish
 cp dotfiles/tmux/.tmux.conf ~/.tmux.conf
 
