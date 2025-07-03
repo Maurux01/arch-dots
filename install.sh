@@ -18,6 +18,7 @@ OPTIONS=(
   "Herramientas extra (yazi, lazygit, etc.)"
   "Lenguajes de programación (Python, Node, Rust, etc.)"
   "Neovim IDE"
+  "Apps creativas, gaming y utilidades"
 )
 SELECTIONS=$(printf '%s\n' "${OPTIONS[@]}" | fzf --multi --prompt="Selecciona: " --header="[Espacio] selecciona, [Enter] confirma")
 
@@ -26,11 +27,13 @@ if [[ "$SELECTIONS" == *"Todo el entorno"* ]]; then
   INSTALL_EXTRA=1
   INSTALL_LANGS=1
   INSTALL_NVIM=1
+  INSTALL_APPS=1
 else
   [[ "$SELECTIONS" == *"Componentes visuales"* ]] && INSTALL_VISUALS=1
   [[ "$SELECTIONS" == *"Herramientas extra"* ]] && INSTALL_EXTRA=1
   [[ "$SELECTIONS" == *"Lenguajes de programación"* ]] && INSTALL_LANGS=1
   [[ "$SELECTIONS" == *"Neovim IDE"* ]] && INSTALL_NVIM=1
+  [[ "$SELECTIONS" == *"Apps creativas, gaming y utilidades"* ]] && INSTALL_APPS=1
 fi
 
 # Instalación de componentes visuales
@@ -80,6 +83,14 @@ if [[ $INSTALL_NVIM == 1 ]]; then
   sudo pacman -Syu --noconfirm neovim
   mkdir -p ~/.config/nvim
   cp -r dotfiles/nvim/* ~/.config/nvim/
+fi
+
+# Instalación de apps creativas, gaming y utilidades
+if [[ $INSTALL_APPS == 1 ]]; then
+  APPS_PKGS=(ufw openvpn networkmanager-openvpn neofetch fastfetch appflowy obs-studio gimp kdenlive ferdium inkscape darktable discord blender steam heroic-games-launcher insomnia blueman pavucontrol flameshot copyq cliphist)
+  sudo pacman -Syu --noconfirm "${APPS_PKGS[@]}"
+  echo "\n¡Apps creativas, gaming y utilidades instaladas!"
+  echo "\nRecuerda: algunas apps como appflowy, heroic, ferdium o lm studio pueden requerir AUR. Si no se instalan, usa pamac o yay para instalarlas."
 fi
 
 echo "\n¡Instalación completada! Reinicia tu sesión para aplicar todos los cambios." 
