@@ -1,0 +1,5 @@
+(box
+  :class "battery"
+  (label :text (getenv "BATTERY_ICON") :class "battery-icon")
+  (label :text (getenv "BATTERY_PERCENT") :class "battery-percent")
+) 

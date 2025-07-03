@@ -1,0 +1,18 @@
+.clock, .weather, .battery, .volume {
+  background: #1e1e2e;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 8px;
+  font-family: "FiraCode Nerd Font", "JetBrainsMono Nerd Font", monospace;
+  color: #cdd6f4;
+  box-shadow: 0 2px 8px #18182588;
+}
+.clock-time { font-size: 2.5em; color: #a6e3a1; }
+.clock-date { font-size: 1.2em; color: #cdd6f4; }
+.weather-icon { font-size: 2em; color: #89b4fa; }
+.weather-temp { font-size: 1.5em; color: #89b4fa; }
+.weather-desc { font-size: 1em; color: #cdd6f4; }
+.battery-icon { font-size: 1.5em; color: #f9e2af; }
+.battery-percent { font-size: 1.2em; color: #f9e2af; }
+.volume-icon { font-size: 1.5em; color: #f38ba8; }
+.volume-percent { font-size: 1.2em; color: #f38ba8; } 

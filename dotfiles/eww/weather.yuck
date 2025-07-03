@@ -1,0 +1,6 @@
+(box
+  :class "weather"
+  (label :text (getenv "WEATHER_ICON") :class "weather-icon")
+  (label :text (getenv "WEATHER_TEMP") :class "weather-temp")
+  (label :text (getenv "WEATHER_DESC") :class "weather-desc")
+) 

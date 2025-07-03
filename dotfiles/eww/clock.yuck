@@ -1,0 +1,5 @@
+(box
+  :class "clock"
+  (label :text (time "%H:%M") :class "clock-time")
+  (label :text (time "%A, %d %B") :class "clock-date")
+) 

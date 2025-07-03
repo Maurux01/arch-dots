@@ -1,0 +1,5 @@
+(box
+  :class "volume"
+  (label :text (getenv "VOLUME_ICON") :class "volume-icon")
+  (label :text (getenv "VOLUME_PERCENT") :class "volume-percent")
+) 
