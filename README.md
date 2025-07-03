@@ -1,80 +1,87 @@
-# Arch Dots: Rice Automático y Moderno para Arch Linux + Hyprland
+# Arch Dots: The Ultimate Automated Arch Linux + Hyprland Rice
 
-Este repositorio contiene una configuración moderna y automatizada para Arch Linux, incluyendo:
-- Hyprland (Wayland compositor con animaciones)
-- Waybar (barra de estado)
-- mako (notificaciones)
+This repository provides a modern, automated, and beautiful setup for Arch Linux, including:
+
+- Hyprland (Wayland compositor with animations)
+- Waybar (status bar)
+- mako (notifications)
 - wofi (launcher)
-- swww (fondos animados)
+- swww (animated wallpapers)
 - eww (widgets)
 - Kitty (terminal)
-- tmux (multiplexor de terminal)
-- Neovim (editor de texto)
-- Fish + Oh My Fish (shell y gestor de temas)
-- Wallpapers personalizados
-- Tema atractivo para GRUB
-- Animaciones fluidas
+- tmux (terminal multiplexer)
+- Neovim IDE (with LSP, AI, themes, and easy keybinds)
+- Fish + Oh My Fish (shell and theme manager)
+- Wallpapers
+- GRUB theme
+- Animations and visual polish
+- Extra tools for productivity, development, and gaming
 
-## Instalación
+## Installation
 
-1. Clona este repositorio:
+1. Clone this repository:
    ```bash
-   git clone https://github.com/tuusuario/arch-dots.git
+   git clone https://github.com/youruser/arch-dots.git
    cd arch-dots
    ```
-2. Ejecuta el instalador automático:
+2. Run the interactive installer:
    ```bash
    chmod +x install.sh
    ./install.sh
    ```
-3. Cierra sesión y selecciona **Hyprland** como tu sesión gráfica en el login.
+   - Use the menu to select what you want to install (full setup, visuals, dev tools, creative/gaming apps, etc.)
+3. Log out and select **Hyprland** as your graphical session.
 
-## Personalización
-- Coloca tus wallpapers en `dotfiles/wallpapers/`.
-- Puedes cambiar el tema de GRUB en `dotfiles/grub-themes/`.
-- Modifica los archivos de configuración en `dotfiles/` según tus preferencias.
-- Agrega scripts personalizados en `dotfiles/scripts/`.
-- Agrega widgets de eww en `dotfiles/eww/` y scripts de swww en `dotfiles/swww/`.
+## Customization
+- Place your wallpapers in `dotfiles/wallpapers/`.
+- Change the GRUB theme in `dotfiles/grub-themes/`.
+- Edit any config in `dotfiles/` to your liking.
+- Add your own scripts in `dotfiles/scripts/`.
+- Add eww widgets in `dotfiles/eww/` and swww scripts in `dotfiles/swww/`.
 
-## Requisitos
-- Arch Linux o derivado
-- Acceso a sudo
-- Tarjeta gráfica compatible con Wayland
+## Main Apps & Tools
+| App/Tool                | Purpose                                 |
+|-------------------------|-----------------------------------------|
+| hyprland                | Wayland compositor                      |
+| waybar                  | Status bar                              |
+| mako                    | Notifications                           |
+| wofi                    | App launcher                            |
+| swww                    | Animated wallpapers                     |
+| eww                     | Custom widgets                          |
+| kitty                   | Terminal emulator                       |
+| tmux                    | Terminal multiplexer                    |
+| neovim (IDE)            | Modern code editor                      |
+| fish + oh-my-fish       | Shell + theme manager                   |
+| pamac                   | GUI package manager                     |
+| gh                      | GitHub CLI                              |
+| yazi                    | TUI file manager                        |
+| bat, fd, rg, btop, zoxide, fzf, lazygit | Productivity CLI tools |
+| ufw, openvpn            | Firewall & VPN                          |
+| neofetch, fastfetch     | System info with ASCII art              |
+| appflowy, obs-studio, gimp, kdenlive, lm studio, ferdium, inkscape, darktable, discord, blender, insomnia, blueman, pavucontrol, flameshot, copyq, cliphist, jenkins, beekeeper-studio, vscodium, podman, steam, heroic-games-launcher | Creative, dev, and gaming apps |
 
-## Créditos
-- Tema Catppuccin para Hyprland, Waybar, mako, wofi
-- Tema Gruvbox para Kitty, tmux y Neovim
-- Tema Vimix para GRUB: https://github.com/vinceliuice/grub2-themes
+> Some apps (appflowy, heroic, ferdium, lm studio, beekeeper-studio) may require AUR. Use pamac or yay if not installed by default.
 
-## Herramientas extra incluidas
-- gh (GitHub CLI)
-- yazi (gestor de archivos TUI)
-- bat (cat con colores)
-- fd (buscador rápido)
-- ripgrep (búsqueda de texto)
-- btop (monitor de sistema)
-- zoxide (cd inteligente)
-- fzf (fuzzy finder)
-- lazygit (git TUI)
+## Post-install
+- The shell is automatically set to fish.
+- Use the alias `dotbackup` to quickly push your dotfiles to GitHub.
+- Run `dotfiles/scripts/postinstall.sh` if you need to reinstall fonts.
 
-## Post-instalación
-- Cambia el shell a fish automáticamente.
-- Usa el alias `dotbackup` para subir tus cambios de dotfiles a GitHub fácilmente.
-
-## Capturas de pantalla
-_Agrega aquí tus screenshots y GIFs para mostrar tu entorno._
-
-## Contribución
-- Pull requests y sugerencias son bienvenidas.
-- Licencia: MIT
+## Screenshots
+_Add your screenshots and GIFs here to showcase your setup._
 
 ## Troubleshooting
-- Si algún programa no inicia, revisa los logs en ~/.local/share o ~/.cache.
-- Si la shell no cambia a fish, ejecuta `chsh -s $(which fish)` manualmente.
-- Si falta alguna fuente, ejecuta el script `dotfiles/scripts/postinstall.sh`.
+- If a program doesn't start, check logs in ~/.local/share or ~/.cache.
+- If the shell doesn't change to fish, run `chsh -s $(which fish)` manually.
+- If a font is missing, run `dotfiles/scripts/postinstall.sh`.
+- For AUR apps, use `pamac build <app>` or `yay -S <app>`.
 
 ## Changelog
-- v1.0: Primera versión completa con Hyprland, Neovim IDE, herramientas extra y automatización total.
+- v1.0: First full version with Hyprland, Neovim IDE, extra tools, creative/gaming apps, and full automation.
+
+## Contribution
+- Pull requests and suggestions are welcome.
+- License: MIT
 
 ---
-¡Disfruta de tu entorno Arch Linux + Hyprland totalmente personalizado y automatizado! 
+Enjoy your fully automated, beautiful, and powerful Arch Linux + Hyprland setup! 
