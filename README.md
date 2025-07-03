@@ -46,5 +46,35 @@ Este repositorio contiene una configuración moderna y automatizada para Arch Li
 - Tema Gruvbox para Kitty, tmux y Neovim
 - Tema Vimix para GRUB: https://github.com/vinceliuice/grub2-themes
 
+## Herramientas extra incluidas
+- gh (GitHub CLI)
+- yazi (gestor de archivos TUI)
+- bat (cat con colores)
+- fd (buscador rápido)
+- ripgrep (búsqueda de texto)
+- btop (monitor de sistema)
+- zoxide (cd inteligente)
+- fzf (fuzzy finder)
+- lazygit (git TUI)
+
+## Post-instalación
+- Cambia el shell a fish automáticamente.
+- Usa el alias `dotbackup` para subir tus cambios de dotfiles a GitHub fácilmente.
+
+## Capturas de pantalla
+_Agrega aquí tus screenshots y GIFs para mostrar tu entorno._
+
+## Contribución
+- Pull requests y sugerencias son bienvenidas.
+- Licencia: MIT
+
+## Troubleshooting
+- Si algún programa no inicia, revisa los logs en ~/.local/share o ~/.cache.
+- Si la shell no cambia a fish, ejecuta `chsh -s $(which fish)` manualmente.
+- Si falta alguna fuente, ejecuta el script `dotfiles/scripts/postinstall.sh`.
+
+## Changelog
+- v1.0: Primera versión completa con Hyprland, Neovim IDE, herramientas extra y automatización total.
+
 ---
 ¡Disfruta de tu entorno Arch Linux + Hyprland totalmente personalizado y automatizado! 

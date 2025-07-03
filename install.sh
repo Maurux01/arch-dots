@@ -4,8 +4,14 @@ set -e
 # Paquetes necesarios
 PACKAGES=(kitty tmux neovim fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
 
+# Herramientas extra
+EXTRA_PKGS=(gh yazi bat fd ripgrep btop zoxide fzf lazygit)
+
 # Instalar paquetes
 sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
+
+# Instalar herramientas extra
+sudo pacman -Syu --noconfirm "${EXTRA_PKGS[@]}"
 
 # Instalar Oh My Fish
 if ! command -v omf &> /dev/null; then
@@ -48,6 +54,12 @@ fi
 # Instalar picom para animaciones (opcional)
 if ! pacman -Qs picom > /dev/null; then
   sudo pacman -S --noconfirm picom
+fi
+
+# Cambiar shell por defecto a fish
+if [ "$SHELL" != "$(which fish)" ]; then
+  chsh -s $(which fish)
+  echo "Shell cambiado a fish. Reinicia la terminal para aplicar."
 fi
 
 # Mensaje final
