@@ -87,7 +87,7 @@ fi
 
 # Instalación de apps creativas, gaming y utilidades
 if [[ $INSTALL_APPS == 1 ]]; then
-  APPS_PKGS=(ufw openvpn networkmanager-openvpn neofetch fastfetch appflowy obs-studio gimp kdenlive ferdium inkscape darktable discord blender steam heroic-games-launcher insomnia blueman pavucontrol flameshot copyq cliphist jenkins beekeeper-studio)
+  APPS_PKGS=(ufw openvpn networkmanager-openvpn neofetch fastfetch appflowy obs-studio gimp kdenlive ferdium inkscape darktable discord blender steam heroic-games-launcher insomnia blueman pavucontrol flameshot copyq cliphist jenkins beekeeper-studio vscodium podman)
   sudo pacman -Syu --noconfirm "${APPS_PKGS[@]}"
   echo "\n¡Apps creativas, gaming y utilidades instaladas!"
   echo "\nRecuerda: algunas apps como appflowy, heroic, ferdium, lm studio o beekeeper-studio pueden requerir AUR. Si no se instalan, usa pamac o yay para instalarlas."
