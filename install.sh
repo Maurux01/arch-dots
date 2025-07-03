@@ -1,66 +1,85 @@
 #!/bin/bash
 set -e
 
-# Paquetes necesarios
-PACKAGES=(kitty tmux neovim fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
+clear
+cat <<'EOF'
+ _              _     _      _      _      
+/_\\  _ __  ___| |__ (_)_ _ (_)__ _| |__  
+/ _ \\| '_ \/ -_) '_ \\| | ' \\| / _` | '_ \\ 
+/_/ \\_\\ .__/\___|_.__/|_|_||_|_\\__, |_.__/
+      |_|                      |___/       
+   archriced by maurux01
+EOF
 
-# Herramientas extra
-EXTRA_PKGS=(gh yazi bat fd ripgrep btop zoxide fzf lazygit)
+echo "\nSelecciona qué deseas instalar (usa espacio para seleccionar, enter para continuar):"
+OPTIONS=(
+  "Todo el entorno (recomendado)"
+  "Componentes visuales (Hyprland, Waybar, eww, etc.)"
+  "Herramientas extra (yazi, lazygit, etc.)"
+  "Lenguajes de programación (Python, Node, Rust, etc.)"
+  "Neovim IDE"
+)
+SELECTIONS=$(printf '%s\n' "${OPTIONS[@]}" | fzf --multi --prompt="Selecciona: " --header="[Espacio] selecciona, [Enter] confirma")
 
-# Instalar paquetes
-sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
-
-# Instalar herramientas extra
-sudo pacman -Syu --noconfirm "${EXTRA_PKGS[@]}"
-
-# Instalar Oh My Fish
-if ! command -v omf &> /dev/null; then
-  curl -L https://get.oh-my.fish | fish
+if [[ "$SELECTIONS" == *"Todo el entorno"* ]]; then
+  INSTALL_VISUALS=1
+  INSTALL_EXTRA=1
+  INSTALL_LANGS=1
+  INSTALL_NVIM=1
+else
+  [[ "$SELECTIONS" == *"Componentes visuales"* ]] && INSTALL_VISUALS=1
+  [[ "$SELECTIONS" == *"Herramientas extra"* ]] && INSTALL_EXTRA=1
+  [[ "$SELECTIONS" == *"Lenguajes de programación"* ]] && INSTALL_LANGS=1
+  [[ "$SELECTIONS" == *"Neovim IDE"* ]] && INSTALL_NVIM=1
 fi
 
-# Instalar tema para Oh My Fish
-fish -c "omf install bobthefish"
-
-# Copiar dotfiles
-mkdir -p ~/.config/kitty ~/.config/nvim ~/.config/fish ~/.tmux
-cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
-cp -r dotfiles/nvim/* ~/.config/nvim/
-cp dotfiles/fish/config.fish ~/.config/fish/config.fish
-cp dotfiles/tmux/.tmux.conf ~/.tmux.conf
-
-# Hyprland y apps Wayland
-mkdir -p ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
-cp dotfiles/hypr/hyprland.conf ~/.config/hypr/hyprland.conf
-cp dotfiles/waybar/config ~/.config/waybar/config
-cp dotfiles/waybar/style.css ~/.config/waybar/style.css
-cp dotfiles/mako/config ~/.config/mako/config
-cp dotfiles/wofi/config ~/.config/wofi/config
-cp dotfiles/wofi/style.css ~/.config/wofi/style.css
-# swww y eww: solo README, puedes agregar scripts/widgets luego
-
-# Copiar wallpapers
-mkdir -p ~/Pictures/wallpapers
-cp dotfiles/wallpapers/* ~/Pictures/wallpapers/ 2>/dev/null || true
-
-# Instalar tema de GRUB (ejemplo con Vimix)
-if [ -d dotfiles/grub-themes ]; then
-  sudo mkdir -p /boot/grub/themes
-  sudo cp -r dotfiles/grub-themes/* /boot/grub/themes/
-  sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub
-  echo 'GRUB_THEME="/boot/grub/themes/Vimix/theme.txt"' | sudo tee -a /etc/default/grub
-  sudo grub-mkconfig -o /boot/grub/grub.cfg
+# Instalación de componentes visuales
+if [[ $INSTALL_VISUALS == 1 ]]; then
+  PACKAGES=(kitty tmux fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
+  sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
+  mkdir -p ~/.config/kitty ~/.config/fish ~/.tmux ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
+  cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
+  cp dotfiles/fish/config.fish ~/.config/fish/config.fish
+  cp dotfiles/tmux/.tmux.conf ~/.tmux.conf
+  cp dotfiles/hypr/hyprland.conf ~/.config/hypr/hyprland.conf
+  cp dotfiles/waybar/config ~/.config/waybar/config
+  cp dotfiles/waybar/style.css ~/.config/waybar/style.css
+  cp dotfiles/mako/config ~/.config/mako/config
+  cp dotfiles/wofi/config ~/.config/wofi/config
+  cp dotfiles/wofi/style.css ~/.config/wofi/style.css
+  cp -r dotfiles/eww/* ~/.config/eww/
+  mkdir -p ~/Pictures/wallpapers
+  cp dotfiles/wallpapers/* ~/Pictures/wallpapers/ 2>/dev/null || true
+  if [ -d dotfiles/grub-themes ]; then
+    sudo mkdir -p /boot/grub/themes
+    sudo cp -r dotfiles/grub-themes/* /boot/grub/themes/
+    sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub
+    echo 'GRUB_THEME="/boot/grub/themes/Vimix/theme.txt"' | sudo tee -a /etc/default/grub
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+  fi
+  if [ "$SHELL" != "$(which fish)" ]; then
+    chsh -s $(which fish)
+    echo "Shell cambiado a fish. Reinicia la terminal para aplicar."
+  fi
 fi
 
-# Instalar picom para animaciones (opcional)
-if ! pacman -Qs picom > /dev/null; then
-  sudo pacman -S --noconfirm picom
+# Instalación de herramientas extra
+if [[ $INSTALL_EXTRA == 1 ]]; then
+  EXTRA_PKGS=(gh yazi bat fd ripgrep btop zoxide fzf lazygit)
+  sudo pacman -Syu --noconfirm "${EXTRA_PKGS[@]}"
 fi
 
-# Cambiar shell por defecto a fish
-if [ "$SHELL" != "$(which fish)" ]; then
-  chsh -s $(which fish)
-  echo "Shell cambiado a fish. Reinicia la terminal para aplicar."
+# Instalación de lenguajes de programación
+if [[ $INSTALL_LANGS == 1 ]]; then
+  sudo pacman -Syu --noconfirm python python-pip nodejs npm rust go jdk-openjdk gcc clang
+  echo "Lenguajes de programación instalados."
 fi
 
-# Mensaje final
-echo "\n¡Configuración completada! Inicia sesión en Hyprland para disfrutar tu rice." 
+# Instalación de Neovim IDE
+if [[ $INSTALL_NVIM == 1 ]]; then
+  sudo pacman -Syu --noconfirm neovim
+  mkdir -p ~/.config/nvim
+  cp -r dotfiles/nvim/* ~/.config/nvim/
+fi
+
+echo "\n¡Instalación completada! Reinicia tu sesión para aplicar todos los cambios." 

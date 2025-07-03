@@ -1,0 +1,3 @@
+(box :class "launcher"
+  (button :onclick "wofi --show drun" (label :text "🚀 Apps"))
+) 

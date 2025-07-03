@@ -15,4 +15,34 @@
 .battery-icon { font-size: 1.5em; color: #f9e2af; }
 .battery-percent { font-size: 1.2em; color: #f9e2af; }
 .volume-icon { font-size: 1.5em; color: #f38ba8; }
-.volume-percent { font-size: 1.2em; color: #f38ba8; } 
+.volume-percent { font-size: 1.2em; color: #f38ba8; }
+
+.main-bar {
+  background: rgba(30, 30, 46, 0.85);
+  border-radius: 16px;
+  margin: 12px 24px;
+  padding: 8px 24px;
+  box-shadow: 0 4px 16px #18182588;
+  align-items: center;
+  min-width: 600px;
+}
+
+.music, .calendar, .notifications, .launcher, .asciiart {
+  background: #181825;
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin: 8px;
+  font-family: "FiraCode Nerd Font", "JetBrainsMono Nerd Font", monospace;
+  color: #cdd6f4;
+  box-shadow: 0 2px 8px #18182588;
+}
+.music-icon { font-size: 1.5em; color: #a6e3a1; }
+.music-title { font-size: 1.2em; color: #cdd6f4; margin: 0 8px; }
+.calendar-title { font-size: 1.2em; color: #f9e2af; }
+.calendar-body { font-size: 1em; color: #cdd6f4; white-space: pre; }
+.notif-icon { font-size: 1.5em; color: #f38ba8; }
+.notif-count { font-size: 1.2em; color: #f38ba8; }
+.launcher button { background: #a6e3a1; color: #1e1e2e; border: none; border-radius: 8px; padding: 8px 16px; font-size: 1em; }
+.asciiart { text-align: center; }
+.ascii-line { font-family: monospace; font-size: 1em; color: #89b4fa; }
+.ascii-sign { font-size: 1.1em; color: #a6e3a1; margin-top: 4px; } 

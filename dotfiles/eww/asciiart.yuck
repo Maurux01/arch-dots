@@ -1,0 +1,8 @@
+(box :class "asciiart"
+  (label :text "_              _     _      _      _      " :class "ascii-line")
+  (label :text "/_\\  _ __  ___| |__ (_)_ _ (_)__ _| |__  " :class "ascii-line")
+  (label :text "/ _ \\| '_ \\/ -_) '_ \\| | ' \\| / _` | '_ \\ " :class "ascii-line")
+  (label :text "/_/ \\_\\ .__/\\___|_.__/|_|_||_|_\\__, |_.__/" :class "ascii-line")
+  (label :text "      |_|                      |___/       " :class "ascii-line")
+  (label :text "archriced by maurux01" :class "ascii-sign")
+) 

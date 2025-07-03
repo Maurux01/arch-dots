@@ -1,0 +1,7 @@
+(box :class "music"
+  (label :text (getenv "MUSIC_ICON") :class "music-icon")
+  (label :text (getenv "MUSIC_TITLE") :class "music-title")
+  (button :onclick "playerctl previous" (label :text "⏮"))
+  (button :onclick "playerctl play-pause" (label :text "⏯"))
+  (button :onclick "playerctl next" (label :text "⏭"))
+) 

@@ -1,0 +1,4 @@
+(box :class "notifications"
+  (label :text "🔔" :class "notif-icon")
+  (label :text (getenv "NOTIF_COUNT") :class "notif-count")
+) 

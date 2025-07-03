@@ -1,0 +1,4 @@
+(box :class "calendar"
+  (label :text (sh "date '+%B %Y'") :class "calendar-title")
+  (label :text (sh "cal | tail -n +2") :class "calendar-body")
+) 

@@ -1,0 +1,11 @@
+(box :orientation "h" :space-evenly true :class "main-bar"
+  (include "asciiart.yuck")
+  (include "clock.yuck")
+  (include "weather.yuck")
+  (include "battery.yuck")
+  (include "volume.yuck")
+  (include "music.yuck")
+  (include "calendar.yuck")
+  (include "notifications.yuck")
+  (include "launcher.yuck")
+) 
