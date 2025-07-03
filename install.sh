@@ -35,7 +35,7 @@ fi
 
 # Instalación de componentes visuales
 if [[ $INSTALL_VISUALS == 1 ]]; then
-  PACKAGES=(kitty tmux fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
+  PACKAGES=(kitty tmux fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd pamac)
   sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
   mkdir -p ~/.config/kitty ~/.config/fish ~/.tmux ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
   cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
