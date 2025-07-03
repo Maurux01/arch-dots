@@ -2,7 +2,7 @@
 set -e
 
 # Paquetes necesarios
-PACKAGES=(kitty tmux neovim fish git curl unzip grub)
+PACKAGES=(kitty tmux neovim fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
 
 # Instalar paquetes
 sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
@@ -21,6 +21,16 @@ cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
 cp dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 cp dotfiles/fish/config.fish ~/.config/fish/config.fish
 cp dotfiles/tmux/.tmux.conf ~/.tmux.conf
+
+# Hyprland y apps Wayland
+mkdir -p ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
+cp dotfiles/hypr/hyprland.conf ~/.config/hypr/hyprland.conf
+cp dotfiles/waybar/config ~/.config/waybar/config
+cp dotfiles/waybar/style.css ~/.config/waybar/style.css
+cp dotfiles/mako/config ~/.config/mako/config
+cp dotfiles/wofi/config ~/.config/wofi/config
+cp dotfiles/wofi/style.css ~/.config/wofi/style.css
+# swww y eww: solo README, puedes agregar scripts/widgets luego
 
 # Copiar wallpapers
 mkdir -p ~/Pictures/wallpapers
@@ -41,4 +51,4 @@ if ! pacman -Qs picom > /dev/null; then
 fi
 
 # Mensaje final
-echo "\n¡Configuración completada! Reinicia tu sesión para aplicar los cambios." 
+echo "\n¡Configuración completada! Inicia sesión en Hyprland para disfrutar tu rice." 
