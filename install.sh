@@ -41,61 +41,126 @@ else
   [[ $SELECTIONS == *6* ]] && INSTALL_APPS=1
 fi
 
+# Función para verificar si un archivo existe antes de copiarlo
+copy_if_exists() {
+  local src="$1"
+  local dest="$2"
+  if [[ -f "$src" ]]; then
+    cp "$src" "$dest"
+    echo "✓ Copiado: $src"
+  else
+    echo "⚠ Archivo no encontrado: $src"
+  fi
+}
+
+# Función para verificar si un directorio existe antes de copiarlo
+copy_dir_if_exists() {
+  local src="$1"
+  local dest="$2"
+  if [[ -d "$src" ]]; then
+    cp -r "$src"/* "$dest/" 2>/dev/null || true
+    echo "✓ Copiado directorio: $src"
+  else
+    echo "⚠ Directorio no encontrado: $src"
+  fi
+}
+
 # Instalación de componentes visuales
 if [[ $INSTALL_VISUALS == 1 ]]; then
-  PACKAGES=(kitty tmux fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd pamac)
+  echo "\n📦 Instalando componentes visuales..."
+  
+  # Verificar si estamos en un entorno real (no WSL)
+  if [[ -d "/boot" && -f "/etc/default/grub" ]]; then
+    PACKAGES=(kitty tmux fish git curl unzip grub hyprland waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
+  else
+    echo "⚠ Detectado entorno virtual/WSL - omitiendo GRUB y Hyprland"
+    PACKAGES=(kitty tmux fish git curl unzip waybar mako wofi swww eww grim slurp wl-clipboard ttf-firacode-nerd ttf-jetbrains-mono-nerd)
+  fi
+  
+  # Instalar paquetes principales
   sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
+  
+  # Crear directorios de configuración
   mkdir -p ~/.config/kitty ~/.config/fish ~/.tmux ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
-  cp dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
-  cp dotfiles/fish/config.fish ~/.config/fish/config.fish
-  cp dotfiles/tmux/.tmux.conf ~/.tmux.conf
-  cp dotfiles/hypr/hyprland.conf ~/.config/hypr/hyprland.conf
-  cp dotfiles/waybar/config ~/.config/waybar/config
-  cp dotfiles/waybar/style.css ~/.config/waybar/style.css
-  cp dotfiles/mako/config ~/.config/mako/config
-  cp dotfiles/wofi/config ~/.config/wofi/config
-  cp dotfiles/wofi/style.css ~/.config/wofi/style.css
-  cp -r dotfiles/eww/* ~/.config/eww/
+  
+  # Copiar archivos de configuración con verificación
+  copy_if_exists "dotfiles/kitty/kitty.conf" "~/.config/kitty/kitty.conf"
+  copy_if_exists "dotfiles/fish/config.fish" "~/.config/fish/config.fish"
+  copy_if_exists "dotfiles/tmux/.tmux.conf" "~/.tmux.conf"
+  copy_if_exists "dotfiles/hypr/hyprland.conf" "~/.config/hypr/hyprland.conf"
+  copy_if_exists "dotfiles/waybar/config" "~/.config/waybar/config"
+  copy_if_exists "dotfiles/waybar/style.css" "~/.config/waybar/style.css"
+  copy_if_exists "dotfiles/mako/config" "~/.config/mako/config"
+  copy_if_exists "dotfiles/wofi/config" "~/.config/wofi/config"
+  copy_if_exists "dotfiles/wofi/style.css" "~/.config/wofi/style.css"
+  copy_dir_if_exists "dotfiles/eww" "~/.config/eww"
+  
+  # Copiar wallpapers
   mkdir -p ~/Pictures/wallpapers
-  cp dotfiles/wallpapers/* ~/Pictures/wallpapers/ 2>/dev/null || true
-  if [ -d dotfiles/grub-themes ]; then
+  copy_dir_if_exists "dotfiles/wallpapers" "~/Pictures/wallpapers"
+  
+  # Configurar GRUB solo si estamos en un entorno real
+  if [[ -d "/boot" && -f "/etc/default/grub" && -d "dotfiles/grub-themes" ]]; then
+    echo "\n🎨 Configurando tema GRUB..."
     sudo mkdir -p /boot/grub/themes
     sudo cp -r dotfiles/grub-themes/* /boot/grub/themes/
     sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub
     echo 'GRUB_THEME="/boot/grub/themes/Vimix/theme.txt"' | sudo tee -a /etc/default/grub
     sudo grub-mkconfig -o /boot/grub/grub.cfg
+    echo "✓ Tema GRUB configurado"
   fi
-  if [ "$SHELL" != "$(which fish)" ]; then
-    chsh -s $(which fish)
-    echo "Shell cambiado a fish. Reinicia la terminal para aplicar."
+  
+  # Cambiar shell a fish solo si es posible
+  if command -v fish >/dev/null 2>&1 && [[ "$SHELL" != "$(which fish)" ]]; then
+    if chsh -s $(which fish) 2>/dev/null; then
+      echo "✓ Shell cambiado a fish. Reinicia la terminal para aplicar."
+    else
+      echo "⚠ No se pudo cambiar el shell a fish (puede requerir permisos especiales)"
+    fi
   fi
 fi
 
 # Instalación de herramientas extra
 if [[ $INSTALL_EXTRA == 1 ]]; then
+  echo "\n🛠️ Instalando herramientas extra..."
   EXTRA_PKGS=(gh yazi bat fd ripgrep btop zoxide fzf lazygit)
   sudo pacman -Syu --noconfirm "${EXTRA_PKGS[@]}"
+  echo "✓ Herramientas extra instaladas"
 fi
 
 # Instalación de lenguajes de programación
 if [[ $INSTALL_LANGS == 1 ]]; then
+  echo "\n💻 Instalando lenguajes de programación..."
   sudo pacman -Syu --noconfirm python python-pip nodejs npm rust go jdk-openjdk gcc clang
-  echo "Lenguajes de programación instalados."
+  echo "✓ Lenguajes de programación instalados"
 fi
 
 # Instalación de Neovim IDE
 if [[ $INSTALL_NVIM == 1 ]]; then
+  echo "\n📝 Instalando Neovim IDE..."
   sudo pacman -Syu --noconfirm neovim
   mkdir -p ~/.config/nvim
-  cp -r dotfiles/nvim/* ~/.config/nvim/
+  copy_dir_if_exists "dotfiles/nvim" "~/.config/nvim"
+  echo "✓ Neovim IDE instalado"
 fi
 
 # Instalación de apps creativas, gaming y utilidades
 if [[ $INSTALL_APPS == 1 ]]; then
-  APPS_PKGS=(ufw openvpn networkmanager-openvpn neofetch fastfetch appflowy obs-studio gimp kdenlive ferdium inkscape darktable discord blender steam heroic-games-launcher insomnia blueman pavucontrol flameshot copyq cliphist jenkins beekeeper-studio vscodium podman)
-  sudo pacman -Syu --noconfirm "${APPS_PKGS[@]}"
-  echo "\n¡Apps creativas, gaming y utilidades instaladas!"
-  echo "\nRecuerda: algunas apps como appflowy, heroic, ferdium, lm studio o beekeeper-studio pueden requerir AUR. Si no se instalan, usa pamac o yay para instalarlas."
+  echo "\n🎮 Instalando apps creativas, gaming y utilidades..."
+  
+  # Paquetes del repositorio oficial
+  OFFICIAL_PKGS=(ufw openvpn networkmanager-openvpn neofetch fastfetch obs-studio gimp kdenlive inkscape darktable blender steam blueman pavucontrol flameshot copyq cliphist jenkins vscodium podman)
+  sudo pacman -Syu --noconfirm "${OFFICIAL_PKGS[@]}"
+  
+  # Paquetes que pueden requerir AUR
+  AUR_PKGS=(appflowy ferdium discord heroic-games-launcher insomnia beekeeper-studio)
+  echo "\n⚠ Los siguientes paquetes pueden requerir AUR:"
+  for pkg in "${AUR_PKGS[@]}"; do
+    echo "  - $pkg"
+  done
+  echo "\n💡 Si algún paquete no se instala, usa: yay -S <paquete> o pamac build <paquete>"
+  
+  echo "✓ Apps instaladas"
 fi
 
-echo "\n¡Instalación completada! Reinicia tu sesión para aplicar todos los cambios." 
+echo "\n🎉 ¡Instalación completada! Reinicia tu sesión para aplicar todos los cambios." 
