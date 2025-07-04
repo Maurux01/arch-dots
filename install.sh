@@ -11,29 +11,34 @@ cat <<'EOF'
    archriced by maurux01
 EOF
 
-echo "\nSelecciona qué deseas instalar (usa espacio para seleccionar, enter para continuar):"
-OPTIONS=(
-  "Todo el entorno (recomendado)"
-  "Componentes visuales (Hyprland, Waybar, eww, etc.)"
-  "Herramientas extra (yazi, lazygit, etc.)"
-  "Lenguajes de programación (Python, Node, Rust, etc.)"
-  "Neovim IDE"
-  "Apps creativas, gaming y utilidades"
-)
-SELECTIONS=$(printf '%s\n' "${OPTIONS[@]}" | fzf --multi --prompt="Selecciona: " --header="[Espacio] selecciona, [Enter] confirma")
+echo "\nSelecciona qué deseas instalar (puedes elegir varias opciones separadas por coma, ej: 1,3,5):"
+echo "1) Todo el entorno (recomendado)"
+echo "2) Componentes visuales (Hyprland, Waybar, eww, etc.)"
+echo "3) Herramientas extra (yazi, lazygit, etc.)"
+echo "4) Lenguajes de programación (Python, Node, Rust, etc.)"
+echo "5) Neovim IDE"
+echo "6) Apps creativas, gaming y utilidades"
+echo -n "Ingresa tu selección: "
+read SELECTIONS
 
-if [[ "$SELECTIONS" == *"Todo el entorno"* ]]; then
+INSTALL_VISUALS=0
+INSTALL_EXTRA=0
+INSTALL_LANGS=0
+INSTALL_NVIM=0
+INSTALL_APPS=0
+
+if [[ $SELECTIONS == *1* ]]; then
   INSTALL_VISUALS=1
   INSTALL_EXTRA=1
   INSTALL_LANGS=1
   INSTALL_NVIM=1
   INSTALL_APPS=1
 else
-  [[ "$SELECTIONS" == *"Componentes visuales"* ]] && INSTALL_VISUALS=1
-  [[ "$SELECTIONS" == *"Herramientas extra"* ]] && INSTALL_EXTRA=1
-  [[ "$SELECTIONS" == *"Lenguajes de programación"* ]] && INSTALL_LANGS=1
-  [[ "$SELECTIONS" == *"Neovim IDE"* ]] && INSTALL_NVIM=1
-  [[ "$SELECTIONS" == *"Apps creativas, gaming y utilidades"* ]] && INSTALL_APPS=1
+  [[ $SELECTIONS == *2* ]] && INSTALL_VISUALS=1
+  [[ $SELECTIONS == *3* ]] && INSTALL_EXTRA=1
+  [[ $SELECTIONS == *4* ]] && INSTALL_LANGS=1
+  [[ $SELECTIONS == *5* ]] && INSTALL_NVIM=1
+  [[ $SELECTIONS == *6* ]] && INSTALL_APPS=1
 fi
 
 # Instalación de componentes visuales
