@@ -81,10 +81,11 @@ if [[ $INSTALL_VISUALS == 1 ]]; then
   sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
   
   # Crear directorios de configuración
-  mkdir -p ~/.config/kitty ~/.config/fish ~/.tmux ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww
+  mkdir -p ~/.config/kitty ~/.config/fish ~/.tmux ~/.config/hypr ~/.config/waybar ~/.config/mako ~/.config/wofi ~/.config/swww ~/.config/eww ~/.config/neofetch
   
   # Copiar archivos de configuración con verificación
   copy_if_exists "dotfiles/kitty/kitty.conf" "~/.config/kitty/kitty.conf"
+  copy_if_exists "dotfiles/kitty/theme-switcher.sh" "~/.config/kitty/theme-switcher.sh"
   copy_if_exists "dotfiles/fish/config.fish" "~/.config/fish/config.fish"
   copy_if_exists "dotfiles/tmux/.tmux.conf" "~/.tmux.conf"
   copy_if_exists "dotfiles/hypr/hyprland.conf" "~/.config/hypr/hyprland.conf"
@@ -94,6 +95,21 @@ if [[ $INSTALL_VISUALS == 1 ]]; then
   copy_if_exists "dotfiles/wofi/config" "~/.config/wofi/config"
   copy_if_exists "dotfiles/wofi/style.css" "~/.config/wofi/style.css"
   copy_dir_if_exists "dotfiles/eww" "~/.config/eww"
+  
+  # Copiar configuraciones de neofetch/fastfetch
+  copy_if_exists "dotfiles/neofetch/neofetch.conf" "~/.config/neofetch/neofetch.conf"
+  copy_if_exists "dotfiles/neofetch/fastfetch.jsonc" "~/.config/fastfetch/config.jsonc"
+  
+  # Configurar tmux plugins y scripts
+  mkdir -p ~/.tmux/plugins
+  copy_dir_if_exists "dotfiles/tmux/scripts" "~/.tmux"
+  
+  # Instalar TPM (Tmux Plugin Manager)
+  if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+    echo "\n🔧 Instalando Tmux Plugin Manager..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    echo "✓ TPM instalado. Ejecuta 'tmux source ~/.tmux.conf' y luego 'prefix + I' para instalar plugins"
+  fi
   
   # Copiar wallpapers
   mkdir -p ~/Pictures/wallpapers
