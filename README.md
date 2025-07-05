@@ -1,323 +1,288 @@
-# 🐧 Arch Dots: The Ultimate Automated Arch Linux + Hyprland Rice
+# Arch Dots - Configuración de Hyprland
 
-[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org/)
-[![Hyprland](https://img.shields.io/badge/Hyprland-FF0080?style=for-the-badge&logo=hyprland&logoColor=white)](https://hyprland.org/)
-[![Neovim](https://img.shields.io/badge/Neovim-57A143?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io/)
-[![Fish Shell](https://img.shields.io/badge/Fish_Shell-FF6B6B?style=for-the-badge&logo=fish&logoColor=white)](https://fishshell.com/)
+Una configuración completa y moderna de Hyprland para Arch Linux con un sistema de login dinámico basado en wallpapers.
 
-> **Una configuración completa y automatizada para Arch Linux con Hyprland, Neovim IDE, y todas las herramientas que necesitas para desarrollo, gaming y productividad.**
+## 🚀 Características
 
-## ✨ Características
+- **Hyprland** - Compositor Wayland moderno y rápido
+- **Login dinámico** - Tema de bloqueo que se adapta a tu wallpaper
+- **EWW widgets** - Widgets personalizables para el escritorio
+- **Waybar** - Barra de estado minimalista
+- **Kitty** - Terminal GPU-accelerated
+- **Neovim** - Editor configurado con LSP y plugins
+- **Fish Shell** - Shell interactivo con autocompletado
+- **Gaming optimizado** - Steam, Lutris, Wine, GameMode
+- **Desarrollo** - Node.js, Python, Rust, Go, Java
+- **Hyperlock** - Bloqueador de pantalla nativo de Hyprland
 
-### 🎨 **Entorno Visual**
-- **Hyprland** - Compositor Wayland moderno con animaciones fluidas
-- **Waybar** - Barra de estado personalizable
-- **Eww** - Widgets personalizados (clima, batería, música, etc.)
-- **Mako** - Notificaciones elegantes
-- **Wofi** - Lanzador de aplicaciones
-- **Swww** - Fondos de pantalla animados
-- **Kitty** - Terminal emulator con soporte GPU
-- **Tema Catppuccin** - Colores hermosos y consistentes
+## 📦 Instalación
 
-### 💻 **Desarrollo**
-- **Neovim IDE** - Editor completo con LSP, autocompletado, IA
-- **Fish Shell** - Shell moderna con autocompletado inteligente
-- **Herramientas CLI** - bat, fd, ripgrep, fzf, lazygit, yazi
-- **Lenguajes** - Python, Node.js, Rust, Go, Java, C/C++
-- **Git** - Configuración optimizada con GitHub CLI
+### Instalación completa automática
 
-### 🎮 **Gaming & Multimedia**
-- **Steam** - Plataforma de gaming
-- **Heroic Games Launcher** - Epic Games Store
-- **OBS Studio** - Streaming y grabación
-- **GIMP, Kdenlive, Inkscape** - Edición multimedia
-- **Blender** - Modelado 3D
-- **Discord** - Comunicación
-
-### 🛠️ **Productividad**
-- **Ferdium** - Gestor de aplicaciones web
-- **AppFlowy** - Notas y gestión de proyectos
-- **Insomnia** - Cliente API
-- **Beekeeper Studio** - Gestor de bases de datos
-- **VSCodium** - Editor de código alternativo
-
-## 🚀 Instalación Rápida
-
-### 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/youruser/arch-dots.git
-cd arch-dots
-```
+# Clonar el repositorio
+git clone https://github.com/tu-usuario/archriced.git
+cd archriced
 
-### 2. **Ejecutar el instalador**
-```bash
-chmod +x install.sh
+# Ejecutar instalación completa
 ./install.sh
 ```
 
-### 3. **Seleccionar componentes**
-El instalador te permitirá elegir:
-- ✅ **Todo el entorno** (recomendado)
-- 🎨 **Componentes visuales** (Hyprland, Waybar, etc.)
-- 🛠️ **Herramientas extra** (yazi, lazygit, etc.)
-- 💻 **Lenguajes de programación** (Python, Node, Rust, etc.)
-- 📝 **Neovim IDE** completo
-- 🎮 **Apps creativas, gaming y utilidades**
+El script de instalación:
+- ✅ Actualiza el sistema
+- ✅ Instala todas las dependencias
+- ✅ Configura Hyprland y componentes
+- ✅ Instala utilidades del sistema
+- ✅ Configura herramientas de desarrollo
+- ✅ Instala fuentes y temas
+- ✅ Configura Hyperlock
+- ✅ Copia todos los dotfiles
+- ✅ Configura el sistema
 
-### 4. **Reiniciar y disfrutar**
+### Desinstalación completa
+
 ```bash
-# Reinicia tu sesión y selecciona Hyprland
+# Desinstalar todo
+./uninstall.sh
 ```
 
-## 📋 Requisitos del Sistema
+El script de desinstalación:
+- ✅ Crea un backup completo
+- ✅ Desinstala todos los paquetes
+- ✅ Elimina configuraciones
+- ✅ Restaura configuraciones por defecto
+- ✅ Limpia el sistema
 
-### **Mínimos**
-- Arch Linux (reciente)
-- 4GB RAM
-- 20GB espacio libre
-- GPU compatible con Wayland
+## 🎨 Características del Login Dinámico
 
-### **Recomendados**
-- 8GB+ RAM
-- SSD
-- GPU moderna (NVIDIA/AMD/Intel)
-- Conexión a internet estable
+El sistema de login dinámico analiza automáticamente tu wallpaper y genera un tema de bloqueo que se adapta a los colores dominantes.
 
-## 🎯 Componentes Principales
+### Funciones incluidas:
 
-| Componente | Descripción | Configuración |
-|------------|-------------|---------------|
-| **Hyprland** | Compositor Wayland | `~/.config/hypr/hyprland.conf` |
-| **Waybar** | Barra de estado | `~/.config/waybar/` |
-| **Eww** | Widgets | `~/.config/eww/` |
-| **Neovim** | IDE completo | `~/.config/nvim/` |
-| **Fish** | Shell moderna | `~/.config/fish/config.fish` |
-| **Kitty** | Terminal | `~/.config/kitty/kitty.conf` |
+- **Análisis de wallpaper** - Extrae colores dominantes
+- **Generación de tema** - Crea temas de swaylock automáticamente
+- **Rotación automática** - Cambia wallpapers automáticamente
+- **Widget de control** - EWW widget para gestionar wallpapers
 
-## 🎨 Personalización
+### Comandos útiles:
 
-### **Temas y Colores**
-- Cambia el tema en `~/.config/hypr/hyprland.conf`
-- Modifica colores en `~/.config/eww/style.scss`
-- Personaliza Waybar en `~/.config/waybar/style.css`
-
-### **Widgets Eww**
-- Clima: `~/.config/eww/scripts/weather.sh`
-- Batería: `~/.config/eww/scripts/battery.sh`
-- Volumen: `~/.config/eww/scripts/volume.sh`
-
-### **Fondos de Pantalla**
 ```bash
-# Agrega tus wallpapers
-cp tu-wallpaper.jpg ~/Pictures/wallpapers/
-# Edita ~/.config/hypr/hyprland.conf para cambiar
+# Bloquear pantalla con tema dinámico
+./utils.sh lock
+
+# Cambiar wallpaper manualmente
+./utils.sh wallpaper
+
+# Iniciar daemon de rotación automática
+./utils.sh wallpaper-daemon
+
+# Analizar wallpaper actual
+./utils.sh analyze-wallpaper
 ```
 
 ## 🛠️ Scripts de Utilidades
 
-### **Script Principal de Utilidades**
-```bash
-# Navegar al directorio
-cd ~/github/arch-dots
+### `utils.sh`
 
-# Usar el script de utilidades
-./dotfiles/scripts/utils.sh [comando]
+Script principal de utilidades con múltiples funciones:
+
+```bash
+# Ver todas las opciones
+./utils.sh
+
+# Gestión de wallpapers
+./utils.sh wallpaper [comando]
+./utils.sh wallpaper-daemon [start|stop|status]
+
+# Bloqueo de pantalla
+./utils.sh lock
+
+# Mantenimiento del sistema
+./utils.sh maintenance
+
+# Información del sistema
+./utils.sh info
+
+# Análisis de wallpapers
+./utils.sh analyze-wallpaper [ruta]
 ```
 
-### **Comandos Disponibles**
+### Hyperlock
+
+Bloqueador de pantalla nativo de Hyprland:
+
 ```bash
-./dotfiles/scripts/utils.sh update    # Actualizar sistema
-./dotfiles/scripts/utils.sh clean     # Limpiar sistema
-./dotfiles/scripts/utils.sh check     # Verificar estado
-./dotfiles/scripts/utils.sh firewall  # Configurar firewall
-./dotfiles/scripts/utils.sh optimize  # Optimizar sistema
-./dotfiles/scripts/utils.sh info      # Información del sistema
-./dotfiles/scripts/utils.sh aur pkg   # Instalar paquetes AUR
+# Bloquear pantalla
+hyperlock
+
+# Configurar Hyperlock
+nano ~/.config/hyperlock/config.toml
+
+# Ver estado de Hyperlock
+systemctl --user status hyperlock
 ```
 
-### **Backup Automático**
-```bash
-# Función integrada en Fish
-dotbackup
+### Portapapeles e Historial
 
-# O usar el script directamente
-./dotfiles/scripts/backup.sh
+Sistema completo de portapapeles con historial:
+
+```bash
+# Abrir historial de CopyQ
+SUPER + V
+
+# Abrir historial de cliphist
+SUPER + SHIFT + V
+
+# Alternativa para cliphist
+SUPER + CTRL + V
+
+# Capturar pantalla al portapapeles
+SUPER + SHIFT + S
 ```
 
-## 🔧 Configuración Post-Instalación
+**Herramientas incluidas:**
+- **CopyQ** - Gestor avanzado de portapapeles con GUI
+- **cliphist** - Historial de portapapeles en terminal
+- **wl-clipboard** - Herramientas de portapapeles para Wayland
 
-### **1. Configurar Git**
-```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "tu@email.com"
-```
+## 🎮 Gaming
 
-### **2. Instalar Fuentes (si es necesario)**
-```bash
-./dotfiles/scripts/postinstall.sh
-```
+Configuración optimizada para gaming:
 
-### **3. Configurar Clima (opcional)**
-```bash
-# Editar ~/.config/eww/scripts/weather.sh
-export WEATHER_CITY="Tu Ciudad"
-export WEATHER_API_KEY="tu-api-key"  # Opcional
-```
-
-### **4. Personalizar Keybinds**
-Edita `~/.config/hypr/hyprland.conf` para modificar atajos de teclado.
-
-## 🎮 Gaming Setup
-
-### **Steam**
-- Instalado automáticamente
-- Configuración optimizada para Wayland
-- Soporte para controladores
-
-### **Heroic Games Launcher**
-```bash
-# Instalar desde AUR si no se instaló
-./dotfiles/scripts/utils.sh aur heroic-games-launcher
-```
-
-### **Optimizaciones de Gaming**
-- FPS counter integrado
-- Configuración de GPU optimizada
-- Soporte para GameMode
+- **Steam** - Plataforma de juegos
+- **Lutris** - Gestor de juegos
+- **Wine** - Compatibilidad con Windows
+- **GameMode** - Optimización automática
+- **MangoHud** - Overlay de rendimiento
+- **Heroic Games Launcher** - Epic Games Store
 
 ## 💻 Desarrollo
 
-### **Neovim IDE**
-- **LSP** para todos los lenguajes principales
-- **Autocompletado** inteligente
-- **IA** con GitHub Copilot y Codeium
-- **Telescope** para búsqueda rápida
-- **Git** integrado con gitsigns
-- **Terminal** integrado
+Herramientas de desarrollo incluidas:
 
-### **Lenguajes Soportados**
-- **Python** - LSP, formateo, debugging
-- **JavaScript/TypeScript** - LSP, npm, debugging
-- **Rust** - Cargo, LSP, formateo
-- **Go** - Go modules, LSP
-- **C/C++** - Clang, debugging
-- **Java** - Maven/Gradle, debugging
+- **Node.js & npm** - JavaScript runtime
+- **Python & pip** - Python interpreter
+- **Rust** - Rust programming language
+- **Go** - Go programming language
+- **Java JDK** - Java development kit
+- **GCC & CMake** - Compiladores y build tools
+- **Git** - Control de versiones
+- **LazyGit** - TUI para Git
+- **Neovim** - Editor configurado con LSP
 
-### **Herramientas de Desarrollo**
-```bash
-# Búsqueda de archivos
-fd "archivo"
+## ⌨️ Atajos de Teclado
 
-# Búsqueda en contenido
-rg "texto"
+### Hyprland
+- `SUPER + RETURN` - Abrir terminal
+- `SUPER + D` - Lanzador de aplicaciones
+- `SUPER + Q` - Cerrar ventana
+- `SUPER + SHIFT + L` - Bloquear pantalla
+- `SUPER + SHIFT + C` - Recargar configuración
+- `SUPER + SHIFT + Q` - Salir de Hyprland
 
-# Navegación inteligente
-z
+### Navegación
+- `SUPER + HJKL` - Navegar entre ventanas
+- `SUPER + 1-9` - Cambiar workspace
+- `SUPER + SHIFT + HJKL` - Mover ventanas
+- `SUPER + SHIFT + 1-9` - Mover ventana a workspace
 
-# Git visual
-lazygit
+### Multimedia
+- `XF86AudioPlay` - Play/Pause
+- `XF86AudioNext` - Siguiente canción
+- `XF86AudioPrev` - Canción anterior
+- `XF86AudioMute` - Silenciar
+- `XF86AudioRaiseVolume` - Subir volumen
+- `XF86AudioLowerVolume` - Bajar volumen
 
-# Gestor de archivos
-yazi
-```
+### Portapapeles
+- `SUPER + V` - Abrir historial CopyQ
+- `SUPER + SHIFT + V` - Abrir historial cliphist
+- `SUPER + CTRL + V` - Alternativa cliphist
+- `SUPER + SHIFT + S` - Capturar pantalla al portapapeles
 
-## 🔍 Troubleshooting
+## 🎨 Temas y Personalización
 
-### **Problemas Comunes**
+### Temas incluidos:
+- **Catppuccin** - Tema oscuro moderno
+- **Papirus** - Iconos consistentes
+- **Bibata** - Cursor animado
 
-#### **Hyprland no inicia**
+### Fuentes:
+- **JetBrains Mono** - Fuente de programación
+- **Fira Code** - Fuente con ligaduras
+- **Noto Fonts** - Fuentes universales
+
+## 🔧 Configuración
+
+### Archivos principales:
+- `~/.config/hypr/hyprland.conf` - Configuración de Hyprland
+- `~/.config/waybar/config` - Configuración de Waybar
+- `~/.config/eww/eww.yuck` - Widgets EWW
+- `~/.config/kitty/kitty.conf` - Configuración de terminal
+- `~/.config/nvim/init.lua` - Configuración de Neovim
+
+### Personalización:
+1. Edita los archivos de configuración
+2. Recarga Hyprland con `SUPER + SHIFT + C`
+3. Los cambios se aplican inmediatamente
+
+## 🐛 Solución de Problemas
+
+### Problemas comunes:
+
+**Hyprland no inicia:**
 ```bash
 # Verificar logs
-journalctl --user -u hyprland
+journalctl --user -f
 
-# Verificar dependencias
-pacman -Q hyprland waybar mako
+# Verificar configuración
+./utils.sh info
 ```
 
-#### **Eww widgets no aparecen**
+**Wallpapers no cambian:**
 ```bash
-# Reiniciar eww
-eww kill
-eww daemon
-eww open-many main-bar
+# Verificar swww
+./utils.sh info
 
-# Verificar permisos
-chmod +x ~/.config/eww/scripts/*.sh
+# Reiniciar daemon
+./utils.sh wallpaper-daemon restart
 ```
 
-#### **Neovim plugins no cargan**
+**Hyperlock no funciona:**
 ```bash
-# Abrir Neovim y esperar
-nvim
+# Verificar instalación
+./utils.sh info
 
-# Verificar Lazy.nvim
-:Lazy sync
+# Reconfigurar Hyperlock
+yay -S hyperlock --noconfirm
 ```
 
-#### **Fish shell no funciona**
-```bash
-# Cambiar shell manualmente
-chsh -s $(which fish)
+### Logs útiles:
+- `~/.local/share/hyprland/hyprland.log` - Logs de Hyprland
+- `./utils.sh debug` - Debug completo
+- `journalctl --user -f` - Logs del usuario
 
-# Verificar Oh My Fish
-omf install bobthefish
+## 📁 Estructura del Proyecto
+
+```
+archriced/
+├── install.sh              # Instalación completa
+├── uninstall.sh            # Desinstalación completa
+├── utils.sh                # Utilidades principales
+├── README.md               # Documentación
+└── dotfiles/               # Configuraciones
+    ├── hypr/               # Hyprland
+    ├── waybar/             # Barra de estado
+    ├── eww/                # Widgets
+    ├── kitty/              # Terminal
+    ├── nvim/               # Editor
+    ├── fish/               # Shell
+    └── wallpapers/         # Wallpapers de ejemplo
 ```
 
-#### **Paquetes AUR no se instalan**
-```bash
-# Instalar yay
-sudo pacman -S --needed git base-devel
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+## 🤝 Contribuir
 
-# O usar el script de utilidades
-./dotfiles/scripts/utils.sh aur paquete
-```
-
-### **Logs Útiles**
-```bash
-# Hyprland
-journalctl --user -u hyprland -f
-
-# Waybar
-waybar -l debug
-
-# Eww
-eww logs
-
-# Sistema
-journalctl -f
-```
-
-### **Recuperación**
-```bash
-# Restaurar configuración
-cd ~/github/arch-dots
-git checkout -- .
-
-# Reinstalar componentes
-./install.sh
-```
-
-## 📚 Recursos Adicionales
-
-### **Documentación Oficial**
-- [Hyprland Wiki](https://wiki.hyprland.org/)
-- [Neovim Docs](https://neovim.io/doc/)
-- [Fish Shell](https://fishshell.com/docs/current/)
-- [Arch Wiki](https://wiki.archlinux.org/)
-
-### **Comunidad**
-- [r/hyprland](https://reddit.com/r/hyprland)
-- [r/neovim](https://reddit.com/r/neovim)
-- [r/archlinux](https://reddit.com/r/archlinux)
-
-## 🤝 Contribución
-
-¡Las contribuciones son bienvenidas! 
-
-1. Fork el repositorio
+1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
 3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
@@ -325,93 +290,23 @@ git checkout -- .
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
 ## 🙏 Agradecimientos
 
 - [Hyprland](https://hyprland.org/) - Compositor Wayland
-- [Neovim](https://neovim.io/) - Editor de código
-- [Fish Shell](https://fishshell.com/) - Shell moderna
+- [EWW](https://github.com/elkowar/eww) - Widgets para Wayland
 - [Catppuccin](https://github.com/catppuccin/catppuccin) - Paleta de colores
-- Comunidad de Arch Linux
+- [JaKooLit](https://github.com/JaKooLit/Arch-Hyprland) - Inspiración para scripts
+
+## 📞 Soporte
+
+Si tienes problemas o preguntas:
+
+1. Revisa la sección de [Solución de Problemas](#-solución-de-problemas)
+2. Ejecuta `./utils.sh debug` y comparte los logs
+3. Abre un issue en GitHub con información detallada
 
 ---
 
-**⭐ Si te gusta este proyecto, ¡dale una estrella!**
-
-**🐛 ¿Encontraste un bug? [Abre un issue](https://github.com/youruser/arch-dots/issues)**
-
-**💡 ¿Tienes una idea? [Sugiere una feature](https://github.com/youruser/arch-dots/discussions)** 
-
-## **✅ MEJORAS IMPLEMENTADAS:**
-
-### **1. Scripts Mejorados**
-- ✅ **`install.sh`** - Más robusto, sin dependencias de fzf
-- ✅ **`postinstall.sh`** - Más fuentes, mejor manejo de errores
-- ✅ **`backup.sh`** - Verificaciones de seguridad, mejor feedback
-- ✅ **`utils.sh`** - **NUEVO** script de utilidades completo
-
-### **2. Configuraciones Mejoradas**
-- ✅ **Hyprland** - Tema Catppuccin completo, más keybinds, gestos
-- ✅ **Fish Shell** - Más aliases, funciones útiles, mejor tema
-- ✅ **Weather Script** - Soporte para OpenWeatherMap API
-- ✅ **Eww Scripts** - Mejor manejo de errores
-
-### **3. Documentación Mejorada**
-- ✅ **README.md** - Completamente reescrito con emojis y estructura clara
-- ✅ **Scripts README** - Documentación detallada de todos los scripts
-- ✅ **Troubleshooting** - Sección expandida con soluciones
-
-### **4. Nuevas Funcionalidades**
-- ✅ **Script de utilidades** con 8 comandos diferentes
-- ✅ **Más fuentes** Nerd Fonts
-- ✅ **Mejor manejo de AUR** paquetes
-- ✅ **Funciones de Fish** integradas
-- ✅ **Configuración de firewall** automática
-
-## **🚀 EL REPOSITORIO AHORA INCLUYE:**
-
-### **Scripts Principales:**
-- `install.sh` - Instalador principal mejorado
-- `postinstall.sh` - Configuración post-instalación
-- `backup.sh` - Backup automático
-- `utils.sh` - **NUEVO** script de utilidades
-
-### **Funcionalidades del Script de Utilidades:**
-```bash
-./dotfiles/scripts/utils.sh update    # Actualizar sistema
-./dotfiles/scripts/utils.sh clean     # Limpiar sistema  
-./dotfiles/scripts/utils.sh check     # Verificar estado
-./dotfiles/scripts/utils.sh firewall  # Configurar firewall
-./dotfiles/scripts/utils.sh optimize  # Optimizar sistema
-./dotfiles/scripts/utils.sh info      # Información del sistema
-./dotfiles/scripts/utils.sh aur pkg   # Instalar paquetes AUR
-```
-
-### **Funciones de Fish Integradas:**
-```bash
-dotbackup    # Backup rápido
-update       # Actualizar sistema
-search       # Buscar paquetes
-install      # Instalar paquetes
-remove       # Desinstalar paquetes
-sysinfo      # Información del sistema
-weather      # Clima en terminal
-```
-
-## **🎯 BENEFICIOS DE LAS MEJORAS:**
-
-1. **Más Robusto** - Mejor manejo de errores y verificaciones
-2. **Más Fácil de Usar** - Documentación clara y comandos intuitivos
-3. **Más Completo** - Scripts de utilidades para mantenimiento
-4. **Más Personalizable** - Configuraciones avanzadas disponibles
-5. **Mejor Documentado** - READMEs detallados y troubleshooting
-
-## **📋 PRÓXIMOS PASOS:**
-
-1. **Probar en Arch Linux real** - El script está listo para usar
-2. **Personalizar configuraciones** - Ajustar temas y keybinds
-3. **Usar los scripts de utilidades** - Para mantenimiento del sistema
-4. **Contribuir** - Agregar más funcionalidades según necesites
-
-¡Tu repositorio ahora es **mucho más profesional, robusto y fácil de usar**! 🚀 
+**¡Disfruta tu nueva configuración de Hyprland! 🎉** 

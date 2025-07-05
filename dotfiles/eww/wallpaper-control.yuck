@@ -1,0 +1,33 @@
+(defwidget wallpaper-control []
+  (box :class "wallpaper-control"
+       :orientation "horizontal"
+       :spacing 8
+       (button :class "wallpaper-btn"
+               :onclick "~/.config/scripts/wallpaper-changer.sh prev"
+               :text "◀")
+       (button :class "wallpaper-btn"
+               :onclick "~/.config/scripts/wallpaper-changer.sh change"
+               :text "🔄")
+       (button :class="wallpaper-btn"
+               :onclick "~/.config/scripts/wallpaper-changer.sh next"
+               :text "▶")))
+
+(defwidget wallpaper-info []
+  (box :class "wallpaper-info"
+       :orientation "vertical"
+       :spacing 4
+       (label :class "wallpaper-name"
+              :text (shell "basename $(~/.config/scripts/wallpaper-analyzer.sh wallpaper 2>/dev/null || echo 'No wallpaper')"))
+       (label :class "wallpaper-status"
+              :text (shell "if pgrep -f wallpaper-changer >/dev/null; then echo '🔄 Auto'; else echo '⏸️ Manual'; fi"))))
+
+(defwidget wallpaper-daemon-control []
+  (box :class "wallpaper-daemon"
+       :orientation "horizontal"
+       :spacing 4
+       (button :class "daemon-btn start"
+               :onclick "~/.config/scripts/wallpaper-changer.sh daemon &"
+               :text "▶ Auto")
+       (button :class "daemon-btn stop"
+               :onclick "~/.config/scripts/wallpaper-changer.sh stop"
+               :text "⏹️ Stop"))) 
