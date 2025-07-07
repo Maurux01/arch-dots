@@ -322,6 +322,318 @@ EOF
     print_success "Portapapeles e historial configurado"
 }
 
+# Función para configurar notificaciones mejoradas
+configure_notifications() {
+    print_section "Configurando notificaciones mejoradas..."
+    
+    print_step "Configurando Mako con animaciones y colores..."
+    
+    # Crear script de notificaciones mejoradas
+    cat > "$HOME/.config/scripts/notification-enhancer.sh" << 'EOF'
+#!/bin/bash
+
+# Notification Enhancer for Mako
+# Adds custom animations and effects for multiple simultaneous notifications
+
+# Colors for different notification types
+declare -A NOTIFICATION_COLORS=(
+    ["info"]="#7aa2f7"
+    ["success"]="#9ece6a"
+    ["warning"]="#e0af68"
+    ["error"]="#f7768e"
+    ["discord"]="#5865f2"
+    ["spotify"]="#1db954"
+    ["firefox"]="#ff7139"
+    ["volume"]="#bb9af7"
+    ["brightness"]="#ff9e64"
+)
+
+# Animation functions
+animate_notification() {
+    local app_name="$1"
+    local message="$2"
+    local urgency="$3"
+    
+    # Get color based on app or urgency
+    local color="${NOTIFICATION_COLORS[$app_name]:-${NOTIFICATION_COLORS[$urgency]:-${NOTIFICATION_COLORS[info]}}}"
+    
+    # Create animated notification with custom styling
+    notify-send \
+        --app-name="$app_name" \
+        --urgency="$urgency" \
+        --icon="$(get_app_icon "$app_name")" \
+        --expire-time=5000 \
+        "$message"
+}
+
+get_app_icon() {
+    local app_name="$1"
+    
+    case "$app_name" in
+        "discord") echo "discord" ;;
+        "spotify") echo "spotify" ;;
+        "firefox") echo "firefox" ;;
+        "volume") echo "audio-volume-high" ;;
+        "brightness") echo "display-brightness" ;;
+        "systemd") echo "system-run" ;;
+        "mpv") echo "video-x-generic" ;;
+        *) echo "dialog-information" ;;
+    esac
+}
+
+# Enhanced volume notification with progress bar
+show_volume_notification() {
+    local volume="$1"
+    local muted="$2"
+    
+    if [[ "$muted" == "true" ]]; then
+        animate_notification "volume" "🔇 Audio Muted" "normal"
+    else
+        # Create visual progress bar
+        local bars=$((volume / 10))
+        local progress=""
+        for ((i=0; i<bars; i++)); do
+            progress+="█"
+        done
+        for ((i=bars; i<10; i++)); do
+            progress+="░"
+        done
+        
+        animate_notification "volume" "🔊 Volume: $progress $volume%" "normal"
+    fi
+}
+
+# Enhanced brightness notification
+show_brightness_notification() {
+    local brightness="$1"
+    
+    # Create visual progress bar
+    local bars=$((brightness / 10))
+    local progress=""
+    for ((i=0; i<bars; i++)); do
+        progress+="█"
+    done
+    for ((i=bars; i<10; i++)); do
+        progress+="░"
+    done
+    
+    animate_notification "brightness" "☀️ Brightness: $progress $brightness%" "normal"
+}
+
+# Enhanced music notification
+show_music_notification() {
+    local title="$1"
+    local artist="$2"
+    local status="$3"
+    
+    case "$status" in
+        "play") animate_notification "spotify" "▶️ $title - $artist" "normal" ;;
+        "pause") animate_notification "spotify" "⏸️ $title - $artist" "normal" ;;
+        "stop") animate_notification "spotify" "⏹️ Music Stopped" "normal" ;;
+    esac
+}
+
+# Enhanced system notification
+show_system_notification() {
+    local message="$1"
+    local urgency="$2"
+    
+    animate_notification "systemd" "$message" "$urgency"
+}
+
+# Enhanced Discord notification
+show_discord_notification() {
+    local channel="$1"
+    local sender="$2"
+    local message="$3"
+    
+    animate_notification "discord" "💬 $channel: $sender - $message" "normal"
+}
+
+# Enhanced web notification
+show_web_notification() {
+    local title="$1"
+    local message="$2"
+    
+    animate_notification "firefox" "🌐 $title: $message" "normal"
+}
+
+# Notification queue manager for multiple simultaneous notifications
+notification_queue() {
+    local queue_file="/tmp/mako_notification_queue"
+    local max_queue=5
+    
+    # Add notification to queue
+    echo "$(date +%s): $*" >> "$queue_file"
+    
+    # Process queue
+    if [[ -f "$queue_file" ]]; then
+        local queue_size=$(wc -l < "$queue_file")
+        
+        if [[ $queue_size -gt $max_queue ]]; then
+            # Show queue overflow notification
+            animate_notification "systemd" "📬 $((queue_size - max_queue)) notifications queued" "normal"
+            
+            # Process oldest notifications
+            tail -n $max_queue "$queue_file" > "${queue_file}.tmp"
+            mv "${queue_file}.tmp" "$queue_file"
+        fi
+    fi
+}
+
+# Main function
+main() {
+    case "$1" in
+        "volume")
+            show_volume_notification "$2" "${3:-false}"
+            ;;
+        "brightness")
+            show_brightness_notification "$2"
+            ;;
+        "music")
+            show_music_notification "$2" "$3" "$4"
+            ;;
+        "system")
+            show_system_notification "$2" "${3:-normal}"
+            ;;
+        "discord")
+            show_discord_notification "$2" "$3" "$4"
+            ;;
+        "web")
+            show_web_notification "$2" "$3"
+            ;;
+        "queue")
+            notification_queue "${@:2}"
+            ;;
+        *)
+            echo "Usage: $0 {volume|brightness|music|system|discord|web|queue} [args...]"
+            echo ""
+            echo "Examples:"
+            echo "  $0 volume 75 false"
+            echo "  $0 brightness 60"
+            echo "  $0 music 'Song Title' 'Artist' play"
+            echo "  $0 system 'System update available' warning"
+            echo "  $0 discord 'general' 'User' 'Hello world!'"
+            echo "  $0 web 'Website' 'New message received'"
+            ;;
+    esac
+}
+
+# Run main function with all arguments
+main "$@"
+EOF
+    
+    chmod +x "$HOME/.config/scripts/notification-enhancer.sh"
+    
+    print_step "Mejorando scripts de EWW..."
+    
+    # Mejorar script de volumen
+    cat > "$HOME/.config/eww/scripts/volume.sh" << 'EOF'
+#!/bin/bash
+
+# Enhanced Volume Script with Beautiful Notifications
+# Uses notification enhancer for animated volume notifications
+
+VOL=$(pamixer --get-volume 2>/dev/null || echo 0)
+MUTE=$(pamixer --get-mute 2>/dev/null || echo false)
+
+# Set icons based on volume level and mute status
+if [ "$MUTE" = "true" ]; then
+    ICON=""
+    VOLUME_ICON=""
+else
+    if [ "$VOL" -eq 0 ]; then
+        ICON=""
+        VOLUME_ICON=""
+    elif [ "$VOL" -le 30 ]; then
+        ICON=""
+        VOLUME_ICON=""
+    elif [ "$VOL" -le 60 ]; then
+        ICON=""
+        VOLUME_ICON=""
+    else
+        ICON=""
+        VOLUME_ICON=""
+    fi
+fi
+
+# Export variables for EWW
+export VOLUME_ICON=$VOLUME_ICON
+export VOLUME_PERCENT="$VOL%"
+
+# Show enhanced notification if this is a volume change event
+if [ "$1" = "notify" ]; then
+    # Use notification enhancer for beautiful volume notifications
+    if command -v "$HOME/.config/scripts/notification-enhancer.sh" >/dev/null 2>&1; then
+        "$HOME/.config/scripts/notification-enhancer.sh" volume "$VOL" "$MUTE"
+    else
+        # Fallback to regular notification
+        if [ "$MUTE" = "true" ]; then
+            notify-send --app-name="volume" --urgency="normal" --icon="audio-volume-muted" "🔇 Audio Muted"
+        else
+            notify-send --app-name="volume" --urgency="normal" --icon="audio-volume-high" "🔊 Volume: $VOL%"
+        fi
+    fi
+fi
+
+# Output for EWW widget
+echo "$ICON $VOL%"
+EOF
+    
+    # Crear script de brillo
+    cat > "$HOME/.config/eww/scripts/brightness.sh" << 'EOF'
+#!/bin/bash
+
+# Enhanced Brightness Script with Beautiful Notifications
+# Uses notification enhancer for animated brightness notifications
+
+# Get brightness value (works with most backlight systems)
+BRIGHTNESS=$(brightnessctl get 2>/dev/null || echo 0)
+MAX_BRIGHTNESS=$(brightnessctl max 2>/dev/null || echo 100)
+PERCENT=$((BRIGHTNESS * 100 / MAX_BRIGHTNESS))
+
+# Set icons based on brightness level
+if [ "$PERCENT" -eq 0 ]; then
+    ICON=""
+    BRIGHTNESS_ICON=""
+elif [ "$PERCENT" -le 25 ]; then
+    ICON=""
+    BRIGHTNESS_ICON=""
+elif [ "$PERCENT" -le 50 ]; then
+    ICON=""
+    BRIGHTNESS_ICON=""
+elif [ "$PERCENT" -le 75 ]; then
+    ICON=""
+    BRIGHTNESS_ICON=""
+else
+    ICON=""
+    BRIGHTNESS_ICON=""
+fi
+
+# Export variables for EWW
+export BRIGHTNESS_ICON=$BRIGHTNESS_ICON
+export BRIGHTNESS_PERCENT="$PERCENT%"
+
+# Show enhanced notification if this is a brightness change event
+if [ "$1" = "notify" ]; then
+    # Use notification enhancer for beautiful brightness notifications
+    if command -v "$HOME/.config/scripts/notification-enhancer.sh" >/dev/null 2>&1; then
+        "$HOME/.config/scripts/notification-enhancer.sh" brightness "$PERCENT"
+    else
+        # Fallback to regular notification
+        notify-send --app-name="brightness" --urgency="normal" --icon="display-brightness" "☀️ Brightness: $PERCENT%"
+    fi
+fi
+
+# Output for EWW widget
+echo "$ICON $PERCENT%"
+EOF
+    
+    chmod +x "$HOME/.config/eww/scripts/volume.sh" "$HOME/.config/eww/scripts/brightness.sh"
+    
+    print_success "Notificaciones mejoradas configuradas"
+}
+
 # Función para copiar dotfiles
 copy_dotfiles() {
     print_section "Copiando dotfiles..."
@@ -377,11 +689,20 @@ show_final_info() {
     echo "• SUPER+RETURN - Terminal"
     echo "• SUPER+Q - Cerrar ventana"
     echo "• SUPER+V - Historial de portapapeles"
+    echo "• Teclas de volumen/brillo - Notificaciones animadas"
+    echo ""
+    
+    echo "Características de notificaciones:"
+    echo "• Notificaciones con colores por tipo de aplicación"
+    echo "• Barras de progreso visuales para volumen y brillo"
+    echo "• Manejo inteligente de múltiples notificaciones"
+    echo "• Animaciones suaves y efectos visuales"
     echo ""
     
     echo "Para más información:"
     echo "• Consulta el README.md"
     echo "• Ejecuta: ./utils.sh"
+    echo "• Prueba: ~/.config/scripts/notification-enhancer.sh"
     echo ""
 }
 
@@ -398,6 +719,7 @@ main() {
     install_fonts_themes
     configure_hyperlock
     configure_clipboard
+    configure_notifications
     copy_dotfiles
     configure_system
     show_final_info

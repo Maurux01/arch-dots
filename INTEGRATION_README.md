@@ -130,7 +130,6 @@ git clone https://github.com/Maurux01/archriced.git
 cd archriced
 
 # Ejecutar instalador
-chmod +x install.sh
 ./install.sh
 ```
 
