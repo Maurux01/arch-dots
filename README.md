@@ -22,7 +22,7 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/archriced.git
+git clone https://github.com/mauruxu01/archriced.git
 cd archriced
 
 # Ejecutar instalación completa
