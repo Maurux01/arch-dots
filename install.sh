@@ -87,8 +87,7 @@ install_hyprland_minimal() {
         "mako"
         "swaylock"
         "swayidle"
-        "grim"
-        "slurp"
+        "flameshot"
         "wl-clipboard"
         "xdg-desktop-portal-hyprland"
         "xdg-desktop-portal-gtk"
@@ -107,6 +106,7 @@ install_hyprland_minimal() {
         "blueman"
         "networkmanager"
         "network-manager-applet"
+        "gdm"
     )
     
     print_step "Instalando paquetes esenciales..."
@@ -207,9 +207,20 @@ configure_system() {
     print_step "Configurando permisos y servicios..."
     # Hacer todo en paralelo para mayor velocidad
     sudo usermod -aG wheel "$USER" &
-    sudo systemctl enable NetworkManager bluetooth &
+    sudo systemctl enable NetworkManager bluetooth gdm &
     sudo chsh -s /usr/bin/fish "$USER" &
     wait
+    
+    print_step "Configurando GDM para Hyprland..."
+    # Crear archivo de configuración para Hyprland en GDM
+    sudo mkdir -p /usr/share/wayland-sessions
+    sudo tee /usr/share/wayland-sessions/hyprland.desktop > /dev/null << 'EOF'
+[Desktop Entry]
+Name=Hyprland
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec=Hyprland
+Type=Application
+EOF
     
     print_success "Sistema configurado"
 }
