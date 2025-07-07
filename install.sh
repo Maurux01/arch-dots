@@ -25,8 +25,8 @@ log() {
 
 print_header() {
     echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║                    INSTALADOR ARCH DOTS                      ║${NC}"
-    echo -e "${BLUE}║                    Instalación completa automática           ║${NC}"
+    echo -e "${BLUE}║                    Archriced                                 ║${NC}"
+    echo -e "${BLUE}║                  by maurux01                                 ║${NC}"
     echo -e "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
 }
