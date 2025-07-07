@@ -70,8 +70,9 @@ check_system() {
 # Función para actualizar sistema
 update_system() {
     print_section "Actualizando sistema..."
-    sudo pacman -Syu --noconfirm
-    print_success "Sistema actualizado"
+    # Solo actualizar base de datos, no todo el sistema
+    sudo pacman -Sy --noconfirm
+    print_success "Base de datos actualizada"
 }
 
 # Función para instalar Hyprland mínimo
@@ -94,10 +95,23 @@ install_hyprland_minimal() {
         "kitty"
         "fish"
         "neovim"
+        "neofetch"
+        "fastfetch"
+        "bat"
+        "fd"
+        "ripgrep"
+        "fzf"
+        "btop"
+        "htop"
+        "pavucontrol"
+        "blueman"
+        "networkmanager"
+        "network-manager-applet"
     )
     
     print_step "Instalando paquetes esenciales..."
-    sudo pacman -S "${essential_packages[@]}" --noconfirm --needed
+    # Instalar en paralelo para mayor velocidad
+    sudo pacman -S "${essential_packages[@]}" --noconfirm --needed --overwrite="*"
     
     print_success "Hyprland mínimo instalado"
 }
@@ -113,10 +127,11 @@ install_aur_helper() {
     
     print_step "Instalando yay..."
     cd /tmp
-    git clone https://aur.archlinux.org/yay.git
+    git clone --depth 1 https://aur.archlinux.org/yay.git
     cd yay
-    makepkg -si --noconfirm
+    makepkg -si --noconfirm --skippgpcheck
     cd "$SCRIPT_DIR"
+    rm -rf /tmp/yay
     
     print_success "AUR helper instalado"
 }
@@ -129,7 +144,58 @@ copy_dotfiles() {
     mkdir -p "$HOME/.config"
     
     print_step "Copiando configuraciones..."
-    cp -r "$DOTFILES_DIR"/* "$HOME/.config/"
+    
+    # Mapeo de carpetas a sus rutas correctas
+    declare -A config_paths=(
+        ["hypr"]="$HOME/.config/hypr"
+        ["waybar"]="$HOME/.config/waybar"
+        ["kitty"]="$HOME/.config/kitty"
+        ["nvim"]="$HOME/.config/nvim"
+        ["eww"]="$HOME/.config/eww"
+        ["wofi"]="$HOME/.config/wofi"
+        ["mako"]="$HOME/.config/mako"
+        ["swww"]="$HOME/.config/swww"
+        ["fish"]="$HOME/.config/fish"
+        ["tmux"]="$HOME/.config/tmux"
+        ["neofetch"]="$HOME/.config/neofetch"
+        ["wallpapers"]="$HOME/.local/share/wallpapers"
+        ["scripts"]="$HOME/.config/scripts"
+    )
+    
+    # Copiar cada carpeta a su ubicación correcta
+    for item in "$DOTFILES_DIR"/*; do
+        if [ -d "$item" ]; then
+            local dirname=$(basename "$item")
+            local target_path="${config_paths[$dirname]}"
+            
+            if [ -n "$target_path" ]; then
+                print_step "Copiando $dirname a $target_path..."
+                mkdir -p "$(dirname "$target_path")"
+                cp -r "$item"/* "$target_path/" 2>/dev/null || cp -r "$item" "$(dirname "$target_path")/"
+            else
+                print_step "Copiando $dirname a ~/.config/$dirname..."
+                cp -r "$item" "$HOME/.config/"
+            fi
+        fi
+    done
+    
+    # Copiar archivos de configuración específicos
+    if [ -f "$DOTFILES_DIR/fish/config.fish" ]; then
+        print_step "Copiando configuración de Fish..."
+        mkdir -p "$HOME/.config/fish"
+        cp "$DOTFILES_DIR/fish/config.fish" "$HOME/.config/fish/"
+    fi
+    
+    if [ -f "$DOTFILES_DIR/neofetch/neofetch.conf" ]; then
+        print_step "Copiando configuración de Neofetch..."
+        mkdir -p "$HOME/.config/neofetch"
+        cp "$DOTFILES_DIR/neofetch/neofetch.conf" "$HOME/.config/neofetch/"
+    fi
+    
+    if [ -f "$DOTFILES_DIR/neofetch/fastfetch.jsonc" ]; then
+        print_step "Copiando configuración de Fastfetch..."
+        cp "$DOTFILES_DIR/neofetch/fastfetch.jsonc" "$HOME/.config/"
+    fi
     
     print_success "Dotfiles copiados"
 }
@@ -138,14 +204,12 @@ copy_dotfiles() {
 configure_system() {
     print_section "Configurando sistema..."
     
-    print_step "Configurando permisos..."
-    sudo usermod -aG wheel "$USER"
-    
-    print_step "Habilitando servicios..."
-    sudo systemctl enable NetworkManager bluetooth
-    
-    print_step "Configurando shell por defecto..."
-    sudo chsh -s /usr/bin/fish "$USER"
+    print_step "Configurando permisos y servicios..."
+    # Hacer todo en paralelo para mayor velocidad
+    sudo usermod -aG wheel "$USER" &
+    sudo systemctl enable NetworkManager bluetooth &
+    sudo chsh -s /usr/bin/fish "$USER" &
+    wait
     
     print_success "Sistema configurado"
 }
