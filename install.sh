@@ -56,7 +56,7 @@ print_warning() {
     log "ADVERTENCIA: $1"
 }
 
-# Función para instalar paquetes de forma eficiente
+# Función para instalar paquetes de forma eficiente con manejo de errores
 install_packages() {
     local packages=("$@")
     local aur_packages=()
@@ -71,17 +71,61 @@ install_packages() {
         fi
     done
     
-    # Instalar paquetes oficiales
+    # Instalar paquetes oficiales con reintentos
     if [ ${#pacman_packages[@]} -gt 0 ]; then
         print_step "Instalando paquetes oficiales..."
-        sudo pacman -S "${pacman_packages[@]}" --noconfirm --needed
+        local max_attempts=3
+        local attempt=1
+        
+        while [ $attempt -le $max_attempts ]; do
+            if sudo pacman -S "${pacman_packages[@]}" --noconfirm --needed; then
+                break
+            else
+                print_warning "Error en instalación de paquetes oficiales (intento $attempt/$max_attempts)"
+                
+                if [ $attempt -lt $max_attempts ]; then
+                    print_step "Reintentando con mirrors alternativos..."
+                    sudo pacman-mirrors --fasttrack --timeout 3
+                    sudo pacman -Syy --noconfirm
+                    sleep 2
+                fi
+                
+                attempt=$((attempt + 1))
+            fi
+        done
+        
+        if [ $attempt -gt $max_attempts ]; then
+            print_error "No se pudieron instalar algunos paquetes oficiales"
+            print_warning "Continuando con la instalación..."
+        fi
     fi
     
-    # Instalar paquetes AUR
+    # Instalar paquetes AUR con reintentos
     if [ ${#aur_packages[@]} -gt 0 ]; then
         print_step "Instalando paquetes AUR..."
         for pkg in "${aur_packages[@]}"; do
-            yay -S "$pkg" --noconfirm --needed
+            local max_attempts=3
+            local attempt=1
+            
+            while [ $attempt -le $max_attempts ]; do
+                if yay -S "$pkg" --noconfirm --needed; then
+                    break
+                else
+                    print_warning "Error instalando $pkg (intento $attempt/$max_attempts)"
+                    
+                    if [ $attempt -lt $max_attempts ]; then
+                        print_step "Reintentando $pkg..."
+                        sleep 2
+                    fi
+                    
+                    attempt=$((attempt + 1))
+                fi
+            done
+            
+            if [ $attempt -gt $max_attempts ]; then
+                print_error "No se pudo instalar $pkg"
+                print_warning "Continuando con la instalación..."
+            fi
         done
     fi
 }
@@ -95,24 +139,117 @@ check_system() {
         exit 1
     fi
     
-    if ! ping -c 1 archlinux.org >/dev/null 2>&1; then
-        print_error "No hay conexión a internet"
-        exit 1
-    fi
-    
     if [ "$EUID" -eq 0 ]; then
         print_error "No ejecutes este script como root"
         exit 1
     fi
     
+    # Verificar conectividad con reintentos
+    print_step "Verificando conectividad a internet..."
+    local max_attempts=3
+    local attempt=1
+    
+    while [ $attempt -le $max_attempts ]; do
+        if ping -c 1 archlinux.org >/dev/null 2>&1; then
+            print_success "Conectividad verificada"
+            break
+        else
+            print_warning "Problema de conectividad (intento $attempt/$max_attempts)"
+            
+            if [ $attempt -lt $max_attempts ]; then
+                print_step "Intentando con DNS alternativos..."
+                # Probar con DNS de Google
+                if ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                    print_step "Configurando DNS temporal..."
+                    echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf >/dev/null
+                    echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf >/dev/null
+                fi
+                sleep 2
+            fi
+            
+            attempt=$((attempt + 1))
+        fi
+    done
+    
+    if [ $attempt -gt $max_attempts ]; then
+        print_error "No se pudo establecer conectividad a internet"
+        print_warning "El script continuará pero puede fallar en la instalación de paquetes"
+    fi
+    
     print_success "Sistema verificado"
 }
 
-# Función para actualizar sistema
+# Función para limpiar y optimizar sistema
+cleanup_system() {
+    print_section "Limpiando y optimizando sistema..."
+    
+    print_step "Limpiando cache de paquetes..."
+    sudo pacman -Sc --noconfirm
+    
+    print_step "Limpiando cache de AUR..."
+    if command -v yay >/dev/null 2>&1; then
+        yay -Sc --noconfirm
+    fi
+    
+    print_step "Limpiando archivos temporales..."
+    sudo rm -rf /tmp/*
+    sudo rm -rf /var/tmp/*
+    
+    print_step "Optimizando base de datos de paquetes..."
+    sudo pacman-optimize
+    
+    print_success "Sistema limpiado y optimizado"
+}
+
+# Función para configurar mirrors
+configure_mirrors() {
+    print_section "Configurando mirrors de Arch Linux..."
+    
+    print_step "Haciendo backup de mirrorlist actual..."
+    sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+    
+    print_step "Generando nueva lista de mirrors optimizada..."
+    sudo pacman-mirrors --fasttrack --timeout 5
+    
+    print_step "Actualizando base de datos de paquetes..."
+    sudo pacman -Syy --noconfirm
+    
+    print_success "Mirrors configurados"
+}
+
+# Función para actualizar sistema con manejo de errores
 update_system() {
     print_section "Actualizando sistema..."
-    sudo pacman -Syu --noconfirm
-    print_success "Sistema actualizado"
+    
+    # Intentar actualización con diferentes estrategias
+    local max_attempts=3
+    local attempt=1
+    
+    while [ $attempt -le $max_attempts ]; do
+        print_step "Intento $attempt de $max_attempts..."
+        
+        if sudo pacman -Syu --noconfirm; then
+            print_success "Sistema actualizado exitosamente"
+            return 0
+        else
+            print_warning "Error en actualización, intentando con mirrors alternativos..."
+            
+            # Cambiar a mirrors más rápidos
+            sudo pacman-mirrors --fasttrack --timeout 3
+            
+            # Limpiar cache si es necesario
+            if [ $attempt -eq 2 ]; then
+                print_step "Limpiando cache de paquetes..."
+                sudo pacman -Sc --noconfirm
+            fi
+            
+            attempt=$((attempt + 1))
+            sleep 2
+        fi
+    done
+    
+    print_error "No se pudo actualizar el sistema después de $max_attempts intentos"
+    print_warning "Continuando con la instalación..."
 }
 
 # Función para instalar dependencias básicas
@@ -710,6 +847,7 @@ show_final_info() {
 main() {
     print_header
     check_system
+    configure_mirrors
     update_system
     install_basic_deps
     install_aur_helper
