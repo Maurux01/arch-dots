@@ -107,6 +107,12 @@ install_hyprland_minimal() {
         "networkmanager"
         "network-manager-applet"
         "gdm"
+        "exa"
+        "starship"
+        "zoxide"
+        "nerd-fonts-jetbrains-mono"
+        "jq"
+        "curl"
     )
     
     print_step "Instalando paquetes esenciales..."
@@ -179,6 +185,19 @@ copy_dotfiles() {
         fi
     done
     
+    # Hacer scripts ejecutables
+    print_step "Haciendo scripts ejecutables..."
+    chmod +x "$HOME/.config/waybar/scripts"/*.sh 2>/dev/null || true
+    chmod +x "$HOME/.config/scripts"/*.sh 2>/dev/null || true
+    
+    # Copiar script de wallpaper aleatorio
+    if [ -f "$DOTFILES_DIR/scripts/random-wallpaper.sh" ]; then
+        print_step "Copiando script de wallpaper aleatorio..."
+        mkdir -p "$HOME/.config/dotfiles/scripts"
+        cp "$DOTFILES_DIR/scripts/random-wallpaper.sh" "$HOME/.config/dotfiles/scripts/"
+        chmod +x "$HOME/.config/dotfiles/scripts/random-wallpaper.sh"
+    fi
+    
     # Copiar archivos de configuración específicos
     if [ -f "$DOTFILES_DIR/fish/config.fish" ]; then
         print_step "Copiando configuración de Fish..."
@@ -238,9 +257,12 @@ show_final_info() {
     echo ""
     
     echo "Comandos básicos:"
+    echo "• SUPER+N - Neovim (Editor por defecto)"
+    echo "• SUPER+B - Browser (Firefox)"
     echo "• SUPER+D - Lanzador de aplicaciones"
     echo "• SUPER+RETURN - Terminal"
     echo "• SUPER+Q - Cerrar ventana"
+    echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
     
     echo "Para instalar más aplicaciones:"

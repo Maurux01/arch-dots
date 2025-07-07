@@ -1,18 +1,448 @@
+/* =============================================================================
+   🎨 WAYBAR STYLE - CATPPUCCIN MOCHA THEME
+   =============================================================================
+   Author: Mauro Infante (maurux01)
+   Theme: Catppuccin Mocha - Modern and Beautiful
+   Description: Advanced Waybar styling with Catppuccin colors
+   ============================================================================= */
+
+/* =============================================================================
+   🎨 COLOR VARIABLES - CATPPUCCIN MOCHA
+   ============================================================================= */
 * {
-  font-family: 'FiraCode Nerd Font', 'JetBrainsMono Nerd Font', monospace;
-  font-size: 14px;
-  color: #cdd6f4;
+  /* Catppuccin Mocha Colors */
+  --catppuccin-rosewater: #f5e0dc;
+  --catppuccin-flamingo: #f2cdcd;
+  --catppuccin-pink: #f5c2e7;
+  --catppuccin-mauve: #cba6f7;
+  --catppuccin-red: #f38ba8;
+  --catppuccin-maroon: #eba0ac;
+  --catppuccin-peach: #fab387;
+  --catppuccin-yellow: #f9e2af;
+  --catppuccin-green: #a6e3a1;
+  --catppuccin-teal: #94e2d5;
+  --catppuccin-sky: #89dceb;
+  --catppuccin-sapphire: #74c7ec;
+  --catppuccin-blue: #89b4fa;
+  --catppuccin-lavender: #b4befe;
+  --catppuccin-text: #cdd6f4;
+  --catppuccin-subtext1: #bac2de;
+  --catppuccin-subtext0: #a6adc8;
+  --catppuccin-overlay2: #9399b2;
+  --catppuccin-overlay1: #7f849c;
+  --catppuccin-overlay0: #6c7086;
+  --catppuccin-surface2: #585b70;
+  --catppuccin-surface1: #45475a;
+  --catppuccin-surface0: #313244;
+  --catppuccin-base: #1e1e2e;
+  --catppuccin-mantle: #181825;
+  --catppuccin-crust: #11111b;
+
+  /* Custom Colors */
+  --background: var(--catppuccin-base);
+  --background-alt: var(--catppuccin-surface0);
+  --foreground: var(--catppuccin-text);
+  --primary: var(--catppuccin-blue);
+  --secondary: var(--catppuccin-mauve);
+  --accent: var(--catppuccin-pink);
+  --urgent: var(--catppuccin-red);
+  --warning: var(--catppuccin-yellow);
+  --success: var(--catppuccin-green);
+  --border: var(--catppuccin-surface1);
+  --separator: var(--catppuccin-overlay0);
+}
+
+/* =============================================================================
+   🖥️ MAIN WAYBAR STYLING
+   ============================================================================= */
+#waybar {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "JetBrains Mono Nerd Font", "Fira Code", "Cascadia Code", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+#waybar:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* =============================================================================
+   📦 MODULE STYLING
+   ============================================================================= */
+#workspaces,
+#window,
+#clock,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#disk,
+#battery,
+#tray,
+#custom-weather,
+#custom-power-menu,
+#custom-separator {
+  padding: 0 12px;
+  margin: 0 2px;
+  border-radius: 8px;
+  background: var(--background-alt);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+#workspaces:hover,
+#window:hover,
+#clock:hover,
+#pulseaudio:hover,
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#battery:hover,
+#tray:hover,
+#custom-weather:hover,
+#custom-power-menu:hover {
+  background: var(--catppuccin-surface1);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* =============================================================================
+   🎯 WORKSPACES STYLING
+   ============================================================================= */
+#workspaces {
+  padding: 0 8px;
+}
+
+#workspaces button {
+  padding: 4px 8px;
+  margin: 0 2px;
   background: transparent;
+  color: var(--catppuccin-subtext0);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
-window#waybar {
-  background: rgba(30, 30, 46, 0.8);
-  border-radius: 10px;
-  border: 2px solid #a6e3a1;
+
+#workspaces button:hover {
+  background: var(--catppuccin-surface1);
+  color: var(--foreground);
+  transform: scale(1.1);
 }
+
 #workspaces button.active {
-  background: #a6e3a1;
-  color: #1e1e2e;
+  background: var(--primary);
+  color: var(--background);
+  box-shadow: 0 2px 8px rgba(137, 180, 250, 0.3);
 }
-#clock, #battery, #pulseaudio, #network, #tray {
-  padding: 0 10px;
-} 
+
+#workspaces button.urgent {
+  background: var(--urgent);
+  color: var(--background);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* =============================================================================
+   🕐 CLOCK STYLING
+   ============================================================================= */
+#clock {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+#clock:hover {
+  color: var(--catppuccin-lavender);
+}
+
+/* =============================================================================
+   🔊 AUDIO STYLING
+   ============================================================================= */
+#pulseaudio {
+  color: var(--catppuccin-green);
+}
+
+#pulseaudio.muted {
+  color: var(--catppuccin-red);
+}
+
+#pulseaudio:hover {
+  color: var(--catppuccin-teal);
+}
+
+/* =============================================================================
+   🌐 NETWORK STYLING
+   ============================================================================= */
+#network {
+  color: var(--catppuccin-sapphire);
+}
+
+#network.disconnected {
+  color: var(--catppuccin-red);
+}
+
+#network:hover {
+  color: var(--catppuccin-sky);
+}
+
+/* =============================================================================
+   🖥️ SYSTEM MONITORING
+   ============================================================================= */
+#cpu {
+  color: var(--catppuccin-peach);
+}
+
+#cpu.warning {
+  color: var(--warning);
+  animation: warning-pulse 1s infinite;
+}
+
+#cpu.critical {
+  color: var(--urgent);
+  animation: critical-pulse 0.5s infinite;
+}
+
+#memory {
+  color: var(--catppuccin-maroon);
+}
+
+#memory.warning {
+  color: var(--warning);
+  animation: warning-pulse 1s infinite;
+}
+
+#memory.critical {
+  color: var(--urgent);
+  animation: critical-pulse 0.5s infinite;
+}
+
+#disk {
+  color: var(--catppuccin-lavender);
+}
+
+#disk.warning {
+  color: var(--warning);
+  animation: warning-pulse 1s infinite;
+}
+
+#disk.critical {
+  color: var(--urgent);
+  animation: critical-pulse 0.5s infinite;
+}
+
+@keyframes warning-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes critical-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* =============================================================================
+   🔋 BATTERY STYLING
+   ============================================================================= */
+#battery {
+  color: var(--catppuccin-green);
+}
+
+#battery.warning {
+  color: var(--warning);
+  animation: warning-pulse 1s infinite;
+}
+
+#battery.critical {
+  color: var(--urgent);
+  animation: critical-pulse 0.5s infinite;
+}
+
+#battery.charging {
+  color: var(--catppuccin-teal);
+}
+
+#battery.plugged {
+  color: var(--catppuccin-sapphire);
+}
+
+/* =============================================================================
+   🌤️ WEATHER STYLING
+   ============================================================================= */
+#custom-weather {
+  color: var(--catppuccin-sky);
+  font-weight: 500;
+}
+
+#custom-weather:hover {
+  color: var(--catppuccin-sapphire);
+}
+
+/* =============================================================================
+   ⏻ POWER MENU STYLING
+   ============================================================================= */
+#custom-power-menu {
+  color: var(--catppuccin-red);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 16px;
+}
+
+#custom-power-menu:hover {
+  color: var(--catppuccin-maroon);
+  background: var(--catppuccin-surface1);
+  transform: scale(1.1);
+}
+
+/* =============================================================================
+   📱 TRAY STYLING
+   ============================================================================= */
+#tray {
+  padding: 0 8px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+/* =============================================================================
+   🔗 SEPARATOR STYLING
+   ============================================================================= */
+#custom-separator {
+  color: var(--separator);
+  font-weight: 300;
+  padding: 0 4px;
+}
+
+/* =============================================================================
+   🎨 TOOLTIP STYLING
+   ============================================================================= */
+tooltip {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: "JetBrains Mono Nerd Font", monospace;
+  font-size: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* =============================================================================
+   📱 RESPONSIVE DESIGN
+   ============================================================================= */
+@media (max-width: 1200px) {
+  #waybar {
+    font-size: 12px;
+  }
+  
+  #workspaces,
+  #window,
+  #clock,
+  #pulseaudio,
+  #network,
+  #cpu,
+  #memory,
+  #disk,
+  #battery,
+  #tray,
+  #custom-weather,
+  #custom-power-menu,
+  #custom-separator {
+    padding: 0 8px;
+    margin: 0 1px;
+  }
+}
+
+@media (max-width: 800px) {
+  #waybar {
+    font-size: 11px;
+  }
+  
+  #workspaces,
+  #window,
+  #clock,
+  #pulseaudio,
+  #network,
+  #cpu,
+  #memory,
+  #disk,
+  #battery,
+  #tray,
+  #custom-weather,
+  #custom-power-menu,
+  #custom-separator {
+    padding: 0 6px;
+    margin: 0 1px;
+  }
+  
+  #custom-separator {
+    display: none;
+  }
+}
+
+/* =============================================================================
+   🌈 SPECIAL EFFECTS
+   ============================================================================= */
+/* Gradient background option (uncomment to enable) */
+/*
+#waybar {
+  background: linear-gradient(135deg, var(--background) 0%, var(--catppuccin-mantle) 100%);
+}
+*/
+
+/* Glass effect option (uncomment to enable) */
+/*
+#waybar {
+  background: rgba(30, 30, 46, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+*/
+
+/* =============================================================================
+   🎮 ANIMATIONS
+   ============================================================================= */
+/* Smooth transitions for all elements */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effects */
+#workspaces button:hover,
+#clock:hover,
+#pulseaudio:hover,
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#battery:hover,
+#custom-weather:hover,
+#custom-power-menu:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* =============================================================================
+   📝 NOTES
+   ============================================================================= */
+/*
+🎨 Theme: Catppuccin Mocha
+🎯 Features: Modern design, smooth animations, responsive
+🔧 Customization: Easy color changes via CSS variables
+📱 Responsive: Adapts to different screen sizes
+🌈 Effects: Optional glass and gradient effects
+*/ 
