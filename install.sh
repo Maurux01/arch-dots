@@ -439,6 +439,20 @@ copy_dotfiles() {
     print_success "Dotfiles copiados"
 }
 
+# Función para copiar wallpapers a la carpeta de imágenes del usuario
+copy_wallpapers() {
+    print_section "Copiando wallpapers a la carpeta de imágenes del usuario..."
+    local user_pictures="$HOME/Pictures"
+    [ -d "$user_pictures" ] || user_pictures="$HOME/Imágenes"
+    mkdir -p "$user_pictures"
+    if [ -d "$DOTFILES_DIR/wallpapers" ]; then
+        cp -r "$DOTFILES_DIR/wallpapers"/* "$user_pictures/"
+        print_success "Wallpapers copiados a $user_pictures"
+    else
+        print_warning "No se encontró la carpeta de wallpapers en dotfiles."
+    fi
+}
+
 # Función para configurar sistema básico
 configure_system() {
     print_section "Configurando sistema..."
@@ -530,6 +544,7 @@ main() {
     install_development
     install_all_nerdfonts
     install_fonts_themes
+    copy_wallpapers
     configure_hyperlock
     configure_clipboard
     copy_dotfiles
