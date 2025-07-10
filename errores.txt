@@ -2,4 +2,10 @@ errores de instalador
 
 Failed to enable unit: File '/etc/systemd/system/display-manager.service' already exists and is a symlink to /usr/lib/systemd/system/sddm.service
 
-// en espera de  verficar que se soluciono
+// solved
+
+
+
+ → Copiando tema Catppuccin a /boot/grub/themes...
+[2025-07-10 16:13:54] PASO: Copiando tema Catppuccin a /boot/grub/themes...
+cp: cannot stat '/tmp/grub2-themes/themes/catppuccin': No such file or directory
