@@ -225,17 +225,33 @@ install_development() {
 install_fonts_themes() {
     print_section "Instalando fuentes y temas..."
     
+    # Fuentes principales (más confiables)
     local font_packages=(
-        "nerd-fonts-jetbrains-mono" "nerd-fonts-fira-code" "noto-fonts"
-        "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation"
+        "nerd-fonts-fira-code" "noto-fonts" "noto-fonts-emoji" 
+        "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "nerd-fonts-adawita-mono"
     )
+    
+    # Intentar instalar JetBrains Mono Nerd Font de forma segura
+    print_step "Instalando fuentes principales..."
+    install_packages "${font_packages[@]}"
+    
+    # Intentar instalar JetBrains Mono Nerd Font de forma opcional
+    print_step "Intentando instalar JetBrains Mono Nerd Font..."
+    if yay -S "nerd-fonts-jetbrains-mono" --noconfirm --needed 2>/dev/null; then
+        print_success "JetBrains Mono Nerd Font instalado"
+    else
+        print_warning "JetBrains Mono Nerd Font no disponible, usando Fira Code como alternativa"
+        # Configurar Fira Code como fuente por defecto
+        sed -i 's/JetBrains Mono/FiraCode Nerd Font/g' "$DOTFILES_DIR/eww/eww.yuck" 2>/dev/null || true
+        sed -i 's/JetBrains Mono/FiraCode Nerd Font/g' "$DOTFILES_DIR/kitty/kitty.conf" 2>/dev/null || true
+    fi
     
     local theme_packages=(
         "catppuccin-gtk-theme" "papirus-icon-theme" "bibata-cursor-theme"
         "adwaita-icon-theme" "gnome-themes-extra"
     )
     
-    install_packages "${font_packages[@]}" "${theme_packages[@]}"
+    install_packages "${theme_packages[@]}"
     print_success "Fuentes y temas instalados"
 }
 
