@@ -1,0 +1,3 @@
+errores de instalador
+
+Failed to enable unit: File '/etc/systemd/system/display-manager.service' already exists and is a symlink to /usr/lib/systemd/system/sddm.service
