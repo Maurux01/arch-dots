@@ -50,7 +50,6 @@ print_error() {
     log "ERROR: $1"
 }
 
-<<<<<<< HEAD
 print_warning() {
     echo -e "${YELLOW}  ⚠ $1${NC}"
     log "ADVERTENCIA: $1"
@@ -86,8 +85,6 @@ install_packages() {
     fi
 }
 
-=======
->>>>>>> c9651f0c7a71909e175e0a6e8d32e13436871899
 # Función para verificar sistema
 check_system() {
     print_section "Verificando sistema..."
@@ -180,7 +177,6 @@ install_aur_helper() {
     print_success "AUR helper instalado"
 }
 
-<<<<<<< HEAD
 # Función para instalar Hyprland y componentes
 install_hyprland() {
     print_section "Instalando Hyprland y componentes..."
@@ -356,8 +352,6 @@ EOF
     print_success "Portapapeles e historial configurado"
 }
 
-=======
->>>>>>> c9651f0c7a71909e175e0a6e8d32e13436871899
 # Función para copiar dotfiles
 copy_dotfiles() {
     print_section "Copiando dotfiles..."
@@ -460,6 +454,33 @@ EOF
     print_success "Sistema configurado"
 }
 
+# Función para instalar tema Catppuccin de GRUB2
+install_grub_theme() {
+    print_section "Instalando tema Catppuccin para GRUB2..."
+    local grub_theme_repo="https://github.com/vinceliuice/grub2-themes.git"
+    local tmp_dir="/tmp/grub2-themes"
+    local theme_name="catppuccin"
+    
+    print_step "Clonando repositorio de temas..."
+    git clone --depth=1 "$grub_theme_repo" "$tmp_dir"
+    
+    print_step "Copiando tema Catppuccin a /boot/grub/themes..."
+    sudo mkdir -p /boot/grub/themes
+    sudo cp -r "$tmp_dir/themes/$theme_name" /boot/grub/themes/
+    
+    print_step "Configurando GRUB para usar el tema..."
+    if grep -q '^GRUB_THEME=' /etc/default/grub; then
+        sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin/theme.txt"|' /etc/default/grub
+    else
+        echo 'GRUB_THEME="/boot/grub/themes/catppuccin/theme.txt"' | sudo tee -a /etc/default/grub
+    fi
+    
+    print_step "Actualizando configuración de GRUB..."
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    
+    print_success "Tema Catppuccin para GRUB2 instalado"
+}
+
 # Función para mostrar información final
 show_final_info() {
     echo -e "${GREEN}╔══════════════════════════════════════════════════════════════╗${NC}"
@@ -496,6 +517,7 @@ main() {
     install_aur_helper
     copy_dotfiles
     configure_system
+    install_grub_theme
     show_final_info
 }
 

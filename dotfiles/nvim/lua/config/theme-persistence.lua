@@ -122,4 +122,29 @@ vim.api.nvim_create_autocmd("VimEnter", {
   priority = 1000,
 })
 
-return M 
+return M
+
+-- Theme persistence for NVimX
+local NvimXTheme = {}
+local nvimx_theme_file = vim.fn.stdpath('config') .. '/theme.txt'
+
+function NvimXTheme.save_theme(theme)
+  local f = io.open(nvimx_theme_file, 'w')
+  if f then
+    f:write(theme)
+    f:close()
+  end
+end
+
+function NvimXTheme.load_theme()
+  local f = io.open(nvimx_theme_file, 'r')
+  if f then
+    local theme = f:read('*l')
+    f:close()
+    if theme and #theme > 0 then
+      vim.cmd.colorscheme(theme)
+    end
+  end
+end
+
+return NvimXTheme

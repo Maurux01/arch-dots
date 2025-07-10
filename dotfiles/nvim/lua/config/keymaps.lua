@@ -17,14 +17,6 @@ require("config.test-themes")
 -- Load theme debug (temporary)
 require("config.theme-debug")
 
-<<<<<<< HEAD
--- NVimX keymaps
-local map = vim.keymap.set
-map("n", "<leader>e", ":Neotree toggle<CR>", { desc = "File Explorer" })
-map("n", "<Tab>", ":bnext<CR>", { desc = "Next Buffer" })
-map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Prev Buffer" })
-map("n", "<leader>tt", function() require("config.theme-keymaps").set_theme("tokyonight") end, { desc = "Tokyo Night Theme" })
-=======
 -- =============================================================================
 -- 🎯 CUSTOM KEYMAPS
 -- =============================================================================
@@ -38,10 +30,43 @@ vim.keymap.set("n", "<leader>E", "<cmd>Telescope find_files<cr>", {
   silent = true 
 })
 
+-- NVimX keymaps
+local map = vim.keymap.set
+map("n", "<leader>e", ":Neotree toggle<CR>", { desc = "File Explorer" })
+map("n", "<Tab>", ":bnext<CR>", { desc = "Next Buffer" })
+map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Prev Buffer" })
+
+local theme_persistence = require("config.theme-persistence")
+
+local function set_theme_and_save(theme)
+  vim.cmd.colorscheme(theme)
+  theme_persistence.save_theme(theme)
+end
+
+map("n", "<leader>tt", function() set_theme_and_save("tokyonight") end, { desc = "Tokyo Night Theme" })
+map("n", "<leader>tc", function() set_theme_and_save("catppuccin") end, { desc = "Catppuccin Theme" })
+map("n", "<leader>tg", function() set_theme_and_save("gruvbox") end, { desc = "Gruvbox Theme" })
+map("n", "<leader>td", function() set_theme_and_save("dracula") end, { desc = "Dracula Theme" })
+map("n", "<leader>to", function() set_theme_and_save("onedark") end, { desc = "One Dark Theme" })
+map("n", "<leader>tm", function() set_theme_and_save("material") end, { desc = "Material Theme" })
+map("n", "<leader>tf", function() set_theme_and_save("nightfox") end, { desc = "Nightfox Theme" })
+map("n", "<leader>tk", function() set_theme_and_save("kanagawa") end, { desc = "Kanagawa Theme" })
+map("n", "<leader>tr", function() set_theme_and_save("rose-pine") end, { desc = "Rose Pine Theme" })
+map("n", "<leader>tp", function() set_theme_and_save("monokai-pro") end, { desc = "Monokai Pro Theme" })
+map("n", "<leader>ts", function() set_theme_and_save("sonokai") end, { desc = "Sonokai Theme" })
+map("n", "<leader>te", function() set_theme_and_save("edge") end, { desc = "Edge Theme" })
+map("n", "<leader>t.", function() set_theme_and_save("oceanicnext") end, { desc = "Oceanic Next Theme" })
+map("n", "<leader>ta", function() set_theme_and_save("palenight") end, { desc = "Palenight Theme" })
+map("n", "<leader>tn", function() set_theme_and_save("nord") end, { desc = "Nord Theme" })
+map("n", "<leader>tv", function() set_theme_and_save("everforest") end, { desc = "Everforest Theme" })
+map("n", "<leader>td", function() set_theme_and_save("doom-one") end, { desc = "Doom One Theme" })
+map("n", "<leader>tx", function() set_theme_and_save("carbonfox") end, { desc = "Carbonfox Theme" })
+map("n", "<leader>tz", function() set_theme_and_save("oxocarbon") end, { desc = "Oxocarbon Theme" })
+map("n", "<leader>tl", function() set_theme_and_save("melange") end, { desc = "Melange Theme" })
+
 -- =============================================================================
 -- 📝 KEYMAP SUMMARY
 -- =============================================================================
 -- Space + e  -> Explorer (Neotree)
 -- Space + E  -> Find Files (Telescope)
 -- =============================================================================
->>>>>>> c9651f0c7a71909e175e0a6e8d32e13436871899
