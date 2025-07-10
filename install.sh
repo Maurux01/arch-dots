@@ -63,7 +63,7 @@ install_packages() {
     
     # Separar paquetes AUR de paquetes oficiales
     for pkg in "${packages[@]}"; do
-        if [[ "$pkg" == "heroic-games-launcher" || "$pkg" == "hyperlock" ]]; then
+        if [[ "$pkg" == "heroic-games-launcher" || "$pkg" == "hyperlock" || "$pkg" == "code-oss" ]]; then
             aur_packages+=("$pkg")
         else
             pacman_packages+=("$pkg")
@@ -213,10 +213,27 @@ install_development() {
     
     local dev_packages=(
         "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
-        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb" "code-oss"
+        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
     )
     
     install_packages "${dev_packages[@]}"
+    
+    # Instalar Code OSS de forma opcional
+    print_step "Intentando instalar Code OSS..."
+    if yay -S "code-oss" --noconfirm --needed 2>/dev/null; then
+        print_success "Code OSS instalado"
+    else
+        print_warning "Code OSS no disponible, intentando con code..."
+        if sudo pacman -S "code" --noconfirm --needed 2>/dev/null; then
+            print_success "Visual Studio Code instalado como alternativa"
+        else
+            print_warning "Ningún editor de código instalado. Puedes instalar manualmente:"
+            echo "  • code-oss (AUR): yay -S code-oss"
+            echo "  • code (oficial): sudo pacman -S code"
+            echo "  • neovim (ya instalado): nvim"
+        fi
+    fi
+    
     print_success "Herramientas de desarrollo instaladas"
 }
 
