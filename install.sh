@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script de instalación completa para Arch Dots
-# Instala todo automáticamente
+# Script de instalación simplificado para Hyprland
+# Solo instala lo mínimo necesario
 
 set -e
 
@@ -16,17 +16,16 @@ NC='\033[0m'
 # Variables globales
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
-INSTALL_LOG="$HOME/.arch-dots-install.log"
 
 # Función para logging
 log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$INSTALL_LOG"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
 }
 
 print_header() {
     echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║                    INSTALADOR ARCH DOTS                      ║${NC}"
-    echo -e "${BLUE}║                    Instalación completa automática           ║${NC}"
+    echo -e "${BLUE}║                    Archriced - Simple                       ║${NC}"
+    echo -e "${BLUE}║                  by maurux01                                ║${NC}"
     echo -e "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
 }
@@ -51,6 +50,7 @@ print_error() {
     log "ERROR: $1"
 }
 
+<<<<<<< HEAD
 print_warning() {
     echo -e "${YELLOW}  ⚠ $1${NC}"
     log "ADVERTENCIA: $1"
@@ -86,17 +86,14 @@ install_packages() {
     fi
 }
 
+=======
+>>>>>>> c9651f0c7a71909e175e0a6e8d32e13436871899
 # Función para verificar sistema
 check_system() {
     print_section "Verificando sistema..."
     
     if [ ! -f "/etc/arch-release" ]; then
         print_error "Este script está diseñado para Arch Linux"
-        exit 1
-    fi
-    
-    if ! ping -c 1 archlinux.org >/dev/null 2>&1; then
-        print_error "No hay conexión a internet"
         exit 1
     fi
     
@@ -111,24 +108,59 @@ check_system() {
 # Función para actualizar sistema
 update_system() {
     print_section "Actualizando sistema..."
-    sudo pacman -Syu --noconfirm
-    print_success "Sistema actualizado"
+    # Solo actualizar base de datos, no todo el sistema
+    sudo pacman -Sy --noconfirm
+    print_success "Base de datos actualizada"
 }
 
-# Función para instalar dependencias básicas
-install_basic_deps() {
-    print_section "Instalando dependencias básicas..."
+# Función para instalar Hyprland mínimo
+install_hyprland_minimal() {
+    print_section "Instalando Hyprland mínimo..."
     
-    local basic_packages=(
-        "base-devel" "git" "curl" "wget" "unzip" "sudo" "polkit"
-        "xdg-user-dirs" "xdg-utils" "imagemagick"
+    # Solo lo esencial para Hyprland/Wayland
+    local essential_packages=(
+        "hyprland"
+        "waybar"
+        "wofi"
+        "mako"
+        "swaylock"
+        "swayidle"
+        "flameshot"
+        "wl-clipboard"
+        "xdg-desktop-portal-hyprland"
+        "xdg-desktop-portal-gtk"
+        "kitty"
+        "fish"
+        "neovim"
+        "neofetch"
+        "fastfetch"
+        "bat"
+        "fd"
+        "ripgrep"
+        "fzf"
+        "btop"
+        "htop"
+        "pavucontrol"
+        "blueman"
+        "networkmanager"
+        "network-manager-applet"
+        "gdm"
+        "exa"
+        "starship"
+        "zoxide"
+        "nerd-fonts-jetbrains-mono"
+        "jq"
+        "curl"
     )
     
-    install_packages "${basic_packages[@]}"
-    print_success "Dependencias básicas instaladas"
+    print_step "Instalando paquetes esenciales..."
+    # Instalar en paralelo para mayor velocidad
+    sudo pacman -S "${essential_packages[@]}" --noconfirm --needed --overwrite="*"
+    
+    print_success "Hyprland mínimo instalado"
 }
 
-# Función para instalar AUR helper
+# Función para instalar AUR helper básico
 install_aur_helper() {
     print_section "Instalando AUR helper..."
     
@@ -139,14 +171,16 @@ install_aur_helper() {
     
     print_step "Instalando yay..."
     cd /tmp
-    git clone https://aur.archlinux.org/yay.git
+    git clone --depth 1 https://aur.archlinux.org/yay.git
     cd yay
-    makepkg -si --noconfirm
+    makepkg -si --noconfirm --skippgpcheck
     cd "$SCRIPT_DIR"
+    rm -rf /tmp/yay
     
     print_success "AUR helper instalado"
 }
 
+<<<<<<< HEAD
 # Función para instalar Hyprland y componentes
 install_hyprland() {
     print_section "Instalando Hyprland y componentes..."
@@ -322,38 +356,106 @@ EOF
     print_success "Portapapeles e historial configurado"
 }
 
+=======
+>>>>>>> c9651f0c7a71909e175e0a6e8d32e13436871899
 # Función para copiar dotfiles
 copy_dotfiles() {
     print_section "Copiando dotfiles..."
     
     print_step "Creando directorios..."
-    mkdir -p "$HOME/.config" "$HOME/.local/share" "$HOME/.local/bin"
+    mkdir -p "$HOME/.config"
     
     print_step "Copiando configuraciones..."
-    cp -r "$DOTFILES_DIR"/* "$HOME/.config/"
     
-    print_step "Copiando scripts..."
-    mkdir -p "$HOME/.config/scripts"
-    cp "$SCRIPT_DIR/utils.sh" "$HOME/.config/scripts/"
+    # Mapeo de carpetas a sus rutas correctas
+    declare -A config_paths=(
+        ["hypr"]="$HOME/.config/hypr"
+        ["waybar"]="$HOME/.config/waybar"
+        ["kitty"]="$HOME/.config/kitty"
+        ["nvim"]="$HOME/.config/nvim"
+        ["eww"]="$HOME/.config/eww"
+        ["wofi"]="$HOME/.config/wofi"
+        ["mako"]="$HOME/.config/mako"
+        ["swww"]="$HOME/.config/swww"
+        ["fish"]="$HOME/.config/fish"
+        ["tmux"]="$HOME/.config/tmux"
+        ["neofetch"]="$HOME/.config/neofetch"
+        ["wallpapers"]="$HOME/.local/share/wallpapers"
+        ["scripts"]="$HOME/.config/scripts"
+    )
     
+    # Copiar cada carpeta a su ubicación correcta
+    for item in "$DOTFILES_DIR"/*; do
+        if [ -d "$item" ]; then
+            local dirname=$(basename "$item")
+            local target_path="${config_paths[$dirname]}"
+            
+            if [ -n "$target_path" ]; then
+                print_step "Copiando $dirname a $target_path..."
+                mkdir -p "$(dirname "$target_path")"
+                cp -r "$item"/* "$target_path/" 2>/dev/null || cp -r "$item" "$(dirname "$target_path")/"
+            else
+                print_step "Copiando $dirname a ~/.config/$dirname..."
+                cp -r "$item" "$HOME/.config/"
+            fi
+        fi
+    done
+    
+    # Hacer scripts ejecutables
     print_step "Haciendo scripts ejecutables..."
-    chmod +x "$HOME/.config/scripts"/*.sh
+    chmod +x "$HOME/.config/waybar/scripts"/*.sh 2>/dev/null || true
+    chmod +x "$HOME/.config/scripts"/*.sh 2>/dev/null || true
+    
+    # Copiar script de wallpaper aleatorio
+    if [ -f "$DOTFILES_DIR/scripts/random-wallpaper.sh" ]; then
+        print_step "Copiando script de wallpaper aleatorio..."
+        mkdir -p "$HOME/.config/dotfiles/scripts"
+        cp "$DOTFILES_DIR/scripts/random-wallpaper.sh" "$HOME/.config/dotfiles/scripts/"
+        chmod +x "$HOME/.config/dotfiles/scripts/random-wallpaper.sh"
+    fi
+    
+    # Copiar archivos de configuración específicos
+    if [ -f "$DOTFILES_DIR/fish/config.fish" ]; then
+        print_step "Copiando configuración de Fish..."
+        mkdir -p "$HOME/.config/fish"
+        cp "$DOTFILES_DIR/fish/config.fish" "$HOME/.config/fish/"
+    fi
+    
+    if [ -f "$DOTFILES_DIR/neofetch/neofetch.conf" ]; then
+        print_step "Copiando configuración de Neofetch..."
+        mkdir -p "$HOME/.config/neofetch"
+        cp "$DOTFILES_DIR/neofetch/neofetch.conf" "$HOME/.config/neofetch/"
+    fi
+    
+    if [ -f "$DOTFILES_DIR/neofetch/fastfetch.jsonc" ]; then
+        print_step "Copiando configuración de Fastfetch..."
+        cp "$DOTFILES_DIR/neofetch/fastfetch.jsonc" "$HOME/.config/"
+    fi
     
     print_success "Dotfiles copiados"
 }
 
-# Función para configurar sistema
+# Función para configurar sistema básico
 configure_system() {
     print_section "Configurando sistema..."
     
-    print_step "Configurando permisos..."
-    sudo usermod -aG wheel "$USER"
+    print_step "Configurando permisos y servicios..."
+    # Hacer todo en paralelo para mayor velocidad
+    sudo usermod -aG wheel "$USER" &
+    sudo systemctl enable NetworkManager bluetooth gdm &
+    sudo chsh -s /usr/bin/fish "$USER" &
+    wait
     
-    print_step "Habilitando servicios..."
-    sudo systemctl enable NetworkManager bluetooth
-    
-    print_step "Configurando shell por defecto..."
-    sudo chsh -s /usr/bin/fish "$USER"
+    print_step "Configurando GDM para Hyprland..."
+    # Crear archivo de configuración para Hyprland en GDM
+    sudo mkdir -p /usr/share/wayland-sessions
+    sudo tee /usr/share/wayland-sessions/hyprland.desktop > /dev/null << 'EOF'
+[Desktop Entry]
+Name=Hyprland
+Comment=An intelligent dynamic tiling Wayland compositor
+Exec=Hyprland
+Type=Application
+EOF
     
     print_success "Sistema configurado"
 }
@@ -368,20 +470,20 @@ show_final_info() {
     echo "Próximos pasos:"
     echo "1. Reinicia tu sistema"
     echo "2. Inicia sesión con Hyprland"
-    echo "3. Personaliza tu configuración"
     echo ""
     
-    echo "Comandos útiles:"
-    echo "• SUPER+SHIFT+L - Bloquear pantalla"
+    echo "Comandos básicos:"
+    echo "• SUPER+N - Neovim (Editor por defecto)"
+    echo "• SUPER+B - Browser (Firefox)"
     echo "• SUPER+D - Lanzador de aplicaciones"
     echo "• SUPER+RETURN - Terminal"
     echo "• SUPER+Q - Cerrar ventana"
-    echo "• SUPER+V - Historial de portapapeles"
+    echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
     
-    echo "Para más información:"
-    echo "• Consulta el README.md"
-    echo "• Ejecuta: ./utils.sh"
+    echo "Para instalar más aplicaciones:"
+    echo "• sudo pacman -S [paquete]"
+    echo "• yay -S [paquete-aur]"
     echo ""
 }
 
@@ -390,14 +492,8 @@ main() {
     print_header
     check_system
     update_system
-    install_basic_deps
+    install_hyprland_minimal
     install_aur_helper
-    install_hyprland
-    install_system_utils
-    install_development
-    install_fonts_themes
-    configure_hyperlock
-    configure_clipboard
     copy_dotfiles
     configure_system
     show_final_info

@@ -14,6 +14,7 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 - **Gaming optimizado** - Steam, Lutris, Wine, GameMode
 - **Desarrollo** - Node.js, Python, Rust, Go, Java
 - **Hyperlock** - Bloqueador de pantalla nativo de Hyprland
+- **Notificaciones mejoradas** - Sistema de notificaciones con animaciones y colores
 
 ## 📦 Instalación
 
@@ -21,7 +22,7 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/archriced.git
+git clone https://github.com/mauruxu01/archriced.git
 cd archriced
 
 # Ejecutar instalación completa
@@ -36,6 +37,7 @@ El script de instalación:
 - ✅ Configura herramientas de desarrollo
 - ✅ Instala fuentes y temas
 - ✅ Configura Hyperlock
+- ✅ Configura notificaciones mejoradas
 - ✅ Copia todos los dotfiles
 - ✅ Configura el sistema
 
@@ -122,6 +124,32 @@ nano ~/.config/hyperlock/config.toml
 systemctl --user status hyperlock
 ```
 
+### Notificaciones Mejoradas
+
+Sistema de notificaciones con animaciones, colores y manejo inteligente de múltiples notificaciones:
+
+```bash
+# Probar notificaciones de volumen
+~/.config/scripts/notification-enhancer.sh volume 75 false
+
+# Probar notificaciones de brillo
+~/.config/scripts/notification-enhancer.sh brightness 60
+
+# Probar notificaciones de música
+~/.config/notification-enhancer.sh music "Song Title" "Artist" play
+
+# Probar notificaciones del sistema
+~/.config/scripts/notification-enhancer.sh system "Test message" normal
+```
+
+**Características incluidas:**
+- **Colores por aplicación** - Discord (azul), Spotify (verde), Firefox (naranja)
+- **Barras de progreso visuales** - Para volumen y brillo
+- **Manejo de múltiples notificaciones** - Cola inteligente
+- **Animaciones suaves** - Transiciones fluidas
+- **Iconos específicos** - Por tipo de aplicación
+- **Notificaciones de sistema** - Con diferentes niveles de urgencia
+
 ### Portapapeles e Historial
 
 Sistema completo de portapapeles con historial:
@@ -190,9 +218,11 @@ Herramientas de desarrollo incluidas:
 - `XF86AudioPlay` - Play/Pause
 - `XF86AudioNext` - Siguiente canción
 - `XF86AudioPrev` - Canción anterior
-- `XF86AudioMute` - Silenciar
-- `XF86AudioRaiseVolume` - Subir volumen
-- `XF86AudioLowerVolume` - Bajar volumen
+- `XF86AudioMute` - Silenciar (con notificación animada)
+- `XF86AudioRaiseVolume` - Subir volumen (con notificación animada)
+- `XF86AudioLowerVolume` - Bajar volumen (con notificación animada)
+- `XF86MonBrightnessUp` - Subir brillo (con notificación animada)
+- `XF86MonBrightnessDown` - Bajar brillo (con notificación animada)
 
 ### Portapapeles
 - `SUPER + V` - Abrir historial CopyQ
