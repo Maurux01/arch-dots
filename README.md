@@ -15,6 +15,7 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 - **Desarrollo** - Node.js, Python, Rust, Go, Java
 - **Hyperlock** - Bloqueador de pantalla nativo de Hyprland
 - **Notificaciones mejoradas** - Sistema de notificaciones con animaciones y colores
+- **Instalación correcta** - Todo instalado en ubicaciones estándar del sistema
 
 ## 📦 Instalación
 
@@ -38,7 +39,8 @@ El script de instalación:
 - ✅ Instala fuentes y temas
 - ✅ Configura Hyperlock
 - ✅ Configura notificaciones mejoradas
-- ✅ Copia todos los dotfiles
+- ✅ Copia todos los dotfiles a ubicaciones correctas del sistema
+- ✅ Verifica la instalación completa
 - ✅ Configura el sistema
 
 ### Desinstalación completa
@@ -172,6 +174,44 @@ SUPER + SHIFT + S
 - **CopyQ** - Gestor avanzado de portapapeles con GUI
 - **cliphist** - Historial de portapapeles en terminal
 - **wl-clipboard** - Herramientas de portapapeles para Wayland
+
+## 📁 Ubicaciones de Instalación
+
+### Estructura de Directorios del Sistema
+
+Todos los componentes se instalan en las ubicaciones estándar del sistema:
+
+```
+~/.config/
+├── hypr/           # Configuración de Hyprland
+├── nvim/           # Configuración de Neovim
+├── fish/           # Configuración de Fish shell
+├── kitty/          # Configuración de Kitty terminal
+├── waybar/         # Configuración de Waybar
+├── eww/            # Configuración de EWW widgets
+├── wofi/           # Configuración de Wofi launcher
+├── mako/           # Configuración de notificaciones
+├── swww/           # Configuración de wallpapers
+├── tmux/           # Configuración de TMUX
+├── neofetch/       # Configuración de Neofetch
+└── scripts/        # Scripts de utilidades
+
+~/.local/
+├── bin/            # Scripts ejecutables
+└── share/
+    └── wallpapers/ # Wallpapers del sistema
+
+~/.cache/
+└── nvim/           # Cache de Neovim
+```
+
+### Verificación de Instalación
+
+El script incluye una verificación automática que comprueba:
+- ✅ Todas las configuraciones en ubicaciones correctas
+- ✅ Scripts ejecutables con permisos correctos
+- ✅ Directorios del sistema creados correctamente
+- ✅ Componentes principales funcionando
 
 ## 🐚 Shell Configuration
 
