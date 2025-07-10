@@ -349,14 +349,9 @@ end
 # CONFIGURACIÓN FINAL
 # =============================================================================
 
-# Mensaje de bienvenida personalizado
+# Mensaje de bienvenida personalizado (deshabilitado)
 function fish_greeting
-    echo "🐟 ¡Bienvenido a tu terminal moderna!"
-    echo "💡 Usa 'help' para ver comandos útiles"
-    echo "🎨 Tu terminal está configurada con colores Catppuccin"
-    if functions -q gpt
-        echo "🤖 Fish GPT está disponible - usa 'gpt' para IA"
-    end
+    # Sin mensaje de bienvenida
 end
 
 # Función de ayuda personalizada

@@ -192,6 +192,7 @@ install_hyprland() {
 }
 
 # Función para instalar utilidades del sistema
+# NOTA: Usamos Fish shell en lugar de zsh para mejor integración con Wayland
 install_system_utils() {
     print_section "Instalando utilidades del sistema..."
     
@@ -459,6 +460,7 @@ configure_system() {
     
     print_step "Configurando permisos y servicios..."
     # Hacer todo en paralelo para mayor velocidad
+    # NOTA: Configuramos Fish como shell por defecto (no zsh)
     sudo usermod -aG wheel "$USER" &
     sudo systemctl enable NetworkManager bluetooth gdm &
     sudo chsh -s /usr/bin/fish "$USER" &

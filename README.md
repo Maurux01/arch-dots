@@ -10,7 +10,7 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 - **Waybar** - Barra de estado minimalista
 - **Kitty** - Terminal GPU-accelerated
 - **Neovim** - Editor configurado con LSP y plugins
-- **Fish Shell** - Shell interactivo con autocompletado
+- **Fish Shell** - Shell interactivo con autocompletado (no zsh)
 - **Gaming optimizado** - Steam, Lutris, Wine, GameMode
 - **Desarrollo** - Node.js, Python, Rust, Go, Java
 - **Hyperlock** - Bloqueador de pantalla nativo de Hyprland
@@ -173,9 +173,42 @@ SUPER + SHIFT + S
 - **cliphist** - Historial de portapapeles en terminal
 - **wl-clipboard** - Herramientas de portapapeles para Wayland
 
-## 🎮 Gaming
+## 🐚 Shell Configuration
 
-Configuración optimizada para gaming:
+### Fish Shell (No ZSH)
+
+Esta configuración usa **Fish shell** en lugar de zsh por las siguientes razones:
+
+- **Mejor integración con Wayland** - Fish funciona mejor con aplicaciones Wayland
+- **Autocompletado inteligente** - Sugerencias basadas en historial
+- **Sintaxis más limpia** - Menos complejidad que zsh
+- **Configuración incluida** - Ya viene configurado con temas y plugins
+- **htop incluido** - Monitor de procesos avanzado
+
+### Características del Fish Shell:
+
+```bash
+# Fish ya está configurado como shell por defecto
+# No necesitas instalar zsh ni oh-my-zsh
+
+# Comandos útiles de Fish:
+fish_config web    # Configurar Fish via web
+fish_update_completions  # Actualizar completions
+```
+
+### htop - Monitor de Procesos
+
+htop está incluido en la instalación para monitoreo avanzado de procesos:
+
+```bash
+# Abrir htop
+htop
+
+# Alternativa con btop (más moderno)
+btop
+```
+
+## 🎮 Gaming
 
 - **Steam** - Plataforma de juegos
 - **Lutris** - Gestor de juegos

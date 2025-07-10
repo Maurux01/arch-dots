@@ -176,7 +176,7 @@ uninstall_packages() {
     done
     
     print_step "Desinstalando paquetes AUR..."
-    local aur_packages=("heroic-games-launcher" "oh-my-zsh")
+    local aur_packages=("heroic-games-launcher")
     for pkg in "${aur_packages[@]}"; do
         if yay -Q "$pkg" >/dev/null 2>&1; then
             print_step "Desinstalando $pkg..."
