@@ -145,7 +145,6 @@ install_hyprland_minimal() {
         "exa"
         "starship"
         "zoxide"
-        "nerd-fonts-jetbrains-mono"
         "jq"
         "curl"
     )
@@ -235,16 +234,7 @@ install_fonts_themes() {
     print_step "Instalando fuentes principales..."
     install_packages "${font_packages[@]}"
     
-    # Intentar instalar JetBrains Mono Nerd Font de forma opcional
-    print_step "Intentando instalar JetBrains Mono Nerd Font..."
-    if yay -S "nerd-fonts-jetbrains-mono" --noconfirm --needed 2>/dev/null; then
-        print_success "JetBrains Mono Nerd Font instalado"
-    else
-        print_warning "JetBrains Mono Nerd Font no disponible, usando Fira Code como alternativa"
-        # Configurar Fira Code como fuente por defecto
-        sed -i 's/JetBrains Mono/FiraCode Nerd Font/g' "$DOTFILES_DIR/eww/eww.yuck" 2>/dev/null || true
-        sed -i 's/JetBrains Mono/FiraCode Nerd Font/g' "$DOTFILES_DIR/kitty/kitty.conf" 2>/dev/null || true
-    fi
+
     
     local theme_packages=(
         "catppuccin-gtk-theme" "papirus-icon-theme" "bibata-cursor-theme"
@@ -259,7 +249,7 @@ install_fonts_themes() {
 install_all_nerdfonts() {
     print_section "Instalando todas las Nerd Fonts..."
     local fonts=(
-        nerd-fonts-complete nerd-fonts-fira-code nerd-fonts-hack nerd-fonts-jetbrains-mono nerd-fonts-meslo nerd-fonts-ubuntu nerd-fonts-dejavu-sans-mono nerd-fonts-iosevka nerd-fonts-cascadia-code nerd-fonts-mononoki nerd-fonts-source-code-pro nerd-fonts-terminus nerd-fonts-victor-mono nerd-fonts-agave nerd-fonts-anonymice-pro nerd-fonts-arimo nerd-fonts-bigblue-terminal nerd-fonts-bitstream-vera-sans-mono nerd-fonts-cousine nerd-fonts-daddy-time-mono nerd-fonts-fantasque-sans-mono nerd-fonts-go-mono nerd-fonts-inconsolata nerd-fonts-lekton nerd-fonts-liberation-mono nerd-fonts-noto nerd-fonts-profont nerd-fonts-roboto-mono nerd-fonts-shure-tech-mono nerd-fonts-space-mono nerd-fonts-tinos nerd-fonts-ubuntu-mono
+        nerd-fonts-complete nerd-fonts-fira-code nerd-fonts-hack nerd-fonts-meslo nerd-fonts-ubuntu nerd-fonts-dejavu-sans-mono nerd-fonts-iosevka nerd-fonts-cascadia-code nerd-fonts-mononoki nerd-fonts-source-code-pro nerd-fonts-terminus nerd-fonts-victor-mono nerd-fonts-agave nerd-fonts-anonymice-pro nerd-fonts-arimo nerd-fonts-bigblue-terminal nerd-fonts-bitstream-vera-sans-mono nerd-fonts-cousine nerd-fonts-daddy-time-mono nerd-fonts-fantasque-sans-mono nerd-fonts-go-mono nerd-fonts-inconsolata nerd-fonts-lekton nerd-fonts-liberation-mono nerd-fonts-noto nerd-fonts-profont nerd-fonts-roboto-mono nerd-fonts-shure-tech-mono nerd-fonts-space-mono nerd-fonts-tinos nerd-fonts-ubuntu-mono
     )
     install_packages "${fonts[@]}"
     print_success "Todas las Nerd Fonts instaladas."
