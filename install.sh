@@ -63,7 +63,7 @@ install_packages() {
     
     # Separar paquetes AUR de paquetes oficiales
     for pkg in "${packages[@]}"; do
-        if [[ "$pkg" == "hyperlock" ]]; then
+        if [[ "$pkg" == "hyperlock" || "$pkg" == "oss" || "$pkg" == "nerd-fonts-complete" ]]; then
             aur_packages+=("$pkg")
         else
             pacman_packages+=("$pkg")
@@ -157,15 +157,15 @@ install_essential_packages() {
         "lazygit" "yazi"
         
         # Reproductores multimedia
-        "mpv" "vlc" "cava"
+        "mpv" "vlc" "cava" "oss"
         
         # Portapapeles e historial
         "cliphist" "copyq"
         
         # Fuentes y temas
-        "nerd-fonts-adawita-mono" "noto-fonts" "noto-fonts-emoji" 
+        "nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" 
         "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono"
-        "catppuccin-gtk-theme" "papirus-icon-theme" "bibata-cursor-theme"
+        "papirus-icon-theme" "bibata-cursor-theme"
         
         # Otros
         "jq" "curl" "gdm"
