@@ -386,7 +386,19 @@ configure_system() {
     print_section "Configurando sistema..."
     
     print_step "Configurando servicios..."
-    sudo systemctl enable NetworkManager bluetooth gdm
+    sudo systemctl enable NetworkManager bluetooth
+    
+    # Configurar display manager (GDM o SDDM)
+    if systemctl is-enabled sddm >/dev/null 2>&1; then
+        print_step "SDDM ya está habilitado, manteniendo configuración..."
+        sudo systemctl enable sddm
+    elif systemctl is-enabled gdm >/dev/null 2>&1; then
+        print_step "GDM ya está habilitado, manteniendo configuración..."
+        sudo systemctl enable gdm
+    else
+        print_step "Habilitando GDM como display manager..."
+        sudo systemctl enable gdm
+    fi
     
     print_step "Configurando Fish como shell por defecto..."
     sudo chsh -s /usr/bin/fish "$USER"
