@@ -194,6 +194,7 @@ Todos los componentes se instalan en las ubicaciones estándar del sistema:
 ├── swww/           # Configuración de wallpapers
 ├── tmux/           # Configuración de TMUX
 ├── neofetch/       # Configuración de Neofetch
+├── fastfetch/      # Configuración de Fastfetch
 └── scripts/        # Scripts de utilidades
 
 ~/.local/

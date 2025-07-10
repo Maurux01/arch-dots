@@ -933,6 +933,255 @@ return {
     event = "InsertEnter",
     opts = {},
   },
+
+  -- ============================================================================
+  -- LSP & DEVELOPMENT TOOLS
+  -- ============================================================================
+  
+  -- Mason (LSP installer)
+  {
+    "williamboman/mason.nvim",
+    event = "VeryLazy",
+    opts = {
+      ui = {
+        border = "rounded",
+        icons = {
+          package_installed = "✓",
+          package_pending = "⟳",
+          package_uninstalled = "✗",
+        },
+      },
+    },
+  },
+
+  -- Mason LSP config
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = "VeryLazy",
+    opts = {
+      ensure_installed = {
+        "lua_ls",
+        "pyright",
+        "tsserver",
+        "rust_analyzer",
+        "clangd",
+        "gopls",
+        "bashls",
+        "jsonls",
+        "yamlls",
+        "html",
+        "cssls",
+        "emmet_ls",
+      },
+      automatic_installation = true,
+    },
+  },
+
+  -- LSP config
+  {
+    "neovim/nvim-lspconfig",
+    event = "VeryLazy",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+  },
+
+  -- CMP sources
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    event = "InsertEnter",
+  },
+
+  {
+    "hrsh7th/cmp-buffer",
+    event = "InsertEnter",
+  },
+
+  {
+    "hrsh7th/cmp-path",
+    event = "InsertEnter",
+  },
+
+  {
+    "hrsh7th/cmp-cmdline",
+    event = "VeryLazy",
+  },
+
+  -- Luasnip for snippets
+  {
+    "L3MON4D3/LuaSnip",
+    event = "InsertEnter",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+    },
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+      require("luasnip.loaders.from_lua").lazy_load()
+    end,
+  },
+
+  -- Friendly snippets
+  {
+    "rafamadriz/friendly-snippets",
+    event = "VeryLazy",
+  },
+
+  -- ============================================================================
+  -- TELESCOPE & FUZZY FINDING
+  -- ============================================================================
+  
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      defaults = {
+        mappings = {
+          i = {
+            ["<C-j>"] = "move_selection_next",
+            ["<C-k>"] = "move_selection_previous",
+          },
+        },
+      },
+    },
+    keys = {
+      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+      { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Old Files" },
+      { "<leader>fc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+    },
+  },
+
+  -- ============================================================================
+  -- GIT INTEGRATION
+  -- ============================================================================
+  
+  -- Git signs
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
+    opts = {
+      signs = {
+        add = { text = "│" },
+        change = { text = "│" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "~" },
+        untracked = { text = "┆" },
+      },
+      on_attach = function(buffer)
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
+
+        map("n", "]h", gs.next_hunk, "Next Hunk")
+        map("n", "[h", gs.prev_hunk, "Prev Hunk")
+        map("n", "<leader>ph", gs.preview_hunk, "Preview Hunk")
+        map("n", "<leader>rh", gs.reset_hunk, "Reset Hunk")
+        map("n", "<leader>Rp", gs.reset_buffer, "Reset Buffer")
+        map("n", "<leader>sh", gs.stage_hunk, "Stage Hunk")
+        map("n", "<leader>uh", gs.undo_stage_hunk, "Undo Stage Hunk")
+        map("n", "<leader>bl", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<leader>tb", gs.toggle_current_line_blame, "Toggle Line Blame")
+      end,
+    },
+  },
+
+  -- ============================================================================
+  -- TREESITTER & SYNTAX
+  -- ============================================================================
+  
+  -- Treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    event = "VeryLazy",
+    build = ":TSUpdate",
+    opts = {
+      highlight = { enable = true },
+      indent = { enable = true },
+      ensure_installed = {
+        "bash",
+        "c",
+        "cpp",
+        "css",
+        "dockerfile",
+        "gitignore",
+        "go",
+        "html",
+        "http",
+        "javascript",
+        "json",
+        "jsonc",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "regex",
+        "rust",
+        "scss",
+        "sql",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      },
+    },
+  },
+
+  -- ============================================================================
+  -- STATUS LINE & UI
+  -- ============================================================================
+  
+  -- Lualine
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = {
+      options = {
+        theme = "auto",
+        globalstatus = true,
+        disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+      },
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch" },
+        lualine_c = { "filename" },
+        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
+      },
+    },
+  },
+
+  -- ============================================================================
+  -- NOTIFICATIONS
+  -- ============================================================================
+  
+  -- Notify
+  {
+    "rcarriga/nvim-notify",
+    event = "VeryLazy",
+    opts = {
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
+  },
 }
 
 -- Filtrar notificaciones de healthcheck de which-key

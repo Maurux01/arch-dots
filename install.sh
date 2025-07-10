@@ -593,9 +593,12 @@ copy_dotfiles() {
         fi
     fi
     
-    # Configurar Fastfetch
-    if [ -f "$HOME/.config/fastfetch.jsonc" ]; then
-        print_step "Fastfetch configurado en ~/.config/fastfetch.jsonc"
+    # Configurar Fastfetch específicamente
+    print_step "Configurando Fastfetch..."
+    mkdir -p "$HOME/.config/fastfetch"
+    if [ -f "$DOTFILES_DIR/neofetch/fastfetch.jsonc" ]; then
+        cp "$DOTFILES_DIR/neofetch/fastfetch.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+        print_step "Fastfetch configurado en ~/.config/fastfetch/config.jsonc"
     fi
     
     print_success "Todos los dotfiles copiados a ubicaciones correctas del sistema"
@@ -621,6 +624,7 @@ verify_installation() {
         "~/.config/mako/config"
         "~/.config/fish/config.fish"
         "~/.config/neofetch/neofetch.conf"
+        "~/.config/fastfetch/config.jsonc"
     )
     
     for config in "${configs[@]}"; do
@@ -648,6 +652,7 @@ verify_installation() {
         "~/.config/fish"
         "~/.config/tmux"
         "~/.config/neofetch"
+        "~/.config/fastfetch"
         "~/.config/scripts"
         "~/.local/share/wallpapers"
         "~/.local/bin"
@@ -844,6 +849,7 @@ show_final_info() {
     echo "• nvim ~/.config/nvim/init.lua"
     echo "• nvim ~/.config/fish/config.fish"
     echo "• nvim ~/.config/kitty/kitty.conf"
+    echo "• nvim ~/.config/fastfetch/config.jsonc"
     echo ""
 }
 

@@ -22,7 +22,7 @@
     "memory",
     "colors"
   ],
-  "separator": "  ",
+  "separator": "  ",
   "keyColor": "#7aa2f7",
   "valueColor": "#c0caf5",
   "colorBlocks": true,

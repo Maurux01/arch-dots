@@ -192,6 +192,15 @@ function sysinfo
     fastfetch
 end
 
+# Función para alternar entre Neofetch y Fastfetch
+function sysinfo-alt
+    if command -v fastfetch >/dev/null 2>&1; then
+        fastfetch
+    else
+        neofetch
+    end
+end
+
 # Función para ver el clima
 function weather
     curl wttr.in/$argv
@@ -361,7 +370,8 @@ function help
     echo "🔄 Sistema:"
     echo "  update    - Actualizar sistema"
     echo "  cleanup   - Limpiar archivos temporales"
-    echo "  sysinfo   - Información del sistema"
+    echo "  sysinfo   - Información del sistema (Fastfetch)"
+    echo "  sysinfo-alt - Alternar entre Neofetch/Fastfetch"
     echo ""
     echo "📁 Navegación:"
     echo "  ll        - Listar archivos (exa)"

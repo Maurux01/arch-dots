@@ -36,6 +36,36 @@ map("n", "<leader>e", ":Neotree toggle<CR>", { desc = "File Explorer" })
 map("n", "<Tab>", ":bnext<CR>", { desc = "Next Buffer" })
 map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Prev Buffer" })
 
+-- =============================================================================
+-- 🪟 WINDOW & SPLIT MANAGEMENT
+-- =============================================================================
+
+-- Close splits/windows
+map("n", "<leader>q", "<cmd>close<cr>", { desc = "Close Window/Split" })
+map("n", "<leader>Q", "<cmd>q!<cr>", { desc = "Force Close Window" })
+map("n", "<leader>wq", "<cmd>wq<cr>", { desc = "Save and Close" })
+
+-- Split management
+map("n", "<leader>sv", "<cmd>vsplit<cr>", { desc = "Vertical Split" })
+map("n", "<leader>sh", "<cmd>split<cr>", { desc = "Horizontal Split" })
+map("n", "<leader>sc", "<cmd>close<cr>", { desc = "Close Split" })
+map("n", "<leader>so", "<cmd>only<cr>", { desc = "Close Other Splits" })
+
+-- Window navigation (like VSCode)
+map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window" })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to Down Window" })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to Up Window" })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window" })
+
+-- Window resizing
+map("n", "<C-Left>", "<cmd>vertical resize -5<cr>", { desc = "Decrease Width" })
+map("n", "<C-Right>", "<cmd>vertical resize +5<cr>", { desc = "Increase Width" })
+map("n", "<C-Up>", "<cmd>resize -5<cr>", { desc = "Decrease Height" })
+map("n", "<C-Down>", "<cmd>resize +5<cr>", { desc = "Increase Height" })
+
+-- Window equalization
+map("n", "<leader>=", "<cmd>wincmd =<cr>", { desc = "Equalize Windows" })
+
 local theme_persistence = require("config.theme-persistence")
 
 local function set_theme_and_save(theme)
@@ -69,4 +99,14 @@ map("n", "<leader>tl", function() set_theme_and_save("melange") end, { desc = "M
 -- =============================================================================
 -- Space + e  -> Explorer (Neotree)
 -- Space + E  -> Find Files (Telescope)
+-- Space + q  -> Close Window/Split
+-- Space + Q  -> Force Close Window
+-- Space + wq -> Save and Close
+-- Space + sv -> Vertical Split
+-- Space + sh -> Horizontal Split
+-- Space + sc -> Close Split
+-- Space + so -> Close Other Splits
+-- Space + =  -> Equalize Windows
+-- Ctrl + h/j/k/l -> Navigate between windows
+-- Ctrl + Arrow Keys -> Resize windows
 -- =============================================================================
