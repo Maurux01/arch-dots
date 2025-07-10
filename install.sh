@@ -143,7 +143,7 @@ install_essential_packages() {
         "kitty" "fish" "starship" "zoxide"
         
         # Editores
-        "neovim"
+        "nvim"
         
         # Utilidades del sistema
         "bat" "fd" "ripgrep" "fzf" "btop" "exa"
@@ -151,7 +151,7 @@ install_essential_packages() {
         
         # Herramientas de desarrollo
         "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
-        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb" "code-oss"
+        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
         
         # Herramientas adicionales
         "lazygit" "yazi"
@@ -172,19 +172,6 @@ install_essential_packages() {
     )
     
     install_packages "${essential_packages[@]}"
-    
-    # Instalar Code OSS desde repositorios oficiales
-    print_step "Instalando Code OSS..."
-    if sudo pacman -S "code-oss" --noconfirm --needed 2>/dev/null; then
-        print_success "Code OSS instalado"
-    else
-        print_warning "Code OSS no disponible, intentando con code..."
-        if sudo pacman -S "code" --noconfirm --needed 2>/dev/null; then
-            print_success "Visual Studio Code instalado como alternativa"
-        else
-            print_warning "Ningún editor de código instalado, usando Neovim como editor principal"
-        fi
-    fi
     
     print_success "Paquetes esenciales instalados"
 }
