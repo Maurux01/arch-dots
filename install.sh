@@ -64,7 +64,7 @@ install_packages() {
     
     # Separar paquetes AUR de paquetes oficiales
     for pkg in "${packages[@]}"; do
-        if [[ "$pkg" == "heroic-games-launcher" || "$pkg" == "oh-my-zsh" || "$pkg" == "hyperlock" ]]; then
+        if [[ "$pkg" == "heroic-games-launcher" || "$pkg" == "hyperlock" ]]; then
             aur_packages+=("$pkg")
         else
             pacman_packages+=("$pkg")
@@ -170,7 +170,7 @@ install_system_utils() {
         "neofetch" "fastfetch" "cava" "pavucontrol" "blueman"
         "networkmanager" "network-manager-applet" "mpv" "vlc"
         "steam" "lutris" "wine" "gamemode" "mangohud"
-        "cliphist" "copyq" "heroic-games-launcher" "oh-my-zsh"
+        "cliphist" "copyq" "heroic-games-launcher"
     )
     
     install_packages "${util_packages[@]}"
@@ -404,4 +404,4 @@ main() {
 }
 
 # Ejecutar función principal
-main "$@" 
+main "$@"
