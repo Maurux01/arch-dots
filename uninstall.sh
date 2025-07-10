@@ -16,8 +16,8 @@ NC='\033[0m'
 
 # Variables globales
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BACKUP_DIR="$HOME/.arch-dots-backup-$(date +%Y%m%d-%H%M%S)"
-UNINSTALL_LOG="$HOME/.arch-dots-uninstall.log"
+BACKUP_DIR="$HOME/.archriced-backup-$(date +%Y%m%d-%H%M%S)"
+UNINSTALL_LOG="$HOME/.archriced-uninstall.log"
 
 # Función para logging
 log() {
@@ -26,7 +26,7 @@ log() {
 
 print_header() {
     echo -e "${RED}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${RED}║                  DESINSTALADOR ARCH DOTS                     ║${NC}"
+    echo -e "${RED}║                  DESINSTALADOR ARCHRICED                     ║${NC}"
     echo -e "${RED}║                  Desinstalación completa automática          ║${NC}"
     echo -e "${RED}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
@@ -64,7 +64,7 @@ print_info() {
 
 # Función para confirmar desinstalación
 confirm_uninstall() {
-    echo -e "${RED}⚠️  ADVERTENCIA: Esta acción desinstalará completamente Arch Dots${NC}"
+    echo -e "${RED}⚠️  ADVERTENCIA: Esta acción desinstalará completamente Archriced${NC}"
     echo -e "${RED}Esto incluye:${NC}"
     echo "• Eliminar todos los paquetes instalados"
     echo "• Restaurar configuraciones originales"
