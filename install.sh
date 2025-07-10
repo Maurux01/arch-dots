@@ -213,7 +213,7 @@ install_development() {
     
     local dev_packages=(
         "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
-        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
+        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb" "code-oss"
     )
     
     install_packages "${dev_packages[@]}"
