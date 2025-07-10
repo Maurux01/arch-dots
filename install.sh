@@ -238,6 +238,16 @@ install_fonts_themes() {
     print_success "Fuentes y temas instalados"
 }
 
+# Función para instalar todas las Nerd Fonts disponibles
+install_all_nerdfonts() {
+    print_section "Instalando todas las Nerd Fonts..."
+    local fonts=(
+        nerd-fonts-complete nerd-fonts-fira-code nerd-fonts-hack nerd-fonts-jetbrains-mono nerd-fonts-meslo nerd-fonts-ubuntu nerd-fonts-dejavu-sans-mono nerd-fonts-iosevka nerd-fonts-cascadia-code nerd-fonts-mononoki nerd-fonts-source-code-pro nerd-fonts-terminus nerd-fonts-victor-mono nerd-fonts-agave nerd-fonts-anonymice-pro nerd-fonts-arimo nerd-fonts-bigblue-terminal nerd-fonts-bitstream-vera-sans-mono nerd-fonts-cousine nerd-fonts-daddy-time-mono nerd-fonts-fantasque-sans-mono nerd-fonts-go-mono nerd-fonts-inconsolata nerd-fonts-lekton nerd-fonts-liberation-mono nerd-fonts-noto nerd-fonts-profont nerd-fonts-roboto-mono nerd-fonts-shure-tech-mono nerd-fonts-space-mono nerd-fonts-tinos nerd-fonts-ubuntu-mono
+    )
+    install_packages "${fonts[@]}"
+    print_success "Todas las Nerd Fonts instaladas."
+}
+
 # Función para configurar Hyperlock
 configure_hyperlock() {
     print_section "Configurando Hyperlock..."
@@ -515,6 +525,13 @@ main() {
     update_system
     install_hyprland_minimal
     install_aur_helper
+    install_hyprland
+    install_system_utils
+    install_development
+    install_all_nerdfonts
+    install_fonts_themes
+    configure_hyperlock
+    configure_clipboard
     copy_dotfiles
     configure_system
     install_grub_theme
