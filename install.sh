@@ -218,20 +218,16 @@ install_development() {
     
     install_packages "${dev_packages[@]}"
     
-    # Instalar Code OSS de forma opcional
-    print_step "Intentando instalar Code OSS..."
+    # Instalar Code OSS original
+    print_step "Instalando Code OSS (open source)..."
     if yay -S "code-oss" --noconfirm --needed 2>/dev/null; then
-        print_success "Code OSS instalado"
+        print_success "Code OSS instalado correctamente"
     else
-        print_warning "Code OSS no disponible, intentando con code..."
-        if sudo pacman -S "code" --noconfirm --needed 2>/dev/null; then
-            print_success "Visual Studio Code instalado como alternativa"
-        else
-            print_warning "Ningún editor de código instalado. Puedes instalar manualmente:"
-            echo "  • code-oss (AUR): yay -S code-oss"
-            echo "  • code (oficial): sudo pacman -S code"
-            echo "  • neovim (ya instalado): nvim"
-        fi
+        print_warning "Code OSS no disponible en AUR"
+        print_info "Alternativas disponibles:"
+        echo "  • code-translucent (AUR): yay -S code-translucent"
+        echo "  • code (oficial): sudo pacman -S code"
+        echo "  • neovim (ya instalado): nvim"
     fi
     
     print_success "Herramientas de desarrollo instaladas"
