@@ -225,7 +225,6 @@ install_development() {
     else
         print_warning "Code OSS no disponible en AUR"
         print_info "Alternativas disponibles:"
-        echo "  • code-translucent (AUR): yay -S code-translucent"
         echo "  • code (oficial): sudo pacman -S code"
         echo "  • neovim (ya instalado): nvim"
     fi
