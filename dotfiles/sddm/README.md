@@ -1,8 +1,9 @@
 # Catppuccin SDDM Theme
 
+
 This directory contains instructions to install and configure the Catppuccin theme for SDDM.
 
-## Quick Installation
+## Quick Installation 
 
 1. Clone the official repository:
 
