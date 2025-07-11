@@ -23,10 +23,10 @@ log() {
 }
 
 print_header() {
-    echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║                    Archriced - Optimized                     ║${NC}"
-    echo -e "${BLUE}║                  by maurux01                                ║${NC}"
-    echo -e "${BLUE}══════════════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${BLUE} ═════════════════════════════════════════════════════════════${NC}"
+    echo -e "${BLUE}║                          Archriced                           ║${NC}"
+    echo -e "${BLUE}║                         by maurux01                          ║${NC}"
+    echo -e "${BLUE} ════════════════════════════════════════════════════════════${NC}"
     echo ""
 }
 
@@ -458,7 +458,7 @@ EOF
 # Final information display function
 show_final_info() {
     echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
-    echo -e "${GREEN}║                    INSTALLATION COMPLETED                   ║${NC}"
+    echo -e "${GREEN}║                    INSTALLATION COMPLETED                                   ║${NC}"
     echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
     echo ""
     
