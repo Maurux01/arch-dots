@@ -12,61 +12,59 @@
    🎨 COLOR VARIABLES - CATPPUCCIN MOCHA
    ============================================================================= */
 * {
-  /* Catppuccin Mocha Colors for Waybar (import at the top of style.css) */
-@define-color rosewater #f5e0dc;
-@define-color flamingo #f2cdcd;
-@define-color pink #f5c2e7;
-@define-color mauve #cba6f7;
-@define-color red #f38ba8;
-@define-color maroon #eba0ac;
-@define-color peach #fab387;
-@define-color yellow #f9e2af;
-@define-color green #a6e3a1;
-@define-color teal #94e2d5;
-@define-color sky #89dceb;
-@define-color sapphire #74c7ec;
-@define-color blue #89b4fa;
-@define-color lavender #b4befe;
-@define-color text #cdd6f4;
-@define-color subtext1 #bac2de;
-@define-color subtext0 #a6adc8;
-@define-color overlay2 #9399b2;
-@define-color overlay1 #7f849c;
-@define-color overlay0 #6c7086;
-@define-color surface2 #585b70;
-@define-color surface1 #45475a;
-@define-color surface0 #313244;
-@define-color base #1e1e2e;
-@define-color mantle #181825;
-@define-color crust #11111b;
-
-  --catppuccin-crust: #11111b;
+  /* Catppuccin Mocha Colors for Waybar */
+  --rosewater: #f5e0dc;
+  --flamingo: #f2cdcd;
+  --pink: #f5c2e7;
+  --mauve: #cba6f7;
+  --red: #f38ba8;
+  --maroon: #eba0ac;
+  --peach: #fab387;
+  --yellow: #f9e2af;
+  --green: #a6e3a1;
+  --teal: #94e2d5;
+  --sky: #89dceb;
+  --sapphire: #74c7ec;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --text: #cdd6f4;
+  --subtext1: #bac2de;
+  --subtext0: #a6adc8;
+  --overlay2: #9399b2;
+  --overlay1: #7f849c;
+  --overlay0: #6c7086;
+  --surface2: #585b70;
+  --surface1: #45475a;
+  --surface0: #313244;
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
 
   /* Custom Colors */
-  --background: var(--catppuccin-base);
-  --background-alt: var(--catppuccin-surface0);
-  --foreground: var(--catppuccin-text);
-  --primary: var(--catppuccin-blue);
-  --secondary: var(--catppuccin-mauve);
-  --accent: var(--catppuccin-pink);
-  --urgent: var(--catppuccin-red);
-  --warning: var(--catppuccin-yellow);
-  --success: var(--catppuccin-green);
-  --border: var(--catppuccin-surface1);
-  --separator: var(--catppuccin-overlay0);
+  --background: var(--base);
+  --background-alt: var(--surface0);
+  --foreground: var(--text);
+  --primary: var(--blue);
+  --secondary: var(--mauve);
+  --accent: var(--pink);
+  --urgent: var(--red);
+  --warning: var(--yellow);
+  --success: var(--green);
+  --border: var(--surface1);
+  --separator: var(--overlay0);
 }
 
 /* =============================================================================
    🖥️ MAIN WAYBAR STYLING
    ============================================================================= */
 #waybar {
-  background-color: @base;
-  color: @text;
+  background-color: var(--base);
+  color: var(--text);
   font-family: "JetBrains Mono Nerd Font", "Fira Code", "Cascadia Code", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
   font-size: 13px;
   font-weight: 500;
   border-radius: 12px;
-  border: 1px solid @surface1;
+  border: 1px solid var(--surface1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
@@ -141,14 +139,14 @@
 }
 
 #workspaces button.active {
-  background: @blue;
-  color: @base;
+  background: var(--blue);
+  color: var(--base);
   box-shadow: 0 2px 8px rgba(137, 180, 250, 0.3);
 }
 
 #workspaces button.urgent {
-  background: @red;
-  color: @base;
+  background: var(--red);
+  color: var(--base);
   animation: pulse 2s infinite;
 }
 
@@ -162,7 +160,7 @@
    ============================================================================= */
 #clock {
   font-weight: 600;
-  color: @blue;
+  color: var(--blue);
 }
 
 #clock:hover {
@@ -173,11 +171,11 @@
    🔊 AUDIO STYLING
    ============================================================================= */
 #pulseaudio {
-  color: @green;
+  color: var(--green);
 }
 
 #pulseaudio.muted {
-  color: @red;
+  color: var(--red);
 }
 
 #pulseaudio:hover {
@@ -188,11 +186,11 @@
    🌐 NETWORK STYLING
    ============================================================================= */
 #network {
-  color: @sapphire;
+  color: var(--sapphire);
 }
 
 #network.disconnected {
-  color: @red;
+  color: var(--red);
 }
 
 #network:hover {
@@ -203,44 +201,44 @@
    🖥️ SYSTEM MONITORING
    ============================================================================= */
 #cpu {
-  color: @peach;
+  color: var(--peach);
 }
 
 #cpu.warning {
-  color: @yellow;
+  color: var(--yellow);
   animation: warning-pulse 1s infinite;
 }
 
 #cpu.critical {
-  color: @red;
+  color: var(--red);
   animation: critical-pulse 0.5s infinite;
 }
 
 #memory {
-  color: @maroon;
+  color: var(--maroon);
 }
 
 #memory.warning {
-  color: @yellow;
+  color: var(--yellow);
   animation: warning-pulse 1s infinite;
 }
 
 #memory.critical {
-  color: @red;
+  color: var(--red);
   animation: critical-pulse 0.5s infinite;
 }
 
 #disk {
-  color: @lavender;
+  color: var(--lavender);
 }
 
 #disk.warning {
-  color: @yellow;
+  color: var(--yellow);
   animation: warning-pulse 1s infinite;
 }
 
 #disk.critical {
-  color: @red;
+  color: var(--red);
   animation: critical-pulse 0.5s infinite;
 }
 
@@ -258,32 +256,32 @@
    🔋 BATTERY STYLING
    ============================================================================= */
 #battery {
-  color: @green;
+  color: var(--green);
 }
 
 #battery.warning {
-  color: @yellow;
+  color: var(--yellow);
   animation: warning-pulse 1s infinite;
 }
 
 #battery.critical {
-  color: @red;
+  color: var(--red);
   animation: critical-pulse 0.5s infinite;
 }
 
 #battery.charging {
-  color: @teal;
+  color: var(--teal);
 }
 
 #battery.plugged {
-  color: @sapphire;
+  color: var(--sapphire);
 }
 
 /* =============================================================================
    🌤️ WEATHER STYLING
    ============================================================================= */
 #custom-weather {
-  color: @sky;
+  color: var(--sky);
   font-weight: 500;
 }
 
@@ -295,7 +293,7 @@
    ⏻ POWER MENU STYLING
    ============================================================================= */
 #custom-power-menu {
-  color: @red;
+  color: var(--red);
   font-size: 16px;
   font-weight: bold;
   padding: 0 16px;
@@ -326,7 +324,7 @@
    🔗 SEPARATOR STYLING
    ============================================================================= */
 #custom-separator {
-  color: @overlay0;
+  color: var(--overlay0);
   font-weight: 300;
   padding: 0 4px;
 }
