@@ -137,16 +137,16 @@ vim.keymap.set("n", "<leader>te", function() set_theme("edge") end, { desc = "Ed
 vim.keymap.set("n", "<leader>t.", function() set_theme("oceanicnext") end, { desc = "Oceanic Next (saved)" })
 vim.keymap.set("n", "<leader>ta", function() set_theme("palenight") end, { desc = "Palenight (saved)" })
 
--- Additional themes with excellent syntax highlighting
-vim.keymap.set("n", "<leader>tn", function() set_theme("nord") end, { desc = "Nord (saved)" })
+-- Additional themes with unique keymaps
+vim.keymap.set("n", "<leader>tN", function() set_theme("nord") end, { desc = "Nord (saved)" })
 vim.keymap.set("n", "<leader>tv", function() set_theme("everforest") end, { desc = "Everforest (saved)" })
-vim.keymap.set("n", "<leader>td", function() set_theme("doom-one") end, { desc = "Doom One (saved)" })
+vim.keymap.set("n", "<leader>tD", function() set_theme("doom-one") end, { desc = "Doom One (saved)" })
 vim.keymap.set("n", "<leader>tx", function() set_theme("carbonfox") end, { desc = "Carbonfox (saved)" })
-vim.keymap.set("n", "<leader>tx", function() set_theme("oxocarbon") end, { desc = "Oxocarbon (saved)" })
+vim.keymap.set("n", "<leader>tX", function() set_theme("oxocarbon") end, { desc = "Oxocarbon (saved)" })
 vim.keymap.set("n", "<leader>tl", function() set_theme("melange") end, { desc = "Melange (saved)" })
-vim.keymap.set("n", "<leader>tm", function() set_theme("modus-vivendi") end, { desc = "Modus Vivendi (saved)" })
-vim.keymap.set("n", "<leader>to", function() set_theme("one") end, { desc = "Vim One (saved)" })
-vim.keymap.set("n", "<leader>tp", function() set_theme("papercolor") end, { desc = "Papercolor (saved)" })
+vim.keymap.set("n", "<leader>tM", function() set_theme("modus-vivendi") end, { desc = "Modus Vivendi (saved)" })
+vim.keymap.set("n", "<leader>tO", function() set_theme("one") end, { desc = "Vim One (saved)" })
+vim.keymap.set("n", "<leader>tP", function() set_theme("papercolor") end, { desc = "Papercolor (saved)" })
 
 -- Additional theme management keymaps
 vim.keymap.set("n", "<leader>t?", show_theme_status, { desc = "Show Theme Status" })

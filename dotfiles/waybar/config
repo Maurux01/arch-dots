@@ -1,36 +1,20 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 35,
+  "height": 32,
   "spacing": 8,
   "margin": "8px 8px 0px 8px",
   "modules-left": [
-    "hyprland/workspaces",
-    "hyprland/window",
-    "custom/separator"
+    "hyprland/workspaces"
   ],
   "modules-center": [
-    "clock",
-    "custom/separator",
-    "custom/weather"
+    "clock"
   ],
   "modules-right": [
-    "custom/separator",
     "pulseaudio",
-    "custom/separator",
     "network",
-    "custom/separator",
-    "cpu",
-    "custom/separator",
-    "memory",
-    "custom/separator",
-    "disk",
-    "custom/separator",
     "battery",
-    "custom/separator",
-    "tray",
-    "custom/separator",
-    "custom/power-menu"
+    "tray"
   ],
 
   "hyprland/workspaces": {
@@ -39,7 +23,7 @@
     "format": "{name}",
     "format-icons": {
       "1": "1",
-      "2": "2", 
+      "2": "2",
       "3": "3",
       "4": "4",
       "5": "5",
@@ -52,138 +36,39 @@
       "focused": "●",
       "default": "○"
     },
-    "on-click": "activate",
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1"
-  },
-
-  "hyprland/window": {
-    "format": "{}",
-    "max-length": 50,
-    "separate-outputs": true
+    "on-click": "activate"
   },
 
   "clock": {
-    "timezone": "Europe/Madrid",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format": "{}",
-    "format-alt": "{}",
-    "format-icons": {
-      "calendar": "📅"
-    },
-    "on-click": "gnome-calendar",
-    "on-click-right": "gnome-calendar"
-  },
-
-  "custom/weather": {
-    "exec": "~/.config/waybar/scripts/weather.sh",
-    "format": "{}",
-    "interval": 1800,
-    "tooltip": true,
-    "on-click": "gnome-weather",
-    "on-click-right": "gnome-weather"
+    "format": "%a %d %b %H:%M",
+    "tooltip": false
   },
 
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "format-bluetooth": "{icon} {volume}%",
-    "format-bluetooth-muted": "🔇",
     "format-muted": "🔇",
-    "format-icons": {
-      "default": ["🔈", "🔉", "🔊"],
-      "headphone": ["🎧", "🎧", "🎧"],
-      "hands-free": ["📱", "📱", "📱"],
-      "portable": ["📱", "📱", "📱"],
-      "car": ["🚗", "🚗", "🚗"],
-      "hifi": ["🎵", "🎵", "🎵"],
-      "phone": ["📞", "📞", "📞"]
-    },
-    "on-click": "pavucontrol",
-    "on-click-right": "pavucontrol",
-    "on-scroll-up": "pamixer -i 5",
-    "on-scroll-down": "pamixer -d 5"
+    "format-icons": ["🔈", "🔉", "🔊"],
+    "on-click": "pavucontrol"
   },
 
   "network": {
-    "interface": "wlan0",
     "format": "{ifname}",
     "format-wifi": "📶 {essid}",
     "format-ethernet": "🌐 {ipaddr}",
     "format-disconnected": "❌",
-    "format-linked": "🔗",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}",
-    "tooltip-format": "{ifname} via {gwaddr}",
-    "max-length": 50,
-    "on-click": "nm-connection-editor",
-    "on-click-right": "nm-connection-editor"
-  },
-
-  "cpu": {
-    "interval": 1,
-    "format": "CPU {}%",
-    "format-icons": ["", "", "", "", ""],
-    "states": {
-      "warning": 70,
-      "critical": 90
-    },
-    "on-click": "btop",
-    "on-click-right": "btop"
-  },
-
-  "memory": {
-    "interval": 1,
-    "format": "RAM {}%",
-    "format-icons": ["", "", "", "", ""],
-    "states": {
-      "warning": 70,
-      "critical": 90
-    },
-    "on-click": "btop",
-    "on-click-right": "btop"
-  },
-
-  "disk": {
-    "interval": 30,
-    "format": "💾 {}%",
-    "path": "/",
-    "states": {
-      "warning": 70,
-      "critical": 90
-    },
-    "on-click": "baobab",
-    "on-click-right": "baobab"
+    "tooltip": false
   },
 
   "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15
-    },
     "format": "{capacity}% {icon}",
     "format-charging": "⚡ {capacity}%",
     "format-plugged": "🔌 {capacity}%",
-    "format-alt": "{time} {icon}",
     "format-icons": ["", "", "", "", ""],
-    "on-click": "gnome-power-statistics",
-    "on-click-right": "gnome-power-statistics"
+    "tooltip": false
   },
 
   "tray": {
-    "icon-size": 20,
-    "spacing": 8,
-    "show-passive-items": true
-  },
-
-  "custom/power-menu": {
-    "format": "⏻",
-    "on-click": "~/.config/waybar/scripts/power-menu.sh",
-    "tooltip": false
-  },
-
-  "custom/separator": {
-    "format": "|",
-    "interval": "once",
-    "tooltip": false
+    "icon-size": 18,
+    "spacing": 6
   }
 } 
