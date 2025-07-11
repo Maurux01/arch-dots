@@ -17,18 +17,23 @@ Una configuración completa y moderna de Hyprland para Arch Linux con un sistema
 - **Notificaciones mejoradas** - Sistema de notificaciones con animaciones y colores
 - **Instalación correcta** - Todo instalado en ubicaciones estándar del sistema
 
-## 📦 Instalación
+## Instalación
 
-### Instalación completa automática
+1. **Clona el repositorio:**
+   ```sh
+   git clone https://github.com/mauruxu01/archriced.git
+   cd archriced
+   ```
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/mauruxu01/archriced.git
-cd archriced
+2. **Dale permisos de ejecución al instalador (si es necesario):**
+   ```sh
+   chmod +x install.sh
+   ```
 
-# Ejecutar instalación completa
-./install.sh
-```
+3. **Ejecuta el instalador:**
+   ```sh
+   ./install.sh
+   ```
 
 El script de instalación:
 - ✅ Actualiza el sistema
