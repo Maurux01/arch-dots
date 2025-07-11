@@ -355,22 +355,21 @@ copy_wallpapers() {
 # Función para instalar tema Catppuccin de GRUB2
 install_grub_theme() {
     print_section "Instalando tema Catppuccin para GRUB2..."
-    local grub_theme_repo="https://github.com/vinceliuice/grub2-themes.git"
-    local tmp_dir="/tmp/grub2-themes"
-    local theme_name="catppuccin"
+    local grub_theme_repo="https://github.com/catppuccin/grub.git"
+    local tmp_dir="/tmp/catppuccin-grub"
     
-    print_step "Clonando repositorio de temas..."
+    print_step "Clonando repositorio Catppuccin..."
     git clone --depth=1 "$grub_theme_repo" "$tmp_dir"
     
     print_step "Copiando tema Catppuccin a /boot/grub/themes..."
     sudo mkdir -p /boot/grub/themes
-    sudo cp -r "$tmp_dir/themes/$theme_name" /boot/grub/themes/
+    sudo cp -r "$tmp_dir/src/catppuccin-mocha" /boot/grub/themes/
     
     print_step "Configurando GRUB para usar el tema..."
     if grep -q '^GRUB_THEME=' /etc/default/grub; then
-        sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin/theme.txt"|' /etc/default/grub
+        sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-mocha/theme.txt"|' /etc/default/grub
     else
-        echo 'GRUB_THEME="/boot/grub/themes/catppuccin/theme.txt"' | sudo tee -a /etc/default/grub
+        echo 'GRUB_THEME="/boot/grub/themes/catppuccin-mocha/theme.txt"' | sudo tee -a /etc/default/grub
     fi
     
     print_step "Actualizando configuración de GRUB..."
