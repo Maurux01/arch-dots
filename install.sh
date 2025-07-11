@@ -1,12 +1,7 @@
 #!/bin/bash
 
-<<<<<<< HEAD
 # Script de instalación optimizado para Hyprland
 # Versión simplificada y eficiente
-=======
-# Simplified installation script for Hyprland
-# Installs only the essentials
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
 
 set -e
 
@@ -28,13 +23,8 @@ log() {
 }
 
 print_header() {
-<<<<<<< HEAD
     echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║                    Archriced - Optimized                     ║${NC}"
-=======
-    echo -e "${BLUE}══════════════════════════════════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}║                    Archriced - Simple                       ║${NC}"
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     echo -e "${BLUE}║                  by maurux01                                ║${NC}"
     echo -e "${BLUE}══════════════════════════════════════════════════════════════════════════════${NC}"
     echo ""
@@ -60,7 +50,6 @@ print_error() {
     log "ERROR: $1"
 }
 
-<<<<<<< HEAD
 print_warning() {
     echo -e "${YELLOW}  ⚠ $1${NC}"
     log "ADVERTENCIA: $1"
@@ -97,9 +86,6 @@ install_packages() {
 }
 
 # Función para verificar sistema
-=======
-# System check function
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
 check_system() {
     print_section "Checking system..."
     
@@ -118,19 +104,11 @@ check_system() {
 
 # System update function
 update_system() {
-<<<<<<< HEAD
     print_section "Actualizando sistema..."
-=======
-    print_section "Updating system database..."
-    # Only update the package database, not the whole system
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     sudo pacman -Sy --noconfirm
     print_success "Database updated."
 }
 
-<<<<<<< HEAD
-# Función para instalar AUR helper
-=======
 # Minimal Hyprland installation function
 install_hyprland_minimal() {
     print_section "Installing minimal Hyprland setup..."
@@ -179,7 +157,6 @@ install_hyprland_minimal() {
 }
 
 # Basic AUR helper installation function
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
 install_aur_helper() {
     print_section "Installing AUR helper..."
     
@@ -199,7 +176,6 @@ install_aur_helper() {
     print_success "AUR helper installed."
 }
 
-<<<<<<< HEAD
 # Función para instalar paquetes esenciales
 install_essential_packages() {
     print_section "Instalando paquetes esenciales..."
@@ -403,10 +379,7 @@ install_grub_theme() {
     print_success "Tema Catppuccin para GRUB2 instalado"
 }
 
-# Función para copiar dotfiles
-=======
 # Dotfiles copy function
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
 copy_dotfiles() {
     print_section "Copying dotfiles..."
     
@@ -417,11 +390,7 @@ copy_dotfiles() {
     
     print_step "Copying configurations..."
     
-<<<<<<< HEAD
-    # Mapeo de carpetas
-=======
     # Map folders to their correct paths
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     declare -A config_paths=(
         ["hypr"]="$HOME/.config/hypr"
         ["waybar"]="$HOME/.config/waybar"
@@ -437,39 +406,23 @@ copy_dotfiles() {
         ["wallpapers"]="$HOME/.local/share/wallpapers"
     )
     
-<<<<<<< HEAD
-    # Copiar cada carpeta
-=======
     # Copy each folder to its correct location
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     for item in "$DOTFILES_DIR"/*; do
         if [ -d "$item" ]; then
             local dirname=$(basename "$item")
             local target_path="${config_paths[$dirname]}"
             
             if [ -n "$target_path" ]; then
-<<<<<<< HEAD
-                print_step "Copiando $dirname..."
-                rm -rf "$target_path"
-                cp -r "$item" "$target_path"
-=======
                 print_step "Copying $dirname to $target_path..."
                 mkdir -p "$(dirname "$target_path")"
                 cp -r "$item"/* "$target_path/" 2>/dev/null || cp -r "$item" "$(dirname "$target_path")/"
             else
                 print_step "Copying $dirname to ~/.config/$dirname..."
                 cp -r "$item" "$HOME/.config/"
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
             fi
         fi
     done
     
-<<<<<<< HEAD
-    # Configurar permisos de scripts
-    print_step "Configurando permisos de scripts..."
-    find "$HOME/.config" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
-    find "$HOME/.local/bin" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
-=======
     # Make scripts executable
     print_step "Making scripts executable..."
     chmod +x "$HOME/.config/waybar/scripts"/*.sh 2>/dev/null || true
@@ -500,40 +453,14 @@ copy_dotfiles() {
         print_step "Copying Fastfetch configuration..."
         cp "$DOTFILES_DIR/neofetch/fastfetch.jsonc" "$HOME/.config/"
     fi
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     
     print_success "Dotfiles copied."
 }
 
-<<<<<<< HEAD
-# Función para configurar sistema
-=======
 # Basic system configuration function
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
 configure_system() {
     print_section "Configuring system..."
     
-<<<<<<< HEAD
-    print_step "Configurando servicios..."
-    sudo systemctl enable NetworkManager bluetooth
-    
-    # Configurar display manager (GDM o SDDM)
-    if systemctl is-enabled sddm >/dev/null 2>&1; then
-        print_step "SDDM ya está habilitado, manteniendo configuración..."
-        sudo systemctl enable sddm
-    elif systemctl is-enabled gdm >/dev/null 2>&1; then
-        print_step "GDM ya está habilitado, manteniendo configuración..."
-        sudo systemctl enable gdm
-    else
-        print_step "Habilitando GDM como display manager..."
-        sudo systemctl enable gdm
-    fi
-    
-    print_step "Configurando Fish como shell por defecto..."
-    sudo chsh -s /usr/bin/fish "$USER"
-    
-    print_step "Configurando GDM para Hyprland..."
-=======
     print_step "Configuring permissions and services..."
     # Do everything in parallel for speed
     sudo usermod -aG wheel "$USER" &
@@ -543,7 +470,6 @@ configure_system() {
     
     print_step "Configuring GDM for Hyprland..."
     # Create Hyprland configuration file for GDM
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     sudo mkdir -p /usr/share/wayland-sessions
     sudo tee /usr/share/wayland-sessions/hyprland.desktop > /dev/null << 'EOF'
 [Desktop Entry]
@@ -563,30 +489,6 @@ show_final_info() {
     echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
     echo ""
     
-<<<<<<< HEAD
-    echo "✅ Instalación completada exitosamente"
-    echo ""
-    echo "📁 Configuraciones instaladas en:"
-    echo "  • Hyprland: ~/.config/hypr/"
-    echo "  • Neovim: ~/.config/nvim/"
-    echo "  • Fish: ~/.config/fish/"
-    echo "  • Kitty: ~/.config/kitty/"
-    echo "  • Waybar: ~/.config/waybar/"
-    echo "  • EWW: ~/.config/eww/"
-    echo ""
-    
-    echo "🚀 Próximos pasos:"
-    echo "1. Reinicia tu sistema"
-    echo "2. Inicia sesión con Hyprland"
-    echo ""
-    
-    echo "⌨️  Comandos básicos:"
-    echo "• SUPER+Return - Terminal"
-    echo "• SUPER+D - Lanzador de aplicaciones"
-    echo "• SUPER+Q - Cerrar ventana"
-    echo "• SUPER+N - Neovim"
-    echo "• SUPER+V - Code OSS"
-=======
     echo "Next steps:"
     echo "1. Reboot your system"
     echo "2. Log in with Hyprland"
@@ -604,7 +506,6 @@ show_final_info() {
     echo "To install more applications:"
     echo "• sudo pacman -S [package]"
     echo "• yay -S [aur-package]"
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
     echo ""
 }
 
@@ -624,10 +525,5 @@ main() {
     show_final_info
 }
 
-<<<<<<< HEAD
-# Ejecutar función principal
-main "$@"
-=======
 # Execute main function
 main "$@" 
->>>>>>> e1390ec (Refactor installation script and Hyprland configuration for improved clarity and usability. Update comments to English, enhance logging functions, and streamline package installation steps. Revise keybindings in the Hyprland configuration for better organization and accessibility, ensuring a more user-friendly experience.)
