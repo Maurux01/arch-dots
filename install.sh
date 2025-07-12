@@ -403,6 +403,36 @@ EOF
     print_success "Waypaper configurado"
 }
 
+# Función para instalar tema GRUB Catppuccin
+install_grub_theme() {
+    print_section "Instalando tema GRUB Catppuccin..."
+    
+    print_step "Clonando repositorio Catppuccin GRUB..."
+    cd /tmp
+    git clone https://github.com/catppuccin/grub.git catppuccin-grub
+    cd catppuccin-grub
+    
+    print_step "Instalando tema GRUB..."
+    sudo cp -r src/catppuccin-grub-theme /usr/share/grub/themes/
+    
+    print_step "Configurando GRUB..."
+    # Backup del archivo GRUB actual
+    sudo cp /etc/default/grub /etc/default/grub.backup
+    
+    # Configurar el tema en GRUB
+    sudo sed -i 's/GRUB_THEME=.*/GRUB_THEME="\/usr\/share\/grub\/themes\/catppuccin-grub-theme\/theme.txt"/' /etc/default/grub
+    
+    print_step "Actualizando GRUB..."
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    
+    print_step "Limpiando archivos temporales..."
+    cd "$SCRIPT_DIR"
+    rm -rf /tmp/catppuccin-grub
+    
+    print_success "Tema GRUB Catppuccin instalado"
+    print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+}
+
 # Function to install custom fonts
 install_custom_fonts() {
     print_section "Installing custom fonts..."
@@ -624,6 +654,7 @@ main() {
     configure_hyperlock
     configure_clipboard
     configure_waypaper
+    install_grub_theme
     copy_dotfiles
     configure_system
     show_final_info

@@ -1,106 +1,48 @@
-# 📝 Custom Fonts
+# Nerd Fonts
 
-This folder contains custom fonts for the system.
+This is an archived font from the Nerd Fonts release v3.4.0.
 
-## 🎯 Configured Fonts
+For more information see:
+* https://github.com/ryanoasis/nerd-fonts/
+* https://github.com/ryanoasis/nerd-fonts/releases/latest/
 
-### Terminal (Kitty)
-- **Main font**: JetBrains Mono Nerd Font
-- **Size**: 12
-- **Configuration**: `dotfiles/kitty/kitty.conf`
+# Adwaita Mono
 
-### Neovim
-- **Main font**: JetBrains Mono Nerd Font
-- **Size**: 12
-- **Configuration**: `dotfiles/nvim_backup/lua/config/options.lua`
+Adwaita Mono is the default monospace font for GNOME 48+. It is a modification of the [Iosevka](https://typeof.net/Iosevka/) font, customized to fit with Adwaita Sans, which is a variation of [Inter](https://rsms.me/inter/) with a disambiguated lowercase L.
 
-### Tmux
-- **Main font**: JetBrains Mono Nerd Font
-- **Size**: 12
-- **Configuration**: `dotfiles/tmux/tmux-themes.conf`
+The fonts and license are available on the GNOME GitLab instance: https://gitlab.gnome.org/GNOME/adwaita-fonts
 
-## 📁 How to Add Fonts
+Version: 32.4
 
-1. **Place your font files** in this folder:
-   - Supported formats: `.ttf`, `.otf`, `.woff`, `.woff2`
-   - Recommended names: `CustomFont-Regular.ttf`, `CustomFont-Bold.ttf`, etc.
+## Which font?
 
-2. **Run the installation script** to install the fonts:
-   ```bash
-   ./install.sh
-   ```
+### TL;DR
 
-3. **Fonts will be automatically installed** in:
-   - `~/.local/share/fonts/` (for user)
-   - `/usr/share/fonts/` (for system, requires sudo)
+* Pick your font family:
+  * If you are limited to monospaced fonts (because of your terminal, etc) then pick a font with `Nerd Font Mono` (or `NFM`).
+  * If you want to have bigger icons (usually around 1.5 normal letters wide) pick a font without `Mono` i.e. `Nerd Font` (or `NF`). Most terminals support this, but ymmv.
+  * If you work in a proportional context (GUI elements or edit a presentation etc) pick a font with `Nerd Font Propo` (or `NFP`).
 
-## 🔧 Automatic Configuration
+### Ligatures
 
-The installation script automatically:
-- Copies fonts to the correct locations
-- Updates the system font cache
-- Configures applications to use the fonts
+Ligatures are generally preserved in the patched fonts.
+Nerd Fonts `v2.0.0` had no ligatures in the `Nerd Font Mono` fonts, this has been dropped with `v2.1.0`.
+If you have a ligature-aware terminal and don't want ligatures you can (usually) disable them in the terminal settings.
 
-## 📋 Recommended Fonts
+### Explanation
 
-### For Terminal/Development
-- **JetBrains Mono Nerd Font** (already configured)
-- **FiraCode Nerd Font**
-- **Cascadia Code Nerd Font**
-- **Hack Nerd Font**
+Once you narrow down your font choice of family (`Droid Sans`, `Inconsolata`, etc) and style (`bold`, `italic`, etc) you have 2 main choices:
 
-### For Interface
-- **Inter** (for UI)
-- **SF Pro Display** (for UI)
-- **Roboto** (for UI)
+#### `Option 1: Download already patched font`
 
-## 🎨 Customization
+ * For a stable version download a font package from the [release page](https://github.com/ryanoasis/nerd-fonts/releases)
+ * Direct links for [AdwaitaMono.zip](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.zip) or [AdwaitaMono.tar.xz](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.tar.xz)
 
-To change fonts in applications:
+#### `Option 2: Patch your own font`
 
-### Kitty (Terminal)
-```bash
-# Edit configuration
-nvim ~/.config/kitty/kitty.conf
+ * Patch your own variations with the various options provided by the font patcher (i.e. not include all symbols for smaller font size)
 
-# Change the line:
-font_family JetBrains Mono Nerd Font
-font_size 12
-```
+For more information see: [The FAQ](https://github.com/ryanoasis/nerd-fonts/wiki/FAQ-and-Troubleshooting#which-font)
 
-### Neovim
-```bash
-# Edit configuration
-nvim ~/.config/nvim/lua/config/options.lua
+[SIL-RFN]:http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web_fonts_and_RFNs#14cbfd4a
 
-# Change the line:
-vim.opt.guifont = "JetBrains Mono Nerd Font:h12"
-```
-
-### Tmux
-```bash
-# Edit configuration
-nvim ~/.config/tmux/tmux-themes.conf
-
-# Change the line:
-set -g default-terminal "tmux-256color"
-set -g terminal-overrides ",xterm-256color:Tc"
-```
-
-## 🔄 Update Fonts
-
-To update the font cache after adding new fonts:
-
-```bash
-# Update font cache
-fc-cache -fv
-
-# Restart applications
-hyprctl reload
-```
-
-## 📝 Notes
-
-- Nerd Fonts include icons for development
-- Fonts should be in TTF/OTF format for better compatibility
-- Some fonts may require administrator permissions for global installation 
