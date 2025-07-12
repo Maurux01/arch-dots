@@ -380,6 +380,42 @@ show_system_info() {
     echo ""
 }
 
+# Función para instalar tema GRUB Catppuccin
+install_grub_theme() {
+    print_section "Instalando tema GRUB Catppuccin..."
+    
+    if [ -f "$HOME/.config/scripts/install-grub-theme.sh" ]; then
+        print_step "Ejecutando script de instalación..."
+        "$HOME/.config/scripts/install-grub-theme.sh"
+    else
+        print_error "Script de instalación no encontrado"
+        print_step "Instalando manualmente..."
+        
+        print_step "Clonando repositorio..."
+        cd /tmp
+        git clone https://github.com/catppuccin/grub.git catppuccin-grub
+        cd catppuccin-grub
+        
+        print_step "Instalando tema..."
+        sudo mkdir -p /usr/share/grub/themes/
+        sudo cp -r src/catppuccin-grub-theme /usr/share/grub/themes/
+        
+        print_step "Configurando GRUB..."
+        sudo cp /etc/default/grub /etc/default/grub.backup
+        sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/catppuccin-grub-theme/theme.txt"|' /etc/default/grub
+        
+        print_step "Actualizando GRUB..."
+        sudo grub-mkconfig -o /boot/grub/grub.cfg
+        
+        print_step "Limpiando..."
+        cd "$SCRIPT_DIR"
+        rm -rf /tmp/catppuccin-grub
+        
+        print_success "Tema GRUB instalado"
+        print_warning "Reinicia el sistema para ver el nuevo tema"
+    fi
+}
+
 # ============================================================================
 # MENÚ PRINCIPAL
 # ============================================================================
