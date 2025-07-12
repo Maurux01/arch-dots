@@ -80,6 +80,9 @@ alias vi='nvim'
 alias e='eww'
 alias h='hyprctl'
 
+# GRUB theme
+alias grub-theme='~/.config/scripts/install-grub-theme.sh'
+
 # Utilities
 alias speedtest='speedtest-cli'
 alias myip='curl -s https://ipinfo.io/ip'
@@ -186,6 +189,17 @@ end
 # Get cheat sheets from cheat.sh
 function cheat
     curl cheat.sh/$argv
+end
+
+# Install Catppuccin GRUB theme
+function install-grub-theme
+    echo "🎨 Instalando tema GRUB Catppuccin..."
+    if test -f ~/.config/scripts/install-grub-theme.sh
+        ~/.config/scripts/install-grub-theme.sh
+    else
+        echo "❌ Script de instalación no encontrado"
+        echo "💡 Ejecuta el instalador principal para obtener el script"
+    end
 end
 
 # --- Tools Initialization ---
