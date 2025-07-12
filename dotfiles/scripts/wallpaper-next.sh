@@ -1,7 +1,7 @@
 #!/bin/bash
 # Cambia al siguiente wallpaper en la carpeta de imágenes del usuario
 
-WALLPAPER_DIR="$HOME/Pictures"
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 STATE_FILE="$HOME/.config/swww/wallpaper_index.txt"
 
 mapfile -t WALLPAPERS < <(find "$WALLPAPER_DIR" -type f \( -iname '*.jpg' -o -iname '*.png' -o -iname '*.jpeg' \) | sort)

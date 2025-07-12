@@ -6,8 +6,8 @@
 # Script para cambiar wallpapers aleatoriamente usando swww
 # =============================================================================
 
-# Directorio de wallpapers (cambia esto a tu directorio)
-WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+# Directorio de wallpapers (ubicación estándar del sistema)
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 
 # Verificar si el directorio existe
 if [ ! -d "$WALLPAPER_DIR" ]; then

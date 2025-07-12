@@ -341,12 +341,26 @@ EOF
 # Función para copiar wallpapers
 copy_wallpapers() {
     print_section "Copiando wallpapers..."
+    
+    # Crear directorio Pictures si no existe
     local user_pictures="$HOME/Pictures"
     [ -d "$user_pictures" ] || user_pictures="$HOME/Imágenes"
     mkdir -p "$user_pictures"
+    
+    # Crear carpeta wallpapers dentro de Pictures
+    local wallpapers_dir="$user_pictures/wallpapers"
+    mkdir -p "$wallpapers_dir"
+    
     if [ -d "$DOTFILES_DIR/wallpapers" ]; then
-        cp -r "$DOTFILES_DIR/wallpapers"/* "$user_pictures/"
-        print_success "Wallpapers copiados a $user_pictures"
+        print_step "Copiando wallpapers a $wallpapers_dir..."
+        cp -r "$DOTFILES_DIR/wallpapers"/* "$wallpapers_dir/"
+        print_success "Wallpapers copiados a $wallpapers_dir"
+        
+        # Crear enlace simbólico para compatibilidad
+        if [ ! -L "$HOME/.local/share/wallpapers" ]; then
+            ln -sf "$wallpapers_dir" "$HOME/.local/share/wallpapers"
+            print_success "Enlace simbólico creado en ~/.local/share/wallpapers"
+        fi
     else
         print_warning "No se encontró la carpeta de wallpapers en dotfiles."
     fi
@@ -376,7 +390,6 @@ copy_dotfiles() {
         ["fish"]="$HOME/.config/fish"
         ["tmux"]="$HOME/.config/tmux"
         ["neofetch"]="$HOME/.config/neofetch"
-        ["wallpapers"]="$HOME/.local/share/wallpapers"
     )
     
     # Copy each folder to its correct location
