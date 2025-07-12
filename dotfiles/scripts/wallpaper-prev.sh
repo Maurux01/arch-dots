@@ -1,5 +1,5 @@
 #!/bin/bash
-# Cambia al wallpaper anterior en la carpeta de imágenes del usuario
+# Change to the previous wallpaper in the user's images folder
 
 WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 STATE_FILE="$HOME/.config/swww/wallpaper_index.txt"

@@ -383,31 +383,31 @@ install_custom_fonts() {
     fi
 }
 
-# Función para copiar wallpapers
+# Function to copy wallpapers
 copy_wallpapers() {
-    print_section "Copiando wallpapers..."
+    print_section "Copying wallpapers..."
     
-    # Crear directorio Pictures si no existe
+    # Create Pictures directory if it doesn't exist
     local user_pictures="$HOME/Pictures"
     [ -d "$user_pictures" ] || user_pictures="$HOME/Imágenes"
     mkdir -p "$user_pictures"
     
-    # Crear carpeta wallpapers dentro de Pictures
+    # Create wallpapers folder inside Pictures
     local wallpapers_dir="$user_pictures/wallpapers"
     mkdir -p "$wallpapers_dir"
     
     if [ -d "$DOTFILES_DIR/wallpapers" ]; then
-        print_step "Copiando wallpapers a $wallpapers_dir..."
+        print_step "Copying wallpapers to $wallpapers_dir..."
         cp -r "$DOTFILES_DIR/wallpapers"/* "$wallpapers_dir/"
-        print_success "Wallpapers copiados a $wallpapers_dir"
+        print_success "Wallpapers copied to $wallpapers_dir"
         
-        # Crear enlace simbólico para compatibilidad
+        # Create symbolic link for compatibility
         if [ ! -L "$HOME/.local/share/wallpapers" ]; then
             ln -sf "$wallpapers_dir" "$HOME/.local/share/wallpapers"
-            print_success "Enlace simbólico creado en ~/.local/share/wallpapers"
+            print_success "Symbolic link created at ~/.local/share/wallpapers"
         fi
     else
-        print_warning "No se encontró la carpeta de wallpapers en dotfiles."
+        print_warning "Wallpapers folder not found in dotfiles."
     fi
 }
 

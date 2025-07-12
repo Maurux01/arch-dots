@@ -3,36 +3,36 @@
 # =============================================================================
 # 🎨 RANDOM WALLPAPER SCRIPT
 # =============================================================================
-# Script para cambiar wallpapers aleatoriamente usando swww
+# Script to change wallpapers randomly using swww
 # =============================================================================
 
-# Directorio de wallpapers (ubicación estándar del sistema)
+# Wallpapers directory (standard system location)
 WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 
-# Verificar si el directorio existe
+# Check if directory exists
 if [ ! -d "$WALLPAPER_DIR" ]; then
-    echo "❌ Directorio de wallpapers no encontrado: $WALLPAPER_DIR"
-    echo "📁 Creando directorio..."
+    echo "❌ Wallpapers directory not found: $WALLPAPER_DIR"
+    echo "📁 Creating directory..."
     mkdir -p "$WALLPAPER_DIR"
-    echo "✅ Directorio creado. Agrega tus wallpapers ahí."
+    echo "✅ Directory created. Add your wallpapers there."
     exit 1
 fi
 
-# Buscar archivos de imagen
+# Find image files
 WALLPAPERS=($(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" \)))
 
-# Verificar si hay wallpapers
+# Check if there are wallpapers
 if [ ${#WALLPAPERS[@]} -eq 0 ]; then
-    echo "❌ No se encontraron wallpapers en: $WALLPAPER_DIR"
-    echo "📁 Agrega archivos de imagen (.jpg, .png, .webp, etc.) al directorio."
+    echo "❌ No wallpapers found in: $WALLPAPER_DIR"
+    echo "📁 Add image files (.jpg, .png, .webp, etc.) to the directory."
     exit 1
 fi
 
-# Seleccionar wallpaper aleatorio
+# Select random wallpaper
 RANDOM_WALLPAPER="${WALLPAPERS[$((RANDOM % ${#WALLPAPERS[@]}))]}"
 
-# Cambiar wallpaper con swww (transiciones súper rápidas)
-echo "🎨 Cambiando wallpaper a: $(basename "$RANDOM_WALLPAPER")"
+# Change wallpaper with swww (super fast transitions)
+echo "🎨 Changing wallpaper to: $(basename "$RANDOM_WALLPAPER")"
 swww img "$RANDOM_WALLPAPER" \
     --transition-type wipe \
     --transition-duration 0.2 \
@@ -40,4 +40,4 @@ swww img "$RANDOM_WALLPAPER" \
     --transition-angle 30 \
     --transition-step 90
 
-echo "✅ Wallpaper cambiado exitosamente!" 
+echo "✅ Wallpaper changed successfully!" 
