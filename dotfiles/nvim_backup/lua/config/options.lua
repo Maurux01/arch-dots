@@ -13,6 +13,17 @@ vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.mouse = "a"
 
+-- Font configuration for GUI
+if vim.fn.has("gui_running") == 1 then
+    vim.opt.guifont = "JetBrains Mono Nerd Font:h12"
+    -- Alternative fonts (uncomment to use):
+    -- vim.opt.guifont = "FiraCode Nerd Font:h12"
+    -- vim.opt.guifont = "Cascadia Code Nerd Font:h12"
+    -- vim.opt.guifont = "Hack Nerd Font:h12"
+    -- vim.opt.guifont = "Source Code Pro Nerd Font:h12"
+    -- vim.opt.guifont = "Ubuntu Mono Nerd Font:h12"
+end
+
 -- Configuraciones adicionales
 vim.opt.wrap = false
 vim.opt.linebreak = true

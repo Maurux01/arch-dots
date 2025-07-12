@@ -338,6 +338,51 @@ EOF
     print_success "Portapapeles e historial configurado"
 }
 
+# Function to install custom fonts
+install_custom_fonts() {
+    print_section "Installing custom fonts..."
+    
+    local fonts_dir="$DOTFILES_DIR/fonts"
+    local user_fonts="$HOME/.local/share/fonts"
+    local system_fonts="/usr/share/fonts"
+    
+    # Create user fonts directory if it doesn't exist
+    mkdir -p "$user_fonts"
+    
+    if [ -d "$fonts_dir" ]; then
+        print_step "Copying custom fonts..."
+        
+        # Find font files
+        local font_files=($(find "$fonts_dir" -type f \( -iname "*.ttf" -o -iname "*.otf" -o -iname "*.woff" -o -iname "*.woff2" \) 2>/dev/null))
+        
+        if [ ${#font_files[@]} -gt 0 ]; then
+            # Copy fonts to user directory
+            cp "${font_files[@]}" "$user_fonts/"
+            print_success "Fonts copied to $user_fonts"
+            
+            # Update font cache
+            print_step "Updating font cache..."
+            fc-cache -fv
+            print_success "Font cache updated"
+            
+            # Create system fonts directory if possible
+            if sudo -n true 2>/dev/null; then
+                print_step "Installing fonts in system..."
+                sudo mkdir -p "$system_fonts/custom"
+                sudo cp "${font_files[@]}" "$system_fonts/custom/"
+                sudo fc-cache -fv
+                print_success "Fonts installed in system"
+            else
+                print_warning "Could not install fonts in system (requires sudo)"
+            fi
+        else
+            print_warning "No font files found in $fonts_dir"
+        fi
+    else
+        print_warning "Fonts folder not found in dotfiles."
+    fi
+}
+
 # Función para copiar wallpapers
 copy_wallpapers() {
     print_section "Copiando wallpapers..."
@@ -414,12 +459,13 @@ copy_dotfiles() {
     chmod +x "$HOME/.config/waybar/scripts"/*.sh 2>/dev/null || true
     chmod +x "$HOME/.config/scripts"/*.sh 2>/dev/null || true
     
-    # Copy random wallpaper script
-    if [ -f "$DOTFILES_DIR/scripts/random-wallpaper.sh" ]; then
-        print_step "Copying random wallpaper script..."
-        mkdir -p "$HOME/.config/dotfiles/scripts"
-        cp "$DOTFILES_DIR/scripts/random-wallpaper.sh" "$HOME/.config/dotfiles/scripts/"
-        chmod +x "$HOME/.config/dotfiles/scripts/random-wallpaper.sh"
+    # Copy scripts
+    if [ -d "$DOTFILES_DIR/scripts" ]; then
+        print_step "Copying scripts..."
+        mkdir -p "$HOME/.config/scripts"
+        cp "$DOTFILES_DIR/scripts"/*.sh "$HOME/.config/scripts/"
+        chmod +x "$HOME/.config/scripts"/*.sh
+        print_success "Scripts copied to ~/.config/scripts/"
     fi
     
     # Copy specific configuration files
@@ -482,11 +528,17 @@ show_final_info() {
     
     echo "Basic commands:"
     echo "• SUPER+N - Neovim (Default editor)"
-    echo "• SUPER+B - Browser (Firefox)"
+    echo "• SUPER+B - Browser (Brave)"
     echo "• SUPER+D - Application launcher"
     echo "• SUPER+RETURN - Terminal"
     echo "• SUPER+Q - Close window"
     echo "• SUPER+SHIFT+W - Random wallpaper"
+    echo ""
+    
+    echo "Font management:"
+    echo "• Place custom fonts in dotfiles/fonts/"
+    echo "• Run ~/.config/scripts/change-font.sh to change fonts"
+    echo "• Use ~/.config/scripts/change-font.sh --list to see options"
     echo ""
     
     echo "To install more applications:"
@@ -502,6 +554,7 @@ main() {
     update_system
     install_aur_helper
     install_essential_packages
+    install_custom_fonts
     copy_wallpapers
     configure_hyperlock
     configure_clipboard
