@@ -1,421 +1,421 @@
-# Arch Dots - Configuración de Hyprland
+# Arch Dots - Hyprland Configuration
 
-Una configuración completa y moderna de Hyprland para Arch Linux con un sistema de login dinámico basado en wallpapers.
+A complete and modern Hyprland configuration for Arch Linux with a dynamic login system based on wallpapers.
 
-## 🚀 Características
+## 🚀 Features
 
-- **Hyprland** - Compositor Wayland moderno y rápido
-- **Login dinámico** - Tema de bloqueo que se adapta a tu wallpaper
-- **EWW widgets** - Widgets personalizables para el escritorio
-- **Waybar** - Barra de estado minimalista
-- **Kitty** - Terminal GPU-accelerated
-- **Neovim** - Editor configurado con LSP y plugins
-- **Fish Shell** - Shell interactivo con autocompletado (no zsh)
-- **Gaming optimizado** - Steam, Lutris, Wine, GameMode
-- **Desarrollo** - Node.js, Python, Rust, Go, Java
-- **Hyperlock** - Bloqueador de pantalla nativo de Hyprland
-- **Notificaciones mejoradas** - Sistema de notificaciones con animaciones y colores
-- **Instalación correcta** - Todo instalado en ubicaciones estándar del sistema
+- **Hyprland** - Modern and fast Wayland compositor
+- **Dynamic login** - Lock screen theme that adapts to your wallpaper
+- **EWW widgets** - Customizable desktop widgets
+- **Waybar** - Minimalist status bar
+- **Kitty** - GPU-accelerated terminal
+- **Neovim** - Editor configured with LSP and plugins
+- **Fish Shell** - Interactive shell with autocompletion (not zsh)
+- **Gaming optimized** - Steam, Lutris, Wine, GameMode
+- **Development** - Node.js, Python, Rust, Go, Java
+- **Hyperlock** - Native Hyprland screen locker
+- **Enhanced notifications** - Notification system with animations and colors
+- **Proper installation** - Everything installed in standard system locations
 
-## Instalación
+## Installation
 
-1. **Clona el repositorio:**
+1. **Clone the repository:**
    ```sh
    git clone https://github.com/mauruxu01/archriced.git
    cd archriced
    ```
 
-2. **Dale permisos de ejecución al instalador (si es necesario):**
+2. **Give execution permissions to the installer (if needed):**
    ```sh
    chmod +x install.sh
    ```
 
-3. **Ejecuta el instalador:**
+3. **Run the installer:**
    ```sh
    ./install.sh
    ```
 
-El script de instalación:
-- ✅ Actualiza el sistema
-- ✅ Instala todas las dependencias
-- ✅ Configura Hyprland y componentes
-- ✅ Instala utilidades del sistema
-- ✅ Configura herramientas de desarrollo
-- ✅ Instala fuentes y temas
-- ✅ Configura Hyperlock
-- ✅ Configura notificaciones mejoradas
-- ✅ Copia todos los dotfiles a ubicaciones correctas del sistema
-- ✅ Verifica la instalación completa
-- ✅ Configura el sistema
+The installation script:
+- ✅ Updates the system
+- ✅ Installs all dependencies
+- ✅ Configures Hyprland and components
+- ✅ Installs system utilities
+- ✅ Configures development tools
+- ✅ Installs fonts and themes
+- ✅ Configures Hyperlock
+- ✅ Configures enhanced notifications
+- ✅ Copies all dotfiles to correct system locations
+- ✅ Verifies complete installation
+- ✅ Configures the system
 
-### Desinstalación completa
+### Complete uninstallation
 
 ```bash
-# Desinstalar todo
+# Uninstall everything
 ./uninstall.sh
 ```
 
-El script de desinstalación:
-- ✅ Crea un backup completo
-- ✅ Desinstala todos los paquetes
-- ✅ Elimina configuraciones
-- ✅ Restaura configuraciones por defecto
-- ✅ Limpia el sistema
+The uninstallation script:
+- ✅ Creates a complete backup
+- ✅ Uninstalls all packages
+- ✅ Removes configurations
+- ✅ Restores default configurations
+- ✅ Cleans the system
 
-## 🎨 Características del Login Dinámico
+## 🎨 Dynamic Login Features
 
-El sistema de login dinámico analiza automáticamente tu wallpaper y genera un tema de bloqueo que se adapta a los colores dominantes.
+The dynamic login system automatically analyzes your wallpaper and generates a lock screen theme that adapts to the dominant colors.
 
-### Funciones incluidas:
+### Included functions:
 
-- **Análisis de wallpaper** - Extrae colores dominantes
-- **Generación de tema** - Crea temas de swaylock automáticamente
-- **Rotación automática** - Cambia wallpapers automáticamente
-- **Widget de control** - EWW widget para gestionar wallpapers
+- **Wallpaper analysis** - Extracts dominant colors
+- **Theme generation** - Creates swaylock themes automatically
+- **Automatic rotation** - Changes wallpapers automatically
+- **Control widget** - EWW widget to manage wallpapers
 
-### Comandos útiles:
+### Useful commands:
 
 ```bash
-# Bloquear pantalla con tema dinámico
+# Lock screen with dynamic theme
 ./utils.sh lock
 
-# Cambiar wallpaper manualmente
+# Change wallpaper manually
 ./utils.sh wallpaper
 
-# Iniciar daemon de rotación automática
+# Start automatic rotation daemon
 ./utils.sh wallpaper-daemon
 
-# Analizar wallpaper actual
+# Analyze current wallpaper
 ./utils.sh analyze-wallpaper
 ```
 
-## 🛠️ Scripts de Utilidades
+## 🛠️ Utility Scripts
 
 ### `utils.sh`
 
-Script principal de utilidades con múltiples funciones:
+Main utility script with multiple functions:
 
 ```bash
-# Ver todas las opciones
+# See all options
 ./utils.sh
 
-# Gestión de wallpapers
-./utils.sh wallpaper [comando]
+# Wallpaper management
+./utils.sh wallpaper [command]
 ./utils.sh wallpaper-daemon [start|stop|status]
 
-# Bloqueo de pantalla
+# Screen lock
 ./utils.sh lock
 
-# Mantenimiento del sistema
+# System maintenance
 ./utils.sh maintenance
 
-# Información del sistema
+# System information
 ./utils.sh info
 
-# Análisis de wallpapers
-./utils.sh analyze-wallpaper [ruta]
+# Wallpaper analysis
+./utils.sh analyze-wallpaper [path]
 ```
 
 ### Hyperlock
 
-Bloqueador de pantalla nativo de Hyprland:
+Native Hyprland screen locker:
 
 ```bash
-# Bloquear pantalla
+# Lock screen
 hyperlock
 
-# Configurar Hyperlock
+# Configure Hyperlock
 nano ~/.config/hyperlock/config.toml
 
-# Ver estado de Hyperlock
+# Check Hyperlock status
 systemctl --user status hyperlock
 ```
 
-### Notificaciones Mejoradas
+### Enhanced Notifications
 
-Sistema de notificaciones con animaciones, colores y manejo inteligente de múltiples notificaciones:
+Notification system with animations, colors and intelligent handling of multiple notifications:
 
 ```bash
-# Probar notificaciones de volumen
+# Test volume notifications
 ~/.config/scripts/notification-enhancer.sh volume 75 false
 
-# Probar notificaciones de brillo
+# Test brightness notifications
 ~/.config/scripts/notification-enhancer.sh brightness 60
 
-# Probar notificaciones de música
+# Test music notifications
 ~/.config/notification-enhancer.sh music "Song Title" "Artist" play
 
-# Probar notificaciones del sistema
+# Test system notifications
 ~/.config/scripts/notification-enhancer.sh system "Test message" normal
 ```
 
-**Características incluidas:**
-- **Colores por aplicación** - Discord (azul), Spotify (verde), Firefox (naranja)
-- **Barras de progreso visuales** - Para volumen y brillo
-- **Manejo de múltiples notificaciones** - Cola inteligente
-- **Animaciones suaves** - Transiciones fluidas
-- **Iconos específicos** - Por tipo de aplicación
-- **Notificaciones de sistema** - Con diferentes niveles de urgencia
+**Included features:**
+- **Colors by application** - Discord (blue), Spotify (green), Firefox (orange)
+- **Visual progress bars** - For volume and brightness
+- **Multiple notification handling** - Intelligent queue
+- **Smooth animations** - Fluid transitions
+- **Specific icons** - By application type
+- **System notifications** - With different urgency levels
 
-### Portapapeles e Historial
+### Clipboard and History
 
-Sistema completo de portapapeles con historial:
+Complete clipboard system with history:
 
 ```bash
-# Abrir historial de CopyQ
+# Open CopyQ history
 SUPER + V
 
-# Abrir historial de cliphist
+# Open cliphist history
 SUPER + SHIFT + V
 
-# Alternativa para cliphist
+# Alternative for cliphist
 SUPER + CTRL + V
 
-# Capturar pantalla al portapapeles
+# Screenshot to clipboard
 SUPER + SHIFT + S
 ```
 
-**Herramientas incluidas:**
-- **CopyQ** - Gestor avanzado de portapapeles con GUI
-- **cliphist** - Historial de portapapeles en terminal
-- **wl-clipboard** - Herramientas de portapapeles para Wayland
+**Included tools:**
+- **CopyQ** - Advanced clipboard manager with GUI
+- **cliphist** - Terminal clipboard history
+- **wl-clipboard** - Clipboard tools for Wayland
 
-## 📁 Ubicaciones de Instalación
+## 📁 Installation Locations
 
-### Estructura de Directorios del Sistema
+### System Directory Structure
 
-Todos los componentes se instalan en las ubicaciones estándar del sistema:
+All components are installed in standard system locations:
 
 ```
 ~/.config/
-├── hypr/           # Configuración de Hyprland
-├── nvim/           # Configuración de Neovim
-├── fish/           # Configuración de Fish shell
-├── kitty/          # Configuración de Kitty terminal
-├── waybar/         # Configuración de Waybar
-├── eww/            # Configuración de EWW widgets
-├── wofi/           # Configuración de Wofi launcher
-├── mako/           # Configuración de notificaciones
-├── swww/           # Configuración de wallpapers
-├── tmux/           # Configuración de TMUX
-├── neofetch/       # Configuración de Neofetch
-├── fastfetch/      # Configuración de Fastfetch
-└── scripts/        # Scripts de utilidades
+├── hypr/           # Hyprland configuration
+├── nvim/           # Neovim configuration
+├── fish/           # Fish shell configuration
+├── kitty/          # Kitty terminal configuration
+├── waybar/         # Waybar configuration
+├── eww/            # EWW widgets configuration
+├── wofi/           # Wofi launcher configuration
+├── mako/           # Notifications configuration
+├── swww/           # Wallpapers configuration
+├── tmux/           # TMUX configuration
+├── neofetch/       # Neofetch configuration
+├── fastfetch/      # Fastfetch configuration
+└── scripts/        # Utility scripts
 
 ~/.local/
-├── bin/            # Scripts ejecutables
+├── bin/            # Executable scripts
 └── share/
-    └── wallpapers/ # Wallpapers del sistema
+    └── wallpapers/ # System wallpapers
 
 ~/.cache/
-└── nvim/           # Cache de Neovim
+└── nvim/           # Neovim cache
 ```
 
-### Verificación de Instalación
+### Installation Verification
 
-El script incluye una verificación automática que comprueba:
-- ✅ Todas las configuraciones en ubicaciones correctas
-- ✅ Scripts ejecutables con permisos correctos
-- ✅ Directorios del sistema creados correctamente
-- ✅ Componentes principales funcionando
+The script includes automatic verification that checks:
+- ✅ All configurations in correct locations
+- ✅ Executable scripts with correct permissions
+- ✅ System directories created correctly
+- ✅ Main components working
 
 ## 🐚 Shell Configuration
 
 ### Fish Shell (No ZSH)
 
-Esta configuración usa **Fish shell** en lugar de zsh por las siguientes razones:
+This configuration uses **Fish shell** instead of zsh for the following reasons:
 
-- **Mejor integración con Wayland** - Fish funciona mejor con aplicaciones Wayland
-- **Autocompletado inteligente** - Sugerencias basadas en historial
-- **Sintaxis más limpia** - Menos complejidad que zsh
-- **Configuración incluida** - Ya viene configurado con temas y plugins
-- **htop incluido** - Monitor de procesos avanzado
+- **Better Wayland integration** - Fish works better with Wayland applications
+- **Intelligent autocompletion** - Suggestions based on history
+- **Cleaner syntax** - Less complexity than zsh
+- **Included configuration** - Already configured with themes and plugins
+- **htop included** - Advanced process monitor
 
-### Características del Fish Shell:
+### Fish Shell Features:
 
 ```bash
-# Fish ya está configurado como shell por defecto
-# No necesitas instalar zsh ni oh-my-zsh
+# Fish is already configured as default shell
+# You don't need to install zsh or oh-my-zsh
 
-# Comandos útiles de Fish:
-fish_config web    # Configurar Fish via web
-fish_update_completions  # Actualizar completions
+# Useful Fish commands:
+fish_config web    # Configure Fish via web
+fish_update_completions  # Update completions
 ```
 
-### htop - Monitor de Procesos
+### htop - Process Monitor
 
-htop está incluido en la instalación para monitoreo avanzado de procesos:
+htop is included in the installation for advanced process monitoring:
 
 ```bash
-# Abrir htop
+# Open htop
 htop
 
-# Alternativa con btop (más moderno)
+# Alternative with btop (more modern)
 btop
 ```
 
 ## 🎮 Gaming
 
-- **Steam** - Plataforma de juegos
-- **Lutris** - Gestor de juegos
-- **Wine** - Compatibilidad con Windows
-- **GameMode** - Optimización automática
-- **MangoHud** - Overlay de rendimiento
+- **Steam** - Gaming platform
+- **Lutris** - Game manager
+- **Wine** - Windows compatibility
+- **GameMode** - Automatic optimization
+- **MangoHud** - Performance overlay
 - **Heroic Games Launcher** - Epic Games Store
 
-## 💻 Desarrollo
+## 💻 Development
 
-Herramientas de desarrollo incluidas:
+Included development tools:
 
 - **Node.js & npm** - JavaScript runtime
 - **Python & pip** - Python interpreter
 - **Rust** - Rust programming language
 - **Go** - Go programming language
 - **Java JDK** - Java development kit
-- **GCC & CMake** - Compiladores y build tools
-- **Git** - Control de versiones
-- **LazyGit** - TUI para Git
-- **Neovim** - Editor configurado con LSP
+- **GCC & CMake** - Compilers and build tools
+- **Git** - Version control
+- **LazyGit** - TUI for Git
+- **Neovim** - Editor configured with LSP
 
-## ⌨️ Atajos de Teclado
+## ⌨️ Keyboard Shortcuts
 
 ### Hyprland
-- `SUPER + RETURN` - Abrir terminal
-- `SUPER + D` - Lanzador de aplicaciones
-- `SUPER + Q` - Cerrar ventana
-- `SUPER + SHIFT + L` - Bloquear pantalla
-- `SUPER + SHIFT + C` - Recargar configuración
-- `SUPER + SHIFT + Q` - Salir de Hyprland
+- `SUPER + RETURN` - Open terminal
+- `SUPER + D` - Application launcher
+- `SUPER + Q` - Close window
+- `SUPER + SHIFT + L` - Lock screen
+- `SUPER + SHIFT + C` - Reload configuration
+- `SUPER + SHIFT + Q` - Exit Hyprland
 
-### Navegación
-- `SUPER + HJKL` - Navegar entre ventanas
-- `SUPER + 1-9` - Cambiar workspace
-- `SUPER + SHIFT + HJKL` - Mover ventanas
-- `SUPER + SHIFT + 1-9` - Mover ventana a workspace
+### Navigation
+- `SUPER + HJKL` - Navigate between windows
+- `SUPER + 1-9` - Change workspace
+- `SUPER + SHIFT + HJKL` - Move windows
+- `SUPER + SHIFT + 1-9` - Move window to workspace
 
 ### Multimedia
 - `XF86AudioPlay` - Play/Pause
-- `XF86AudioNext` - Siguiente canción
-- `XF86AudioPrev` - Canción anterior
-- `XF86AudioMute` - Silenciar (con notificación animada)
-- `XF86AudioRaiseVolume` - Subir volumen (con notificación animada)
-- `XF86AudioLowerVolume` - Bajar volumen (con notificación animada)
-- `XF86MonBrightnessUp` - Subir brillo (con notificación animada)
-- `XF86MonBrightnessDown` - Bajar brillo (con notificación animada)
+- `XF86AudioNext` - Next song
+- `XF86AudioPrev` - Previous song
+- `XF86AudioMute` - Mute (with animated notification)
+- `XF86AudioRaiseVolume` - Raise volume (with animated notification)
+- `XF86AudioLowerVolume` - Lower volume (with animated notification)
+- `XF86MonBrightnessUp` - Raise brightness (with animated notification)
+- `XF86MonBrightnessDown` - Lower brightness (with animated notification)
 
-### Portapapeles
-- `SUPER + V` - Abrir historial CopyQ
-- `SUPER + SHIFT + V` - Abrir historial cliphist
-- `SUPER + CTRL + V` - Alternativa cliphist
-- `SUPER + SHIFT + S` - Capturar pantalla al portapapeles
+### Clipboard
+- `SUPER + V` - Open CopyQ history
+- `SUPER + SHIFT + V` - Open cliphist history
+- `SUPER + CTRL + V` - Alternative cliphist
+- `SUPER + SHIFT + S` - Screenshot to clipboard
 
-## 🎨 Temas y Personalización
+## 🎨 Themes and Customization
 
-### Temas incluidos:
-- **Catppuccin** - Tema oscuro moderno
-- **Papirus** - Iconos consistentes
-- **Bibata** - Cursor animado
+### Included themes:
+- **Catppuccin** - Modern dark theme
+- **Papirus** - Consistent icons
+- **Bibata** - Animated cursor
 
-### Fuentes:
-- **JetBrains Mono** - Fuente de programación
-- **Fira Code** - Fuente con ligaduras
-- **Noto Fonts** - Fuentes universales
+### Fonts:
+- **JetBrains Mono** - Programming font
+- **Fira Code** - Font with ligatures
+- **Noto Fonts** - Universal fonts
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Archivos principales:
-- `~/.config/hypr/hyprland.conf` - Configuración de Hyprland
-- `~/.config/waybar/config` - Configuración de Waybar
-- `~/.config/eww/eww.yuck` - Widgets EWW
-- `~/.config/kitty/kitty.conf` - Configuración de terminal
-- `~/.config/nvim/init.lua` - Configuración de Neovim
+### Main files:
+- `~/.config/hypr/hyprland.conf` - Hyprland configuration
+- `~/.config/waybar/config` - Waybar configuration
+- `~/.config/eww/eww.yuck` - EWW widgets
+- `~/.config/kitty/kitty.conf` - Terminal configuration
+- `~/.config/nvim/init.lua` - Neovim configuration
 
-### Personalización:
-1. Edita los archivos de configuración
-2. Recarga Hyprland con `SUPER + SHIFT + C`
-3. Los cambios se aplican inmediatamente
+### Customization:
+1. Edit configuration files
+2. Reload Hyprland with `SUPER + SHIFT + C`
+3. Changes apply immediately
 
-## 🐛 Solución de Problemas
+## 🐛 Troubleshooting
 
-### Problemas comunes:
+### Common problems:
 
-**Hyprland no inicia:**
+**Hyprland doesn't start:**
 ```bash
-# Verificar logs
+# Check logs
 journalctl --user -f
 
-# Verificar configuración
+# Check configuration
 ./utils.sh info
 ```
 
-**Wallpapers no cambian:**
+**Wallpapers don't change:**
 ```bash
-# Verificar swww
+# Check swww
 ./utils.sh info
 
-# Reiniciar daemon
+# Restart daemon
 ./utils.sh wallpaper-daemon restart
 ```
 
-**Hyperlock no funciona:**
+**Hyperlock doesn't work:**
 ```bash
-# Verificar instalación
+# Check installation
 ./utils.sh info
 
-# Reconfigurar Hyperlock
+# Reconfigure Hyperlock
 yay -S hyperlock --noconfirm
 ```
 
-### Logs útiles:
-- `~/.local/share/hyprland/hyprland.log` - Logs de Hyprland
-- `./utils.sh debug` - Debug completo
-- `journalctl --user -f` - Logs del usuario
+### Useful logs:
+- `~/.local/share/hyprland/hyprland.log` - Hyprland logs
+- `./utils.sh debug` - Complete debug
+- `journalctl --user -f` - User logs
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 archriced/
-├── install.sh              # Instalación completa
-├── uninstall.sh            # Desinstalación completa
-├── utils.sh                # Utilidades principales
-├── README.md               # Documentación
-└── dotfiles/               # Configuraciones
+├── install.sh              # Complete installation
+├── uninstall.sh            # Complete uninstallation
+├── utils.sh                # Main utilities
+├── README.md               # Documentation
+└── dotfiles/               # Configurations
     ├── hypr/               # Hyprland
-    ├── waybar/             # Barra de estado
+    ├── waybar/             # Status bar
     ├── eww/                # Widgets
     ├── kitty/              # Terminal
     ├── nvim/               # Editor
     ├── fish/               # Shell
-    └── wallpapers/         # Wallpapers de ejemplo
+    └── wallpapers/         # Example wallpapers
 ```
 
-## 🤝 Contribuir
+## 🤝 Contributing
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+This project is under the MIT License. See the `LICENSE` file for more details.
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-- [Hyprland](https://hyprland.org/) - Compositor Wayland
-- [EWW](https://github.com/elkowar/eww) - Widgets para Wayland
-- [Catppuccin](https://github.com/catppuccin/catppuccin) - Paleta de colores
-- [JaKooLit](https://github.com/JaKooLit/Arch-Hyprland) - Inspiración para scripts
+- [Hyprland](https://hyprland.org/) - Wayland compositor
+- [EWW](https://github.com/elkowar/eww) - Wayland widgets
+- [Catppuccin](https://github.com/catppuccin/catppuccin) - Color palette
+- [JaKooLit](https://github.com/JaKooLit/Arch-Hyprland) - Script inspiration
 
-## 📞 Soporte
+## 📞 Support
 
-Si tienes problemas o preguntas:
+If you have problems or questions:
 
-1. Revisa la sección de [Solución de Problemas](#-solución-de-problemas)
-2. Ejecuta `./utils.sh debug` y comparte los logs
-3. Abre un issue en GitHub con información detallada
+1. Check the [Troubleshooting](#-troubleshooting) section
+2. Run `./utils.sh debug` and share the logs
+3. Open an issue on GitHub with detailed information
 
 ---
 
-**¡Disfruta tu nueva configuración de Hyprland! 🎉** 
+**Enjoy your new Hyprland configuration! 🎉** 
