@@ -224,7 +224,7 @@ install_essential_packages() {
         
         # Herramientas adicionales
         "jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects"
-        "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako"
+        "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper"
     )
     
     install_packages "${essential_packages[@]}"
@@ -345,6 +345,62 @@ notificationShadowOffsetY=2
 EOF
     
     print_success "Portapapeles e historial configurado"
+}
+
+# Función para configurar Waypaper
+configure_waypaper() {
+    print_section "Configurando Waypaper..."
+    
+    print_step "Verificando instalación de waypaper..."
+    if ! command -v waypaper >/dev/null 2>&1; then
+        print_step "Instalando waypaper..."
+        yay -S waypaper --noconfirm --needed
+    fi
+    
+    print_step "Creando directorio de configuración..."
+    mkdir -p "$HOME/.config/waypaper"
+    
+    print_step "Creando configuración de waypaper..."
+    cat > "$HOME/.config/waypaper/waypaper.json" << 'EOF'
+{
+    "daemon": {
+        "enabled": true,
+        "interval": 300
+    },
+    "wallpaper": {
+        "mode": "stretch",
+        "output": "all"
+    },
+    "image": {
+        "path": "~/Pictures/wallpapers",
+        "sort": "name"
+    },
+    "hyprland": {
+        "enabled": true,
+        "method": "hyprctl"
+    }
+}
+EOF
+    
+    print_step "Configurando directorio de wallpapers..."
+    mkdir -p "$HOME/Pictures/wallpapers"
+    
+    print_step "Configurando inicio automático..."
+    mkdir -p "$HOME/.config/autostart"
+    
+    cat > "$HOME/.config/autostart/waypaper.desktop" << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=Waypaper
+Comment=Waypaper wallpaper daemon
+Exec=waypaper --daemon
+Terminal=false
+X-GNOME-Autostart-enabled=true
+EOF
+    
+    chmod +x "$HOME/.config/autostart/waypaper.desktop"
+    
+    print_success "Waypaper configurado"
 }
 
 # Function to install custom fonts
@@ -567,6 +623,7 @@ main() {
     copy_wallpapers
     configure_hyperlock
     configure_clipboard
+    configure_waypaper
     copy_dotfiles
     configure_system
     show_final_info

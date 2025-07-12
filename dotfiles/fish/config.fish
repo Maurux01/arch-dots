@@ -171,6 +171,18 @@ if command -v nmtui >/dev/null 2>&1
     alias net='nmtui'
 end
 
+# Waypaper aliases
+if command -v waypaper >/dev/null 2>&1
+    alias wp='waypaper'
+    alias wpr='waypaper --random'
+    alias wps='waypaper --restore'
+    alias wpd='waypaper --daemon'
+    alias wpg='waypaper --gui'
+    alias wpn='waypaper --next'
+    alias wpp='waypaper --previous'
+    alias wpl='waypaper --list'
+end
+
 # Sistema mejorado
 alias df='df -h'
 alias du='du -h'
@@ -335,6 +347,36 @@ function disk-usage
     end
 end
 
+# Función para gestionar wallpapers con waypaper
+function wallpaper-manager
+    if command -v waypaper >/dev/null 2>&1
+        echo "🎨 Gestor de wallpapers con Waypaper:"
+        echo "  wp        - Abrir waypaper"
+        echo "  wpr       - Wallpaper aleatorio"
+        echo "  wps       - Restaurar wallpaper"
+        echo "  wpd       - Iniciar daemon"
+        echo "  wpg       - Interfaz gráfica"
+        echo "  wpn       - Siguiente wallpaper"
+        echo "  wpp       - Wallpaper anterior"
+        echo "  wpl       - Listar wallpapers"
+        echo ""
+        echo "Atajos de teclado:"
+        echo "  SUPER+SHIFT+W - Wallpaper aleatorio"
+        echo "  SUPER+CTRL+W  - Restaurar wallpaper"
+        echo "  SUPER+ALT+W   - Iniciar daemon"
+        echo "  SUPER+CTRL+ALT+W - Interfaz gráfica"
+        echo "  SUPER+SHIFT+ALT+W - Siguiente wallpaper"
+        echo "  SUPER+CTRL+SHIFT+W - Wallpaper anterior"
+        echo ""
+        echo "Configuración:"
+        echo "  • Archivo: ~/.config/waypaper/waypaper.json"
+        echo "  • Wallpapers: ~/Pictures/wallpapers/"
+        echo "  • Auto-inicio: ~/.config/autostart/waypaper.desktop"
+    else
+        echo "❌ waypaper no está instalado"
+    end
+end
+
 # =============================================================================
 # CONFIGURACIÓN DE HERRAMIENTAS
 # =============================================================================
@@ -474,6 +516,17 @@ function help
     echo "  io        - iotop"
     echo "  gpu       - nvtop"
     echo "  net       - nmtui"
+    echo ""
+    echo "🎨 Wallpapers:"
+    echo "  wp        - Waypaper"
+    echo "  wpr       - Wallpaper aleatorio"
+    echo "  wps       - Restaurar wallpaper"
+    echo "  wpd       - Iniciar daemon"
+    echo "  wpg       - Interfaz gráfica"
+    echo "  wpn       - Siguiente wallpaper"
+    echo "  wpp       - Wallpaper anterior"
+    echo "  wpl       - Listar wallpapers"
+    echo "  wallpaper-manager - Ayuda de wallpapers"
     echo ""
     echo "🌤️  Utilidades:"
     echo "  weather   - Clima"
