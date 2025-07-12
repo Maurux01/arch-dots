@@ -131,6 +131,46 @@ if command -v just >/dev/null 2>&1
     alias j='just'
 end
 
+# Docker aliases
+if command -v docker >/dev/null 2>&1
+    alias d='docker'
+    alias dc='docker-compose'
+    alias dps='docker ps'
+    alias dimg='docker images'
+    alias dex='docker exec -it'
+    alias dlogs='docker logs'
+    alias dstop='docker stop'
+    alias drm='docker rm'
+    alias drmi='docker rmi'
+end
+
+# Lazydocker alias
+if command -v lazydocker >/dev/null 2>&1
+    alias ld='lazydocker'
+end
+
+# System monitoring aliases
+if command -v ncdu >/dev/null 2>&1
+    alias disk='ncdu'
+end
+
+if command -v iotop >/dev/null 2>&1
+    alias io='iotop'
+end
+
+if command -v nvtop >/dev/null 2>&1
+    alias gpu='nvtop'
+end
+
+# Network aliases
+if command -v speedtest-cli >/dev/null 2>&1
+    alias speed='speedtest-cli'
+end
+
+if command -v nmtui >/dev/null 2>&1
+    alias net='nmtui'
+end
+
 # Sistema mejorado
 alias df='df -h'
 alias du='du -h'
@@ -257,6 +297,44 @@ function procs
     ps aux | grep -i $argv
 end
 
+# Función para Docker
+function docker-clean
+    echo "🧹 Limpiando Docker..."
+    docker system prune -f
+    docker volume prune -f
+    docker network prune -f
+    echo "✅ Docker limpiado!"
+end
+
+# Función para monitorear sistema
+function monitor
+    echo "📊 Monitoreo del sistema:"
+    echo "CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2}' | cut -d'%' -f1)%"
+    echo "Memoria: $(free -h | grep Mem | awk '{print $3"/"$2}')"
+    echo "Disco: $(df -h / | tail -1 | awk '{print $5}')"
+    echo "Red: $(ss -tulanp | wc -l) conexiones activas"
+end
+
+# Función para test de velocidad
+function speedtest
+    if command -v speedtest-cli >/dev/null 2>&1
+        echo "🌐 Ejecutando test de velocidad..."
+        speedtest-cli --simple
+    else
+        echo "❌ speedtest-cli no está instalado"
+    end
+end
+
+# Función para análisis de disco
+function disk-usage
+    if command -v ncdu >/dev/null 2>&1
+        echo "💾 Analizando uso de disco..."
+        ncdu
+    else
+        echo "❌ ncdu no está instalado"
+    end
+end
+
 # =============================================================================
 # CONFIGURACIÓN DE HERRAMIENTAS
 # =============================================================================
@@ -285,8 +363,7 @@ end
 
 # Instalar Starship si no está instalado
 if not command -v starship >/dev/null 2>&1
-    echo "🚀 Starship no está instalado. Usando prompt básico."
-    echo "💡 Para instalar Starship: curl -sS https://starship.rs/install.sh | sh"
+    # Sin mensaje de bienvenida
 else
     # Inicializar Starship
     starship init fish | source
@@ -298,8 +375,7 @@ end
 
 # Fisher plugin manager (opcional)
 if not functions -q fisher
-    echo "🐟 Fisher no está instalado. Los plugins están deshabilitados."
-    echo "💡 Para instalar Fisher: curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+    # Sin mensaje de bienvenida
 end
 
 # Plugins útiles (solo si fisher está disponible)
@@ -345,13 +421,7 @@ if functions -q gpt
         gpt "Ayúdame a debuggear este problema: $argv"
     end
     
-    echo "🤖 Fish GPT instalado y configurado!"
-    echo "💡 Comandos disponibles:"
-    echo "   gpt 'pregunta' - Chat con IA"
-    echo "   explain 'comando' - Explica un comando"
-    echo "   generate 'descripción' - Genera un comando"
-    echo "   optimize 'comando' - Optimiza un comando"
-    echo "   debug 'problema' - Ayuda con debugging"
+    # Sin mensaje de bienvenida
 end
 
 # =============================================================================
@@ -388,6 +458,23 @@ function help
     echo "  search    - Buscar paquetes"
     echo "  procs     - Buscar procesos"
     echo ""
+    echo "🐳 Docker:"
+    echo "  d         - Docker"
+    echo "  dc        - Docker Compose"
+    echo "  dps       - Docker containers"
+    echo "  dimg      - Docker images"
+    echo "  ld        - Lazydocker"
+    echo "  docker-clean - Limpiar Docker"
+    echo ""
+    echo "📊 Monitoreo:"
+    echo "  monitor   - Estado del sistema"
+    echo "  speedtest - Test de velocidad"
+    echo "  disk-usage - Análisis de disco"
+    echo "  disk      - ncdu"
+    echo "  io        - iotop"
+    echo "  gpu       - nvtop"
+    echo "  net       - nmtui"
+    echo ""
     echo "🌤️  Utilidades:"
     echo "  weather   - Clima"
     echo "  extract   - Extraer archivos"
@@ -413,4 +500,4 @@ set -gx TERM xterm-256color
 fish_add_path ~/.local/bin
 fish_add_path ~/.cargo/bin
 
-echo "🐟 Fish configurado con éxito! 🎉" 
+# Sin mensaje de bienvenida 

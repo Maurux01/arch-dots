@@ -193,29 +193,38 @@ install_essential_packages() {
         "nvim"
         
         # Utilidades del sistema
-        "bat" "fd" "ripgrep" "fzf" "btop" "exa"
+        "bat" "fd" "ripgrep" "fzf" "btop" "exa" "htop" "ncdu" "iotop" "nvtop"
         "pavucontrol" "blueman" "networkmanager" "network-manager-applet"
+        "speedtest-cli" "nmtui" "playerctl" "pamixer" "brightnessctl"
         
         # Herramientas de desarrollo
         "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
         "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
+        "docker" "docker-compose" "podman" "buildah" "skopeo"
         
         # Herramientas adicionales
-        "lazygit" "yazi"
+        "lazygit" "lazydocker" "yazi"
         
         # Reproductores multimedia
-        "mpv" "vlc" "cava" "oss"
+        "mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop"
+        "obs" "obs-studio" "krita" "gimp" "inkscape"
         
         # Portapapeles e historial
-        "cliphist" "copyq"
+        "cliphist" "copyq" "obsidian" "libreoffice" "firefox" "brave"
+        "nautilus" "thunar" "geany" "code" "code-marketplace"
         
         # Fuentes y temas
         "nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" 
         "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono"
         "papirus-icon-theme" "bibata-cursor-theme"
         
-        # Otros
-        "jq" "curl" "gdm"
+        # Gaming y desarrollo
+        "steam" "lutris" "wine" "gamemode" "mangohud" "heroic-games-launcher"
+        "retroarch" "dolphin-emu" "ppsspp" "citra-git"
+        
+        # Herramientas adicionales
+        "jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects"
+        "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako"
     )
     
     install_packages "${essential_packages[@]}"
