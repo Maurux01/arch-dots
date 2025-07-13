@@ -188,6 +188,12 @@ uninstall_packages() {
         "mpv" "vlc" "steam" "lutris" "wine" "gamemode" "mangohud"
         "flameshot" "spectacle" "maim" "xclip" "imagemagick"
         "ffmpeg" "v4l-utils" "pulseaudio-alsa"
+        
+        # Herramientas de seguridad y red
+        "ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn"
+        "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp"
+        "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop"
+        "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs"
     )
     
     for pkg in "${util_packages[@]}"; do
@@ -299,6 +305,13 @@ clean_config_files() {
     rm -rf "$HOME/.config/krita" 2>/dev/null || true
     rm -rf "$HOME/.config/gimp" 2>/dev/null || true
     rm -rf "$HOME/.config/inkscape" 2>/dev/null || true
+    
+    print_step "Eliminando configuraciones de seguridad..."
+    sudo rm -rf /etc/wireguard 2>/dev/null || true
+    sudo rm -rf /etc/fail2ban 2>/dev/null || true
+    sudo rm -rf /etc/clamav 2>/dev/null || true
+    sudo rm -f /usr/local/bin/network-monitor.sh 2>/dev/null || true
+    sudo rm -rf /var/log/network 2>/dev/null || true
     
     print_success "Archivos de configuración limpiados"
 }

@@ -18,6 +18,7 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
 - **Hyperlock** - Native Hyprland screen locker
 - **Enhanced notifications** - Notification system with animations and colors
 - **Proper installation** - Everything installed in standard system locations
+- **Security tools** - UFW firewall, WireGuard VPN, Fail2ban, ClamAV
 
 ## 📦 Installation
 
@@ -50,6 +51,8 @@ The unified installation script includes:
 - ✅ Configures enhanced notifications
 - ✅ Installs multimedia tools (LMMS, Pixelorama, Upscayl)
 - ✅ Installs image support (Neovim + Kitty)
+- ✅ Installs security tools (UFW, WireGuard, Fail2ban, ClamAV)
+- ✅ Configures firewall and VPN
 - ✅ Copies all dotfiles to correct system locations
 - ✅ Verifies complete installation
 - ✅ Configures the system
@@ -303,6 +306,101 @@ kitty +kitten icat image.png
 # Paste image in Neovim
 SUPER + SHIFT + P
 ```
+
+## 🛡️ Security Tools
+
+### Included Security Tools
+
+- **UFW** - Uncomplicated Firewall (simple and effective)
+- **WireGuard** - Modern and fast VPN
+- **Fail2ban** - Protection against brute force attacks
+- **ClamAV** - Antivirus scanner
+- **RKHunter** - Rootkit detection
+- **Network monitoring tools** - nmap, tcpdump, netcat
+
+### Security Configuration
+
+```bash
+# Check firewall status
+sudo ufw status
+
+# Allow specific port
+sudo ufw allow 8080
+
+# Start WireGuard VPN
+sudo wg-quick up wg0
+
+# Stop WireGuard VPN
+sudo wg-quick down wg0
+
+# Check Fail2ban status
+sudo fail2ban-client status
+
+# Update ClamAV database
+sudo freshclam
+
+# Run RKHunter scan
+sudo rkhunter --check
+
+# Network monitoring
+sudo /usr/local/bin/network-monitor.sh
+
+# Security manager (easier interface)
+./security-manager.sh firewall status
+./security-manager.sh vpn start wg0
+./security-manager.sh clamav scan /home
+```
+
+### Security Features
+
+- **Automatic firewall configuration** - UFW with sensible defaults
+- **VPN setup** - WireGuard with key generation
+- **Intrusion detection** - Fail2ban with SSH protection
+- **Malware scanning** - ClamAV with automatic updates
+- **Rootkit detection** - RKHunter with daily scans
+- **Network monitoring** - Tools for network analysis
+- **Security Manager** - Easy-to-use interface for all security tools
+
+## 🛡️ Security Manager
+
+### Easy Security Management
+
+The `security-manager.sh` script provides an easy interface to manage all security tools:
+
+```bash
+# Firewall management
+./security-manager.sh firewall status
+./security-manager.sh firewall allow 8080
+./security-manager.sh firewall deny 22
+
+# VPN management
+./security-manager.sh vpn status
+./security-manager.sh vpn start wg0
+./security-manager.sh vpn stop wg0
+./security-manager.sh vpn keys
+
+# Security scanning
+./security-manager.sh clamav scan /home
+./security-manager.sh clamav update
+./security-manager.sh rkhunter scan
+./security-manager.sh rkhunter update
+
+# Network monitoring
+./security-manager.sh network monitor
+./security-manager.sh port scan 192.168.1.1
+./security-manager.sh traffic monitor
+
+# Show help
+./security-manager.sh help
+```
+
+### Security Manager Features
+
+- **Firewall control** - Easy UFW management
+- **VPN management** - WireGuard interface control
+- **Security scanning** - ClamAV and RKHunter integration
+- **Network monitoring** - Built-in network analysis tools
+- **Unified interface** - All security tools in one place
 
 ## 🖥️ Screenshot Tools
 

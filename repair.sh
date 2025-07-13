@@ -278,6 +278,78 @@ repair_permissions() {
 }
 
 # =============================================================================
+#                           🛡️ FUNCIONES DE REPARACIÓN DE SEGURIDAD
+# =============================================================================
+
+repair_security_tools() {
+    print_section "Reparando herramientas de seguridad..."
+    
+    print_step "Verificando UFW..."
+    if command -v ufw >/dev/null 2>&1; then
+        if ! systemctl is-active --quiet ufw; then
+            print_step "Habilitando UFW..."
+            sudo systemctl enable ufw
+            sudo systemctl start ufw
+            print_success "UFW habilitado"
+        else
+            print_success "UFW ya está activo"
+        fi
+    else
+        print_warning "UFW no está instalado"
+    fi
+    
+    print_step "Verificando WireGuard..."
+    if command -v wg >/dev/null 2>&1; then
+        if [ ! -f /etc/wireguard/private.key ]; then
+            print_step "Generando claves WireGuard..."
+            sudo mkdir -p /etc/wireguard
+            sudo wg genkey | sudo tee /etc/wireguard/private.key > /dev/null
+            sudo wg pubkey < /etc/wireguard/private.key | sudo tee /etc/wireguard/public.key > /dev/null
+            sudo chmod 600 /etc/wireguard/private.key
+            sudo chmod 644 /etc/wireguard/public.key
+            print_success "Claves WireGuard generadas"
+        else
+            print_success "Claves WireGuard ya existen"
+        fi
+    else
+        print_warning "WireGuard no está instalado"
+    fi
+    
+    print_step "Verificando Fail2ban..."
+    if command -v fail2ban-client >/dev/null 2>&1; then
+        if ! systemctl is-active --quiet fail2ban; then
+            print_step "Habilitando Fail2ban..."
+            sudo systemctl enable fail2ban
+            sudo systemctl start fail2ban
+            print_success "Fail2ban habilitado"
+        else
+            print_success "Fail2ban ya está activo"
+        fi
+    else
+        print_warning "Fail2ban no está instalado"
+    fi
+    
+    print_step "Verificando ClamAV..."
+    if command -v freshclam >/dev/null 2>&1; then
+        if ! systemctl is-active --quiet clamav-daemon; then
+            print_step "Habilitando ClamAV..."
+            sudo systemctl enable clamav-daemon
+            sudo systemctl start clamav-daemon
+            print_success "ClamAV habilitado"
+        else
+            print_success "ClamAV ya está activo"
+        fi
+        
+        print_step "Actualizando base de datos de ClamAV..."
+        sudo freshclam
+    else
+        print_warning "ClamAV no está instalado"
+    fi
+    
+    print_success "Herramientas de seguridad reparadas"
+}
+
+# =============================================================================
 #                           🧹 FUNCIONES DE LIMPIEZA
 # =============================================================================
 
@@ -504,6 +576,7 @@ main() {
             repair_configs
             repair_fonts
             repair_permissions
+            repair_security_tools
             verify_repair
             ;;
         "clean")
@@ -524,6 +597,7 @@ main() {
             repair_configs
             repair_fonts
             repair_permissions
+            repair_security_tools
             clean_system
             clean_neovim
             update_system

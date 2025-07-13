@@ -195,6 +195,12 @@ install_core_packages() {
         # Herramientas adicionales
         "jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects"
         "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper"
+        
+        # Herramientas de seguridad y red
+        "ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn"
+        "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp"
+        "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop"
+        "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs"
     )
     
     print_step "Instalando paquetes oficiales..."
@@ -633,6 +639,203 @@ EOF
 }
 
 # =============================================================================
+#                           🛡️ FUNCIONES DE SEGURIDAD
+# =============================================================================
+
+configure_firewall() {
+    print_section "Configurando firewall (UFW)..."
+    
+    print_step "Verificando instalación de UFW..."
+    if ! command -v ufw >/dev/null 2>&1; then
+        print_step "Instalando UFW..."
+        sudo pacman -S ufw --noconfirm --needed
+    fi
+    
+    print_step "Configurando reglas básicas de UFW..."
+    
+    # Habilitar UFW
+    sudo ufw --force enable
+    
+    # Configurar políticas por defecto
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    
+    # Permitir SSH (si está instalado)
+    if systemctl is-active --quiet sshd; then
+        sudo ufw allow ssh
+        print_step "Regla SSH agregada"
+    fi
+    
+    # Permitir conexiones locales
+    sudo ufw allow from 127.0.0.1
+    sudo ufw allow from ::1
+    
+    # Permitir DNS
+    sudo ufw allow out 53/tcp
+    sudo ufw allow out 53/udp
+    
+    # Permitir HTTP/HTTPS
+    sudo ufw allow out 80/tcp
+    sudo ufw allow out 443/tcp
+    
+    # Permitir NTP
+    sudo ufw allow out 123/udp
+    
+    print_step "Configurando UFW para inicio automático..."
+    sudo systemctl enable ufw
+    sudo systemctl start ufw
+    
+    print_success "Firewall UFW configurado y habilitado"
+    print_info "Estado del firewall: $(sudo ufw status | head -1)"
+}
+
+configure_vpn() {
+    print_section "Configurando herramientas VPN..."
+    
+    print_step "Verificando instalación de WireGuard..."
+    if ! command -v wg >/dev/null 2>&1; then
+        print_step "Instalando WireGuard..."
+        sudo pacman -S wireguard-tools --noconfirm --needed
+    fi
+    
+    print_step "Creando directorio de configuración WireGuard..."
+    sudo mkdir -p /etc/wireguard
+    
+    print_step "Generando claves WireGuard..."
+    if [ ! -f /etc/wireguard/private.key ]; then
+        sudo wg genkey | sudo tee /etc/wireguard/private.key > /dev/null
+        sudo wg pubkey < /etc/wireguard/private.key | sudo tee /etc/wireguard/public.key > /dev/null
+        sudo chmod 600 /etc/wireguard/private.key
+        sudo chmod 644 /etc/wireguard/public.key
+        print_success "Claves WireGuard generadas"
+    else
+        print_info "Claves WireGuard ya existen"
+    fi
+    
+    print_step "Creando configuración de ejemplo WireGuard..."
+    sudo tee /etc/wireguard/wg0.conf.example > /dev/null << 'EOF'
+[Interface]
+PrivateKey = <tu_clave_privada>
+Address = 10.0.0.2/24
+DNS = 1.1.1.1, 1.0.0.1
+
+[Peer]
+PublicKey = <clave_pública_del_servidor>
+AllowedIPs = 0.0.0.0/0
+Endpoint = <servidor_vpn>:51820
+PersistentKeepalive = 25
+EOF
+    
+    print_step "Configurando NetworkManager para VPN..."
+    if command -v nmcli >/dev/null 2>&1; then
+        # Habilitar plugins de VPN en NetworkManager
+        sudo systemctl enable NetworkManager
+        sudo systemctl start NetworkManager
+        
+        print_success "NetworkManager configurado para VPN"
+    fi
+    
+    print_success "Herramientas VPN configuradas"
+    print_info "Clave pública WireGuard: $(sudo cat /etc/wireguard/public.key)"
+    print_info "Configuración de ejemplo en: /etc/wireguard/wg0.conf.example"
+}
+
+configure_security_tools() {
+    print_section "Configurando herramientas de seguridad..."
+    
+    print_step "Configurando Fail2ban..."
+    if command -v fail2ban-client >/dev/null 2>&1; then
+        sudo systemctl enable fail2ban
+        sudo systemctl start fail2ban
+        
+        # Crear configuración básica
+        sudo tee /etc/fail2ban/jail.local > /dev/null << 'EOF'
+[DEFAULT]
+bantime = 3600
+findtime = 600
+maxretry = 3
+
+[sshd]
+enabled = true
+port = ssh
+logpath = /var/log/auth.log
+EOF
+        
+        print_success "Fail2ban configurado"
+    fi
+    
+    print_step "Configurando ClamAV..."
+    if command -v freshclam >/dev/null 2>&1; then
+        sudo freshclam
+        sudo systemctl enable clamav-daemon
+        sudo systemctl start clamav-daemon
+        
+        print_success "ClamAV configurado"
+    fi
+    
+    print_step "Configurando RKHunter..."
+    if command -v rkhunter >/dev/null 2>&1; then
+        sudo rkhunter --update
+        sudo rkhunter --propupd
+        
+        # Crear tarea cron para escaneos diarios
+        echo "0 2 * * * root /usr/bin/rkhunter --cronjob --update --quiet" | sudo tee -a /etc/crontab
+        
+        print_success "RKHunter configurado"
+    fi
+    
+    print_success "Herramientas de seguridad configuradas"
+}
+
+configure_network_monitoring() {
+    print_section "Configurando monitoreo de red..."
+    
+    print_step "Creando directorio de logs de red..."
+    sudo mkdir -p /var/log/network
+    sudo chmod 755 /var/log/network
+    
+    print_step "Configurando tcpdump para captura de paquetes..."
+    sudo groupadd -f pcap
+    sudo usermod -a -G pcap "$USER"
+    
+    print_step "Configurando herramientas de monitoreo..."
+    
+    # Crear script de monitoreo de red
+    sudo tee /usr/local/bin/network-monitor.sh > /dev/null << 'EOF'
+#!/bin/bash
+# Script de monitoreo de red
+
+echo "=== MONITOREO DE RED ==="
+echo "Fecha: $(date)"
+echo ""
+
+echo "=== CONEXIONES ACTIVAS ==="
+ss -tuln
+
+echo ""
+echo "=== PROCESOS DE RED ==="
+ps aux | grep -E "(ssh|vpn|wireguard)" | grep -v grep
+
+echo ""
+echo "=== ESTADO DEL FIREWALL ==="
+sudo ufw status
+
+echo ""
+echo "=== INTERFACES DE RED ==="
+ip addr show
+
+echo ""
+echo "=== RUTAS ==="
+ip route show
+EOF
+    
+    sudo chmod +x /usr/local/bin/network-monitor.sh
+    
+    print_success "Monitoreo de red configurado"
+    print_info "Usa: sudo /usr/local/bin/network-monitor.sh"
+}
+
+# =============================================================================
 #                           ✅ FUNCIONES DE VERIFICACIÓN
 # =============================================================================
 
@@ -713,6 +916,17 @@ show_final_info() {
     echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
     
+    echo "🛡️ Comandos de seguridad:"
+    echo "• sudo ufw status - Estado del firewall"
+    echo "• sudo ufw allow [puerto] - Permitir puerto"
+    echo "• sudo wg-quick up wg0 - Activar WireGuard"
+    echo "• sudo wg-quick down wg0 - Desactivar WireGuard"
+    echo "• sudo /usr/local/bin/network-monitor.sh - Monitoreo de red"
+    echo "• sudo fail2ban-client status - Estado de Fail2ban"
+    echo "• sudo freshclam - Actualizar ClamAV"
+    echo "• sudo rkhunter --check - Escanear con RKHunter"
+    echo ""
+    
     echo "Gestión de fuentes:"
     echo "• Coloca fuentes personalizadas en dotfiles/fonts/"
     echo "• Ejecuta ~/.config/scripts/change-font.sh para cambiar fuentes"
@@ -734,6 +948,15 @@ show_final_info() {
     echo "• Visualización de imágenes en Neovim"
     echo "• Soporte para SVG"
     echo "• Vista previa de Markdown"
+    echo ""
+    
+    echo "🛡️ Herramientas de seguridad instaladas:"
+    echo "• UFW - Firewall simple y efectivo"
+    echo "• WireGuard - VPN moderna y rápida"
+    echo "• Fail2ban - Protección contra ataques"
+    echo "• ClamAV - Antivirus"
+    echo "• RKHunter - Detección de rootkits"
+    echo "• Herramientas de monitoreo de red"
     echo ""
     
     if [ -n "$BACKUP_DIR" ]; then
@@ -760,6 +983,10 @@ main() {
     copy_dotfiles
     configure_fish_shell
     configure_system
+    configure_firewall
+    configure_vpn
+    configure_security_tools
+    configure_network_monitoring
     verify_installation
     show_final_info
 }
