@@ -176,10 +176,10 @@ install_core_packages() {
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
     local utility_packages=("lazygit" "lazydocker" "yazi")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
-    local creation_packages=("obs" "obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
-    local clipboard_packages=("cliphist" "copyq" "obsidian" "libreoffice" "firefox" "brave" "nautilus" "thunar" "geany" "code" "code-marketplace")
+    local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
+    local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
     local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
-    local gaming_packages=("steam" "lutris" "wine" "gamemode" "mangohud" "heroic-games-launcher" "retroarch" "dolphin-emu" "ppsspp" "citra-git")
+    local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
     local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper")
     local security_packages=("ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn" "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp" "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop" "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs")
     
@@ -235,7 +235,7 @@ install_aur_packages() {
     
     local aur_packages=(
         "hyperlock" "oss" "nerd-fonts-complete" "heroic-games-launcher"
-        "pixelorama" "upscayl" "citra-git"
+        "pixelorama" "upscayl" "appflowy"
     )
     
     for pkg in "${aur_packages[@]}"; do
@@ -1371,6 +1371,45 @@ verify_kitty_installation() {
     done
 }
 
+verify_browser_and_notes() {
+    print_section "Verificando navegador y aplicación de notas..."
+    
+    print_step "Verificando Brave..."
+    if command -v brave >/dev/null 2>&1; then
+        print_success "Brave está instalado: $(brave --version | head -1)"
+    else
+        print_warning "Brave no está instalado, intentando instalar..."
+        sudo pacman -S brave --noconfirm --needed
+        if command -v brave >/dev/null 2>&1; then
+            print_success "Brave instalado exitosamente"
+        else
+            print_error "Falló al instalar Brave"
+        fi
+    fi
+    
+    print_step "Verificando AppFlowy..."
+    if command -v appflowy >/dev/null 2>&1; then
+        print_success "AppFlowy está instalado"
+    else
+        print_warning "AppFlowy no está instalado, intentando instalar desde AUR..."
+        yay -S appflowy --noconfirm --needed
+        if command -v appflowy >/dev/null 2>&1; then
+            print_success "AppFlowy instalado exitosamente"
+        else
+            print_error "Falló al instalar AppFlowy"
+        fi
+    fi
+    
+    print_step "Verificando configuración de navegador por defecto..."
+    if [ -f "$HOME/.config/mimeapps.list" ]; then
+        if grep -q "x-scheme-handler/http=brave.desktop" "$HOME/.config/mimeapps.list"; then
+            print_success "Brave configurado como navegador por defecto"
+        else
+            print_warning "Brave no está configurado como navegador por defecto"
+        fi
+    fi
+}
+
 # =============================================================================
 #                           📋 FUNCIÓN PRINCIPAL
 # =============================================================================
@@ -1389,6 +1428,7 @@ show_final_info() {
     echo "Comandos básicos:"
     echo "• SUPER+N - Neovim (Editor por defecto)"
     echo "• SUPER+B - Navegador (Brave)"
+    echo "• SUPER+O - AppFlowy (Notas)"
     echo "• SUPER+D - Lanzador de aplicaciones"
     echo "• SUPER+RETURN - Terminal"
     echo "• SUPER+Q - Cerrar ventana"
@@ -1429,6 +1469,14 @@ show_final_info() {
     echo "Para instalar más aplicaciones:"
     echo "• sudo pacman -S [paquete]"
     echo "• yay -S [paquete-aur]"
+    echo ""
+    
+    echo "Aplicaciones principales instaladas:"
+    echo "• Brave - Navegador web privado y rápido"
+    echo "• AppFlowy - Aplicación de notas y productividad"
+    echo "• Neovim - Editor de código avanzado"
+    echo "• Kitty - Terminal GPU-accelerated"
+    echo "• Hyprland - Compositor de ventanas moderno"
     echo ""
     
     echo "Herramientas multimedia instaladas:"
@@ -1485,6 +1533,7 @@ main() {
     configure_tmux
     verify_installation
     verify_kitty_installation
+    verify_browser_and_notes
     show_final_info
 }
 
