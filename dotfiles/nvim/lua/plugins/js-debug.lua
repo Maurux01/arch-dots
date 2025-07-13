@@ -1,12 +1,14 @@
+-- lua/plugins/js-debug.lua
+-- Configuración de debugging de JavaScript integrada como plugin
+
 return {
-  -- DAP (Debug Adapter Protocol)
+  -- DAP (Debug Adapter Protocol) para JavaScript
   {
     "mfussenegger/nvim-dap",
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
       "nvim-telescope/telescope-dap.nvim",
-      "microsoft/vscode-js-debug",
     },
     keys = {
       { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
@@ -230,6 +232,66 @@ return {
     },
     config = function()
       require("telescope").load_extension("dap")
+    end,
+  },
+
+  -- Auto-install js-debug when needed
+  {
+    "nvim-lua/plenary.nvim",
+    config = function()
+      -- Función para instalar js-debug automáticamente
+      local function install_js_debug()
+        local js_debug_path = vim.fn.stdpath("data") .. "/dapinstall/jsnode_modules/js-debug"
+        
+        if vim.fn.isdirectory(js_debug_path) == 0 then
+          vim.notify("Installing js-debug...", vim.log.levels.INFO)
+          
+          -- Crear directorio
+          vim.fn.mkdir(vim.fn.stdpath("data") .. "/dapinstall/jsnode_modules", "p")
+          
+          -- Clonar repositorio
+          local job = vim.fn.jobstart({
+            "git", "clone", "--depth", "1",
+            "https://github.com/microsoft/vscode-js-debug.git",
+            js_debug_path
+          }, {
+            on_exit = function(_, code)
+              if code == 0 then
+                -- Instalar dependencias
+                local install_job = vim.fn.jobstart({
+                  "npm", "install"
+                }, {
+                  cwd = js_debug_path,
+                  on_exit = function(_, install_code)
+                    if install_code == 0 then
+                      -- Compilar
+                      local compile_job = vim.fn.jobstart({
+                        "npm", "run", "compile"
+                      }, {
+                        cwd = js_debug_path,
+                        on_exit = function(_, compile_code)
+                          if compile_code == 0 then
+                            vim.notify("js-debug installed successfully!", vim.log.levels.INFO)
+                          else
+                            vim.notify("Failed to compile js-debug", vim.log.levels.ERROR)
+                          end
+                        end
+                      })
+                    else
+                      vim.notify("Failed to install js-debug dependencies", vim.log.levels.ERROR)
+                    end
+                  end
+                })
+              else
+                vim.notify("Failed to clone js-debug repository", vim.log.levels.ERROR)
+              end
+            end
+          })
+        end
+      end
+      
+      -- Instalar js-debug al cargar el plugin
+      vim.defer_fn(install_js_debug, 1000)
     end,
   },
 } 

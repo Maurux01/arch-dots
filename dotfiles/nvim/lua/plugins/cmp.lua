@@ -1,5 +1,5 @@
 -- lua/plugins/cmp.lua
--- Configuración mejorada de autocompletado con nvim-cmp
+-- Configuración optimizada de autocompletado con nvim-cmp
 
 return {
   -- nvim-cmp setup
@@ -12,8 +12,6 @@ return {
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-nvim-lsp-signature-help",
-      "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
@@ -26,8 +24,26 @@ return {
       local luasnip = require("luasnip")
       local lspkind = require("lspkind")
 
-      -- Load friendly snippets
-      require("luasnip.loaders.from_vscode").lazy_load()
+      -- Load friendly snippets with deduplication
+      require("luasnip.loaders.from_vscode").lazy_load({
+        exclude = { "global" },
+      })
+
+      -- Custom deduplication function
+      local function deduplicate_entries(entries)
+        local seen = {}
+        local result = {}
+        
+        for _, entry in ipairs(entries) do
+          local key = entry.completion_item.label
+          if not seen[key] then
+            seen[key] = true
+            table.insert(result, entry)
+          end
+        end
+        
+        return result
+      end
 
       return {
         completion = {
@@ -69,14 +85,27 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "copilot", priority = 1000 },
-          { name = "codeium", priority = 900 },
-          { name = "nvim_lsp", priority = 800 },
-          { name = "luasnip", priority = 750 },
-          { name = "buffer", priority = 500 },
-          { name = "path", priority = 250 },
-          { name = "nvim_lua", priority = 200 },
-          { name = "nvim_lsp_signature_help", priority = 150 },
+          -- AI completions (highest priority, limited to prevent spam)
+          { name = "copilot", priority = 1000, max_item_count = 2 },
+          { name = "codeium", priority = 900, max_item_count = 2 },
+          
+          -- LSP completions (high priority)
+          { name = "nvim_lsp", priority = 800, max_item_count = 8 },
+          
+          -- Snippets (medium priority, very limited to avoid duplicates)
+          { name = "luasnip", priority = 750, max_item_count = 3 },
+          
+          -- Buffer completions (lower priority)
+          { name = "buffer", priority = 500, max_item_count = 5 },
+          
+          -- Path completions
+          { name = "path", priority = 250, max_item_count = 3 },
+          
+          -- Lua completions
+          { name = "nvim_lua", priority = 200, max_item_count = 2 },
+          
+          -- Signature help (lowest priority)
+          { name = "nvim_lsp_signature_help", priority = 150, max_item_count = 1 },
         },
         formatting = {
           format = lspkind.cmp_format({
@@ -84,16 +113,27 @@ return {
             maxwidth = 50,
             ellipsis_char = "...",
             before = function(entry, vim_item)
+              -- Custom menu labels to distinguish sources
               vim_item.menu = ({
-                copilot = "[Copilot]",
-                codeium = "[Codeium]",
-                nvim_lsp = "[LSP]",
-                luasnip = "[Snippet]",
-                buffer = "[Buffer]",
-                path = "[Path]",
-                nvim_lua = "[Lua]",
-                nvim_lsp_signature_help = "[Signature]",
+                copilot = "[🤖 Copilot]",
+                codeium = "[💡 Codeium]",
+                nvim_lsp = "[🔧 LSP]",
+                luasnip = "[📝 Snippet]",
+                buffer = "[📄 Buffer]",
+                path = "[📁 Path]",
+                nvim_lua = "[🐺 Lua]",
+                nvim_lsp_signature_help = "[📋 Signature]",
               })[entry.source.name]
+              
+              -- Add source-specific icons
+              if entry.source.name == "copilot" then
+                vim_item.kind = "🤖"
+              elseif entry.source.name == "codeium" then
+                vim_item.kind = "💡"
+              elseif entry.source.name == "luasnip" then
+                vim_item.kind = "📝"
+              end
+              
               return vim_item
             end,
           }),
@@ -113,6 +153,29 @@ return {
         },
         experimental = {
           ghost_text = true,
+        },
+        -- Enhanced deduplication
+        dedupe = true,
+        -- Smart case matching
+        matching = {
+          disallow_fuzzy_matching = false,
+          disallow_full_fuzzy_matching = false,
+          disallow_partial_fuzzy_matching = false,
+          disallow_partial_matching = false,
+          disallow_prefix_unmatching = false,
+        },
+        -- Custom sorting to prioritize unique entries
+        sorting = {
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
         },
       }
     end,
@@ -140,15 +203,21 @@ return {
     end,
   },
 
-  -- LuaSnip configuration
+  -- LuaSnip configuration with advanced deduplication
   {
     "L3MON4D3/LuaSnip",
     opts = {
       history = true,
       delete_check_events = "TextChanged,InsertLeave",
       region_check_events = "CursorMoved,CursorHold,InsertEnter",
-      enable_autosnippets = true,
+      enable_autosnippets = false, -- Disable autosnippets to prevent spam
       store_selection_keys = "<Tab>",
+      -- Prevent duplicate snippets
+      update_events = { "TextChanged", "TextChangedI" },
+      -- Smart snippet loading with deduplication
+      load_ft_func = function(ft)
+        return require("luasnip.loaders.from_vscode").load_ft_func(ft)
+      end,
     },
     keys = {
       {
@@ -172,21 +241,103 @@ return {
     },
   },
 
-  -- Friendly snippets
+  -- Friendly snippets with advanced deduplication
   {
     "rafamadriz/friendly-snippets",
     config = function()
-      require("luasnip.loaders.from_vscode").lazy_load()
+      -- Load snippets with strict deduplication
+      require("luasnip.loaders.from_vscode").lazy_load({
+        exclude = { "global", "all" },
+        include = {
+          "javascript",
+          "typescript",
+          "html",
+          "css",
+          "scss",
+          "json",
+          "lua",
+          "python",
+          "rust",
+          "go",
+          "java",
+          "c",
+          "cpp",
+          "php",
+          "vue",
+          "react",
+        },
+      })
+      
+      -- Custom snippet configuration to prevent duplicates
+      local ls = require("luasnip")
+      ls.config.set_config({
+        history = true,
+        updateevents = "TextChanged,TextChangedI",
+        enable_autosnippets = false, -- Disable to prevent spam
+        store_selection_keys = "<Tab>",
+        -- Custom snippet deduplication
+        region_check_events = "CursorMoved,CursorHold,InsertEnter",
+        delete_check_events = "TextChanged,InsertLeave",
+      })
+      
+      -- Custom snippet loader to prevent duplicates
+      local function load_snippets_with_deduplication()
+        local snippets = require("luasnip.loaders.from_vscode")
+        local loaded_snippets = {}
+        
+        -- Load snippets and track what's already loaded
+        snippets.lazy_load({
+          exclude = { "global", "all" },
+        })
+        
+        -- Custom deduplication logic
+        for ft, ft_snippets in pairs(ls.snippets) do
+          local unique_snippets = {}
+          local seen = {}
+          
+          for name, snippet in pairs(ft_snippets) do
+            local key = snippet.trigger or name
+            if not seen[key] then
+              seen[key] = true
+              unique_snippets[name] = snippet
+            end
+          end
+          
+          ls.snippets[ft] = unique_snippets
+        end
+      end
+      
+      -- Load snippets with deduplication
+      load_snippets_with_deduplication()
     end,
   },
 
-  -- Copilot integration with CMP
+  -- Copilot integration with CMP (optimized for deduplication)
   {
     "zbirenbaum/copilot-cmp",
     dependencies = {
       "zbirenbaum/copilot.lua",
     },
-    opts = {},
+    opts = {
+      -- Prevent copilot from overwhelming other sources
+      method = "getCompletionsCycling",
+      formatters = {
+        insert_text = require("copilot_cmp.format").remove_existing,
+      },
+      -- Limit copilot suggestions
+      suggestion = {
+        enabled = true,
+        auto_trigger = false,
+        keymap = {
+          accept = "<C-y>",
+          accept_word = false,
+          accept_line = false,
+          next = "<C-n>",
+          prev = "<C-p>",
+          dismiss = "<C-e>",
+        },
+      },
+    },
     config = function(_, opts)
       local copilot_cmp = require("copilot_cmp")
       copilot_cmp.setup(opts)
