@@ -8,6 +8,10 @@ set -g fish_autosuggestion_enabled 1
 set -g fish_autosuggestion_highlight_color 555
 set -g history_size 10000
 
+# Disable welcome messages but keep history
+set -g fish_greeting ""
+set -g fish_initialized 1
+
 # --- Gruvbox Color Scheme ---
 # Set Gruvbox colors for Fish
 set -g fish_color_normal normal
