@@ -137,6 +137,29 @@ install_aur_helper() {
     print_success "AUR helper instalado."
 }
 
+install_compiler() {
+    print_section "Instalando compilador C..."
+    
+    print_step "Verificando compilador existente..."
+    if command -v gcc >/dev/null 2>&1; then
+        print_success "gcc ya está instalado: $(gcc --version | head -1)"
+        return
+    elif command -v clang >/dev/null 2>&1; then
+        print_success "clang ya está instalado: $(clang --version | head -1)"
+        return
+    fi
+    
+    print_step "Instalando base-devel (incluye gcc)..."
+    sudo pacman -S base-devel --noconfirm --needed
+    
+    print_step "Verificando instalación..."
+    if command -v gcc >/dev/null 2>&1; then
+        print_success "Compilador C instalado: $(gcc --version | head -1)"
+    else
+        print_error "Falló al instalar compilador C"
+    fi
+}
+
 install_core_packages() {
     print_section "Instalando paquetes core..."
     
@@ -505,14 +528,23 @@ copy_dotfiles() {
                             mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
                         fi
                         
-                        if git clone https://github.com/Maurux01/NVimX.git "$HOME/.config/nvim" 2>/dev/null; then
-                            print_success "NVimX clonado exitosamente"
-                            rm -rf "$HOME/.config/nvim/.git"
+                        print_step "Configurando Neovim con dashboard..."
+                        
+                        # Crear directorios
+                        mkdir -p "$HOME/.config/nvim/lua/plugins"
+                        mkdir -p "$HOME/.config/nvim/lua/config"
+                        
+                        # Copiar archivos de configuración
+                        if [ -d "$item" ]; then
+                            cp -r "$item"/* "$HOME/.config/nvim/"
+                            print_success "Configuración de Neovim copiada"
+                            
+                            # Instalar plugins
                             print_step "Instalando plugins de Neovim..."
                             nvim --headless -c "Lazy! sync" -c "quit" 2>/dev/null || true
                             print_success "Plugins de Neovim instalados"
                         else
-                            print_error "Falló al instalar NVimX"
+                            print_error "Configuración de Neovim no encontrada"
                         fi
                         ;;
                     "sddm")
@@ -1383,6 +1415,7 @@ main() {
     check_dependencies
     update_system
     install_aur_helper
+    install_compiler
     install_core_packages
     install_aur_packages
     install_custom_fonts
