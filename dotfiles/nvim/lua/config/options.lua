@@ -1,85 +1,84 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
+-- lua/config/options.lua
+-- Opciones personalizadas para LazyVim
 
--- NVimX options mejoradas
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.termguicolors = true
-vim.opt.cursorline = true
-vim.opt.mouse = "a"
+-- Configuración básica de Neovim
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- Font configuration for GUI
-if vim.fn.has("gui_running") == 1 then
-    vim.opt.guifont = "JetBrains Mono Nerd Font:h12"
-    -- Alternative fonts (uncomment to use):
-    -- vim.opt.guifont = "FiraCode Nerd Font:h12"
-    -- vim.opt.guifont = "Cascadia Code Nerd Font:h12"
-    -- vim.opt.guifont = "Hack Nerd Font:h12"
-    -- vim.opt.guifont = "Source Code Pro Nerd Font:h12"
-    -- vim.opt.guifont = "Ubuntu Mono Nerd Font:h12"
-end
+-- Opciones básicas
+local opt = vim.opt
 
--- Configuraciones adicionales
-vim.opt.wrap = false
-vim.opt.linebreak = true
-vim.opt.showbreak = "↪ "
-vim.opt.list = true
-vim.opt.listchars = { tab = "▸ ", trail = "·" }
-vim.opt.fillchars = { eob = " " }
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.incsearch = true
-vim.opt.hlsearch = true
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
-vim.opt.clipboard = "unnamedplus"
-vim.opt.undofile = true
-vim.opt.undodir = vim.fn.stdpath("data") .. "/undo"
-vim.opt.backup = false
-vim.opt.writebackup = false
-vim.opt.swapfile = false
-vim.opt.completeopt = "menu,menuone,noselect"
-vim.opt.pumheight = 10
-vim.opt.pumblend = 10
-vim.opt.winblend = 10
-vim.opt.signcolumn = "yes"
-vim.opt.updatetime = 300
-vim.opt.timeoutlen = 300
-vim.opt.ttimeoutlen = 10
-vim.opt.redrawtime = 1500
-vim.opt.lazyredraw = true
-vim.opt.synmaxcol = 240
-vim.opt.formatoptions = "jcroqlnt"
-vim.opt.grepformat = "%f:%l:%c:%m"
-vim.opt.grepprg = "rg --vimgrep"
-vim.opt.joinspaces = false
-vim.opt.showmode = false
-vim.opt.shortmess = "filnxtToOF"
-vim.opt.ruler = false
-vim.opt.laststatus = 3
-vim.opt.cmdheight = 0
-vim.opt.showcmd = false
-vim.opt.wildmenu = true
-vim.opt.wildmode = "longest:full,full"
-vim.opt.wildignore = "*.o,*.obj,*.dylib,*.bin,*.dll,*.exe"
-vim.opt.wildignorecase = true
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-vim.opt.equalalways = false
-vim.opt.diffopt = "filler,iwhite,internal,algorithm:patience"
-vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-vim.opt.viewoptions = "folds,cursor,curdir,slash,unix"
-vim.opt.virtualedit = "block"
-vim.opt.whichwrap = "b,s,h,l,<,>,[,]"
-vim.opt.iskeyword = vim.opt.iskeyword + "-"
-vim.opt.smarttab = true
-vim.opt.breakindent = true
-vim.opt.breakindentopt = "shift:2,min:20"
-vim.opt.showbreak = "NONE"
-vim.opt.inccommand = "nosplit"
-vim.opt.smoothscroll = true
+-- Interfaz
+opt.number = true
+opt.relativenumber = true
+opt.cursorline = true
+opt.cursorlineopt = "line"
+opt.signcolumn = "yes"
+opt.colorcolumn = "80"
+opt.scrolloff = 8
+opt.sidescrolloff = 8
+
+-- Búsqueda
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.incsearch = true
+
+-- Indentación
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
+opt.autoindent = true
+opt.smartindent = true
+
+-- Archivos
+opt.swapfile = false
+opt.backup = false
+opt.undofile = true
+opt.undodir = vim.fn.stdpath("data") .. "/undodir"
+
+-- Terminal
+opt.termguicolors = true
+opt.showmode = false
+
+-- Fuente
+opt.guifont = "JetBrains Mono:h13"
+
+-- Comportamiento
+opt.mouse = "a"
+opt.clipboard = "unnamedplus"
+opt.completeopt = "menu,menuone,noselect"
+opt.hidden = true
+opt.wrap = false
+opt.linebreak = true
+opt.showbreak = "↪ "
+opt.list = true
+opt.listchars = { tab = "▸ ", trail = "·" }
+
+-- Rendimiento
+opt.synmaxcol = 240
+opt.updatetime = 250
+
+-- Configuración específica de archivos
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "text" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+  end,
+})
+
+-- Mejorar la experiencia de edición
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 300 })
+  end,
+})
+
+-- Configuración de colores
+vim.cmd([[
+  hi CursorLine ctermbg=NONE guibg=NONE
+  hi CursorLineNr ctermfg=Yellow guifg=Yellow
+  hi LineNr ctermfg=Gray guifg=Gray
+  hi SignColumn ctermbg=NONE guibg=NONE
+]])

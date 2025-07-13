@@ -409,6 +409,34 @@ install_grub_theme() {
     print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
 }
 
+# Función para instalar NVimX desde GitHub
+install_nvimx() {
+    print_section "Instalando NVimX desde GitHub"
+    
+    print_step "Clonando NVimX desde GitHub..."
+    if [ -d "$HOME/.config/nvim" ]; then
+        print_step "Haciendo backup de la configuración actual de nvim..."
+        mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
+    fi
+    
+    if git clone https://github.com/Maurux01/NVimX.git "$HOME/.config/nvim" 2>/dev/null; then
+        print_success "NVimX clonado exitosamente"
+        
+        # Remover directorio .git para evitar conflictos
+        rm -rf "$HOME/.config/nvim/.git"
+        
+        print_step "Instalando plugins de Neovim..."
+        nvim --headless -c "Lazy! sync" -c "quit" 2>/dev/null || true
+        print_success "Plugins de Neovim instalados"
+        
+        print_success "NVimX instalado exitosamente"
+        print_info "Ahora puedes usar Neovim con tu configuración personalizada"
+    else
+        print_error "Falló al instalar NVimX"
+        print_info "Verifica tu conexión a internet e intenta de nuevo"
+    fi
+}
+
 # Function to install custom fonts
 install_custom_fonts() {
     print_section "Installing custom fonts..."
@@ -522,13 +550,29 @@ copy_dotfiles() {
                 # Special handling for different types of configs
                 case "$dirname" in
                     "nvim")
-                        # Copy nvim config with backup handling
+                        # Clone NVimX from GitHub repository
+                        print_step "Cloning NVimX from GitHub..."
                         if [ -d "$HOME/.config/nvim" ]; then
                             print_step "Backing up existing nvim config..."
                             mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
                         fi
-                        cp -r "$item" "$HOME/.config/nvim"
-                        print_success "Neovim config copied"
+                        
+                        # Clone the repository
+                        if git clone https://github.com/Maurux01/NVimX.git "$HOME/.config/nvim" 2>/dev/null; then
+                            print_success "NVimX cloned successfully"
+                            
+                            # Remove .git directory to avoid conflicts
+                            rm -rf "$HOME/.config/nvim/.git"
+                            
+                            # Install plugins
+                            print_step "Installing Neovim plugins..."
+                            nvim --headless -c "Lazy! sync" -c "quit" 2>/dev/null || true
+                            print_success "Neovim plugins installed"
+                        else
+                            print_error "Failed to clone NVimX, using local config as fallback"
+                            cp -r "$item" "$HOME/.config/nvim"
+                            print_success "Local Neovim config copied as fallback"
+                        fi
                         ;;
                     "sddm")
                         # Copy SDDM config to system location
