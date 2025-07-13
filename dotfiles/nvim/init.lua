@@ -2,3 +2,4 @@
 require("config.lazy")
 require("config.theme-toggle")
 require("config.capture-utils")
+require("config.telescope")

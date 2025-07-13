@@ -66,10 +66,10 @@ keymap("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>", { desc = "Go to buff
 keymap("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>", { desc = "Go to buffer 9" })
 
 -- Tab navigation
-keymap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "New tab" })
-keymap("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "Close tab" })
-keymap("n", "<leader>tl", "<cmd>tabnext<cr>", { desc = "Next tab" })
-keymap("n", "<leader>th", "<cmd>tabprevious<cr>", { desc = "Previous tab" })
+keymap("n", "<leader>tabn", "<cmd>tabnew<cr>", { desc = "New tab" })
+keymap("n", "<leader>tabc", "<cmd>tabclose<cr>", { desc = "Close tab" })
+keymap("n", "<leader>tabl", "<cmd>tabnext<cr>", { desc = "Next tab" })
+keymap("n", "<leader>tabh", "<cmd>tabprevious<cr>", { desc = "Previous tab" })
 
 -- Telescope (File navigation)
 keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
@@ -78,7 +78,6 @@ keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
 keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old files" })
 keymap("n", "<leader>fc", "<cmd>Telescope colorscheme<cr>", { desc = "Colorscheme" })
-keymap("n", "<leader>fe", "<cmd>Telescope file_browser<cr>", { desc = "File browser" })
 keymap("n", "<leader>fr", "<cmd>Telescope resume<cr>", { desc = "Resume last search" })
 
 -- LSP
@@ -122,14 +121,14 @@ keymap("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
 keymap("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
 keymap("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
 
--- File explorer (LazyVim native)
-keymap("n", "<leader>e", "<cmd>Telescope find_files<cr>", { desc = "Find files (LazyVim)" })
+-- File explorer (NvimTree)
+keymap("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer (NvimTree)" })
+keymap("n", "<leader>ef", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })
+keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<cr>", { desc = "Collapse file explorer" })
+keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh file explorer" })
 
 -- Lazy
 keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" })
-
--- File browser (Telescope) - Smart Open
-keymap("n", "<leader>fe", "<cmd>Telescope file_browser<cr>", { desc = "Telescope File Browser" })
 
 -- Surround
 keymap("n", "ys", "<cmd>lua require('mini.surround').add()<cr>", { desc = "Add surround" })
@@ -189,17 +188,7 @@ keymap("n", "<leader>gct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Choose 
 keymap("n", "<leader>gcb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Choose Both" })
 keymap("n", "<leader>gcn", "<cmd>GitConflictChooseNone<cr>", { desc = "Choose None" })
 keymap("n", "<leader>gcp", "<cmd>GitConflictPrevConflict<cr>", { desc = "Previous Conflict" })
-keymap("n", "<leader>gcn", "<cmd>GitConflictNextConflict<cr>", { desc = "Next Conflict" })
-
--- LazyDocker
-keymap("n", "<leader>dd", "<cmd>LazyDocker<cr>", { desc = "LazyDocker" })
-keymap("n", "<leader>dc", "<cmd>LazyDockerConfig<cr>", { desc = "LazyDocker Config" })
-
--- Docker Telescope
-keymap("n", "<leader>fd", "<cmd>Telescope docker containers<cr>", { desc = "Docker containers" })
-keymap("n", "<leader>fi", "<cmd>Telescope docker images<cr>", { desc = "Docker images" })
-keymap("n", "<leader>fv", "<cmd>Telescope docker volumes<cr>", { desc = "Docker volumes" })
-keymap("n", "<leader>fn", "<cmd>Telescope docker networks<cr>", { desc = "Docker networks" })
+keymap("n", "<leader>gcnx", "<cmd>GitConflictNextConflict<cr>", { desc = "Next Conflict" })
 
 -- Quick save and quit
 keymap("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
@@ -234,7 +223,7 @@ keymap("n", "<leader>sh", "<cmd>split<cr>", { desc = "Horizontal split" })
 keymap("n", "<leader>se", "<cmd>wincmd =<cr>", { desc = "Equalize windows" })
 
 -- Quick navigation
-keymap("n", "<leader>gg", "<cmd>e#<cr>", { desc = "Go to previous file" })
+keymap("n", "<leader>gp", "<cmd>e#<cr>", { desc = "Go to previous file" })
 keymap("n", "<leader>gl", "<cmd>lua vim.diagnostic.open_float()<cr>", { desc = "Show line diagnostics" })
 keymap("n", "<leader>gj", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Next diagnostic" })
 keymap("n", "<leader>gk", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Previous diagnostic" })

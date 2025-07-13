@@ -365,6 +365,25 @@ run '~/.tmux/plugins/tpm/tpm'
 - `twork` - Work tmux session (Fish shell)
 - `./utils.sh tmux start [session]` - Start tmux session via utils
 
+### Neovim Editor
+- `<leader>e` - Toggle file explorer (NvimTree)
+- `<leader>ef` - Focus file explorer
+- `<leader>ec` - Collapse file explorer
+- `<leader>er` - Refresh file explorer
+- `CTRL + h` - Previous buffer
+- `CTRL + l` - Next buffer
+- `<leader>bd` - Close buffer
+- `<leader>bp` - Pick buffer
+- `<leader>1-9` - Go to buffer 1-9
+- `<leader>ff` - Find files (Telescope)
+- `<leader>fg` - Live grep (Telescope)
+- `<leader>fb` - Find buffers (Telescope)
+- `<leader>fo` - Recent files (Telescope)
+- `<leader>tabn` - New tab
+- `<leader>tabc` - Close tab
+- `<leader>tabl` - Next tab
+- `<leader>tabh` - Previous tab
+
 ## 🎨 Themes and Customization
 
 ### Included themes:

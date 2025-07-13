@@ -1,16 +1,24 @@
 #!/bin/bash
 
-# Script para arreglar la configuración de Neovim
-# Elimina configuraciones problemáticas y reinstala correctamente
+# =============================================================================
+# FIX NVIM PLUGINS - Remove problematic plugins
+# =============================================================================
 
 set -e
 
-# Colores para output
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m'
+
+print_header() {
+    echo -e "${BLUE}================================${NC}"
+    echo -e "${BLUE}Fix Neovim Plugins${NC}"
+    echo -e "${BLUE}================================${NC}"
+}
 
 print_step() {
     echo -e "${YELLOW}→ $1${NC}"
@@ -24,66 +32,29 @@ print_error() {
     echo -e "${RED}✗ $1${NC}"
 }
 
-print_header() {
-    echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}                    Arreglando Neovim                          ${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
-    echo ""
-}
+print_header
 
-# Función principal
-main() {
-    print_header
-    
-    print_step "Backup de configuración actual..."
-    if [ -d "$HOME/.config/nvim" ]; then
-        mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
-        print_success "Backup creado"
-    fi
-    
-    print_step "Limpiando cache de Neovim..."
-    rm -rf "$HOME/.local/share/nvim"
-    rm -rf "$HOME/.local/state/nvim"
-    rm -rf "$HOME/.cache/nvim"
-    print_success "Cache limpiado"
-    
-    print_step "Copiando nueva configuración..."
-    cp -r dotfiles/nvim "$HOME/.config/"
-    print_success "Configuración copiada"
-    
-    print_step "Haciendo scripts ejecutables..."
-    find "$HOME/.config/nvim" -name "*.lua" -type f -exec chmod 644 {} \;
-    print_success "Permisos actualizados"
-    
-    print_step "Instalando dependencias de Neovim..."
-    # Instalar dependencias necesarias
-    sudo pacman -S --noconfirm --needed \
-        ripgrep \
-        fd \
-        tree-sitter \
-        nodejs \
-        npm
-    
-    print_success "Dependencias instaladas"
-    
-    echo ""
-    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
-    echo -e "${GREEN}                    ¡Neovim arreglado!                          ${NC}"
-    echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
-    echo ""
-    echo "Próximos pasos:"
-    echo "1. Abre Neovim: nvim"
-    echo "2. Espera a que se instalen los plugins automáticamente"
-    echo "3. Si hay errores, ejecuta :Lazy sync"
-    echo "4. Para verificar la instalación: :checkhealth"
-    echo ""
-    echo "Comandos útiles:"
-    echo "• :Lazy sync - Sincronizar plugins"
-    echo "• :Lazy clean - Limpiar plugins no usados"
-    echo "• :checkhealth - Verificar salud del sistema"
-    echo "• :Mason - Instalar LSP servers"
-    echo ""
-}
+print_step "Removing problematic plugins..."
+rm -rf ~/.local/share/nvim/lazy/lazydocker.nvim
+rm -rf ~/.local/share/nvim/lazy/telescope-command-palette.nvim
+rm -rf ~/.local/share/nvim/lazy/telescope-docker.nvim
+print_success "Problematic plugins removed"
 
-# Ejecutar función principal
-main "$@" 
+print_step "Cleaning Neovim cache..."
+rm -rf ~/.cache/nvim
+print_success "Cache cleaned"
+
+print_step "Starting Neovim to reinstall plugins..."
+echo "Starting Neovim... Please wait for plugins to install."
+echo "You can close Neovim once plugins are installed (Ctrl+C to cancel)"
+read -p "Press Enter to continue..."
+
+nvim --headless -c "Lazy! sync" -c "quit"
+
+print_success "Neovim plugins fixed!"
+echo ""
+echo "You can now use Neovim normally. The problematic plugins have been removed."
+echo "If you need Docker functionality, consider using:"
+echo "  - LazyGit for Git operations"
+echo "  - Terminal commands for Docker"
+echo "  - Telescope for file navigation" 
