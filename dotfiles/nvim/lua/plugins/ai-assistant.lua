@@ -1,3 +1,4 @@
+-- AI Assistant Plugins - Configuración limpia y optimizada
 return {
   -- Codeium (Free AI code completion)
   {
@@ -6,102 +7,36 @@ return {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
     },
+    event = "InsertEnter",
     config = function()
       require("codeium").setup({
         tools = {
-          -- Disable codeium language server
           codeium_lsp = {
             enabled = false,
           },
         },
         language_server = {
-          -- Disable codeium language server
           enabled = false,
         },
       })
+      
+      -- Keybinds para Codeium
+      vim.keymap.set("i", "<Tab>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true, silent = true, desc = "Codeium: Accept suggestion" })
+      
+      vim.keymap.set("i", "<S-Tab>", function()
+        return vim.fn["codeium#Next"]()
+      end, { expr = true, silent = true, desc = "Codeium: Next suggestion" })
+      
+      vim.keymap.set("i", "<C-]>", function()
+        return vim.fn["codeium#Dismiss"]()
+      end, { expr = true, silent = true, desc = "Codeium: Dismiss suggestion" })
+      
+      -- Comandos adicionales
+      vim.keymap.set("n", "<leader>ai", "<cmd>Codeium<cr>", { desc = "Codeium: Toggle" })
+      vim.keymap.set("n", "<leader>as", "<cmd>Codeium<cr>", { desc = "Codeium: Status" })
     end,
-  },
-
-  -- Tabnine (Alternative AI completion - Open Source)
-  {
-    "codota/tabnine-nvim",
-    build = "./dl_binaries.sh",
-    config = function()
-      require("tabnine").setup({
-        disable_auto_comment = true,
-        accept_keymap = "<Tab>",
-        dismiss_keymap = "<C-]>",
-        debounce_ms = 800,
-        suggestion_color = { gui = "#808080", cterm = 244 },
-        exclude_filetypes = { "TelescopePrompt", "NvimTree" },
-        log_file_path = nil,
-      })
-    end,
-  },
-
-  -- AI-powered code actions
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "lua",
-        "javascript",
-        "typescript",
-        "html",
-        "css",
-        "json",
-        "yaml",
-        "markdown",
-        "python",
-        "bash",
-        "rust",
-        "go",
-        "c",
-        "cpp",
-        "java",
-        "php",
-        "ruby",
-        "sql",
-        "xml",
-        "toml",
-        "dockerfile",
-        "gitignore",
-        "vim",
-        "vimdoc",
-      },
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      indent = { enable = true },
-      autotag = { enable = true },
-      context_commentstring = { enable = true },
-    },
-  },
-
-  -- Auto pairs with AI suggestions
-  {
-    "windwp/nvim-autopairs",
-    opts = {
-      check_ts = true,
-      ts_config = {
-        lua = { "string", "source" },
-        javascript = { "string", "template_string" },
-        java = false,
-      },
-      disable_filetype = { "TelescopePrompt", "spectre_panel" },
-      fast_wrap = {
-        map = "<M-e>",
-        chars = { "{", "[", "(", '"', "'" },
-        pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
-        offset = 0,
-        end_key = "$",
-        keys = "qwertyuiopzxcvbnmasdfghjkl",
-        check_comma = true,
-        highlight = "PmenuSel",
-        highlight_grey = "LineNr",
-      },
-    },
   },
 
   -- AI-powered refactoring
@@ -156,18 +91,6 @@ return {
     },
   },
 
-  -- AI-powered code generation
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-      config = function()
-        require("telescope").load_extension("fzf")
-      end,
-    },
-  },
-
   -- AI-powered code analysis
   {
     "folke/trouble.nvim",
@@ -198,125 +121,146 @@ return {
     },
   },
 
-  -- Open Source AI Chat (Alternative to CopilotChat)
+  -- ChatGPT integration (Open Source)
   {
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup({
-        api_key_cmd = "echo $OPENAI_API_KEY",
-        openai_params = {
-          model = "gpt-3.5-turbo",
-          frequency_penalty = 0,
-          presence_penalty = 0,
-          max_tokens = 300,
-          temperature = 0,
-          top_p = 1,
-          n = 1,
-        },
-        openai_edit_params = {
-          model = "code-davinci-edit-001",
-          temperature = 0,
-          top_p = 1,
-          n = 1,
-        },
-        max_history = 0,
-        show_help = "yes",
-        chat_input = {
-          prompt = "> ",
-        },
-        chat_win_options = {
-          winblend = 0,
-          winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-        },
-        popup_win_options = {
-          winblend = 0,
-          winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-        },
-        show_break_lines = false,
-        popup_layout = {
-          default = "center",
-          center = {
-            width = 80,
-            height = 80,
-          },
-          right = {
-            width = 30,
-            width_settings_open = 50,
-          },
-        },
-        popup_type = {
-          help = "float",
-          chat = "float",
-        },
-        debug = false,
-        disable_signs = false,
-        log = {
-          enabled = false,
-          file = nil,
-        },
-        use_popup = true,
-        highlights = {
-          input = "Normal:Normal",
-          unknown = "ErrorMsg",
-          flags = "Special",
-        },
-        prompts = {
-          Explain = "Explain how the selected code works.",
-          Review = "Review the selected code and provide suggestions for improvement.",
-          Tests = "Generate unit tests for the selected code.",
-          Fix = "Fix the selected code and explain the changes.",
-          Optimize = "Optimize the selected code and explain the improvements.",
-          Docs = "Generate documentation for the selected code.",
-        },
-        chat = {
-          sessions_window = {
-            border = "single",
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-            winblend = 0,
-          },
-          type = "popup",
-          relative = "editor",
-          position = {
-            row = 0,
-            col = 0,
-          },
-          size = {
-            width = 80,
-            height = 80,
-          },
-          session = {
-            auto_save = true,
-            auto_save_path = vim.fn.stdpath("data") .. "/chatgpt_sessions",
-          },
-        },
-        popup = {
-          enter = "<CR>",
-          close = "<C-c>",
-        },
-        keymaps = {
-          close = { "<C-c>" },
-          yank_last = "<g-y>",
-          yank_last_code = "<g-c>",
-          scroll_up = "<C-u>",
-          scroll_down = "<C-d>",
-          toggle_settings = "<C-o>",
-          new_session = "<C-n>",
-          cycle_windows = "<Tab>",
-          select_session = "<Space>",
-          rename_session = "r",
-          delete_session = "d",
-          draft_message = "<C-d>",
-          toggle_settings = "<C-o>",
-          toggle_message_role = "<C-r>",
-          toggle_system_role_open = "<C-s>",
-        },
-      })
-    end,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
     },
+    config = function()
+      require("chatgpt").setup({
+        api_key_cmd = "echo $OPENAI_API_KEY",
+        yank_register = "+",
+        edit_with_instructions = {
+          keymaps = {
+            close = "<C-c>",
+            accept = "<C-y>",
+            toggle_diff = "<C-d>",
+            toggle_settings = "<C-o>",
+            cycle_windows = "<Tab>",
+            use_output_as_input = "<C-i>",
+          },
+        },
+        chat = {
+          keymaps = {
+            close = { "<C-c>" },
+            yank_last = "<C-y>",
+            yank_last_code = "<C-k>",
+            scroll_up = "<C-u>",
+            scroll_down = "<C-d>",
+            toggle_settings = "<C-o>",
+            new_session = "<C-n>",
+            cycle_windows = "<Tab>",
+            select_session = "<C-s>",
+            rename_session = "r",
+            delete_session = "d",
+          },
+        },
+        popup_layout = {
+          default = "center",
+          center = {
+            width = "80%",
+            height = "80%",
+          },
+          right = {
+            width = "30%",
+            width_settings_open = "50%",
+          },
+        },
+        popup_window = {
+          filetype = "chatgpt",
+          border = {
+            highlight = "FloatBorder",
+            style = "rounded",
+            text = {
+              top = " ChatGPT ",
+              top_align = "center",
+            },
+          },
+          win_options = {
+            background = "Normal",
+            winblend = 10,
+          },
+          buf_options = {
+            filetype = "chatgpt",
+          },
+        },
+        popup_input = {
+          prompt = " ChatGPT ",
+          border = {
+            highlight = "FloatBorder",
+            style = "rounded",
+            text = {
+              top_align = "center",
+            },
+          },
+          win_options = {
+            background = "Normal",
+            winblend = 10,
+          },
+          submit = "<C-Enter>",
+          submit_n = "<Enter>",
+          max_visible_lines = 20,
+        },
+        show_help = "yes",
+        show_error = "yes",
+        no_selection = false,
+        model = "gpt-3.5-turbo",
+        temperature = 0.2,
+        openai_params = {
+          model = "gpt-3.5-turbo",
+          frequency_penalty = 0,
+          presence_penalty = 0,
+          max_tokens = 300,
+          temperature = 0.2,
+        },
+        max_tokens = 300,
+        fade_in_animation = {
+          enabled = true,
+          duration = 300,
+        },
+        context_provider = {
+          enabled = false,
+          mode = "buffer",
+          providers = {
+            ["gpt-3.5-turbo"] = "https://github.com/jackMort/ChatGPT.nvim/blob/main/scripts/context.lua",
+            ["gpt-4"] = "https://github.com/jackMort/ChatGPT.nvim/blob/main/scripts/context.lua",
+          },
+        },
+        system_window = {
+          border = {
+            style = "rounded",
+            text = {
+              top = " SYSTEM ",
+            },
+          },
+        },
+        popup_menu = {
+          enabled = true,
+          keymaps = {
+            focus = "<C-k>",
+            close = "<esc>",
+          },
+        },
+        integrations = {
+          telescope = {
+            enabled = true,
+            config = {},
+          },
+          which_key = {
+            enabled = true,
+            register = {
+              add_actions = true,
+              add_commands = true,
+              add_alias = true,
+            },
+          },
+        },
+        callbacks = {},
+      })
+    end,
   },
 } 

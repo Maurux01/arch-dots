@@ -18,6 +18,8 @@ return {
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
       "onsails/lspkind.nvim",
+      "Exafunction/codeium.nvim",
+      "zbirenbaum/copilot.lua",
     },
     opts = function()
       local cmp = require("cmp")
@@ -67,7 +69,9 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", priority = 1000 },
+          { name = "copilot", priority = 1000 },
+          { name = "codeium", priority = 900 },
+          { name = "nvim_lsp", priority = 800 },
           { name = "luasnip", priority = 750 },
           { name = "buffer", priority = 500 },
           { name = "path", priority = 250 },
@@ -81,6 +85,8 @@ return {
             ellipsis_char = "...",
             before = function(entry, vim_item)
               vim_item.menu = ({
+                copilot = "[Copilot]",
+                codeium = "[Codeium]",
                 nvim_lsp = "[LSP]",
                 luasnip = "[Snippet]",
                 buffer = "[Buffer]",
@@ -171,6 +177,19 @@ return {
     "rafamadriz/friendly-snippets",
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+
+  -- Copilot integration with CMP
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = {
+      "zbirenbaum/copilot.lua",
+    },
+    opts = {},
+    config = function(_, opts)
+      local copilot_cmp = require("copilot_cmp")
+      copilot_cmp.setup(opts)
     end,
   },
 } 
