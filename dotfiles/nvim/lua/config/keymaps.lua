@@ -110,6 +110,11 @@ keymap("n", "<leader>u2", "<cmd>lua require('config.theme-toggle').set('catppucc
 keymap("n", "<leader>u3", "<cmd>lua require('config.theme-toggle').set('gruvbox')<cr>", { desc = "Gruvbox" })
 keymap("n", "<leader>u4", "<cmd>lua require('config.theme-toggle').set('dracula')<cr>", { desc = "Dracula" })
 keymap("n", "<leader>u5", "<cmd>lua require('config.theme-toggle').set('habamax')<cr>", { desc = "Habamax" })
+keymap("n", "<leader>u6", "<cmd>lua require('config.theme-toggle').set('github_dark')<cr>", { desc = "GitHub Dark" })
+keymap("n", "<leader>u7", "<cmd>lua require('config.theme-toggle').set('github_light')<cr>", { desc = "GitHub Light" })
+keymap("n", "<leader>u8", "<cmd>lua require('config.theme-toggle').set('github_dimmed')<cr>", { desc = "GitHub Dimmed" })
+keymap("n", "<leader>u9", "<cmd>lua require('config.theme-toggle').set('github_dark_default')<cr>", { desc = "GitHub Dark Default" })
+keymap("n", "<leader>u0", "<cmd>lua require('config.theme-toggle').set('github_dark_high_contrast')<cr>", { desc = "GitHub Dark High Contrast" })
 
 -- Terminal
 keymap("n", "<leader>t", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
