@@ -152,6 +152,22 @@ return {
     end,
   },
 
+  -- Treesitter y Playground
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    dependencies = {
+      "nvim-treesitter/playground"
+    },
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        highlight = { enable = true },
+        indent = { enable = true },
+        playground = { enable = true },
+      }
+    end,
+  },
+
   -- the opts function can also be used to change the default opts:
   {
     "nvim-lualine/lualine.nvim",
