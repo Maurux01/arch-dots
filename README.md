@@ -19,7 +19,9 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
 - **Enhanced notifications** - Notification system with animations and colors
 - **Proper installation** - Everything installed in standard system locations
 
-## Installation
+## 📦 Installation
+
+### Quick Install
 
 1. **Clone the repository:**
    ```sh
@@ -27,66 +29,85 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
    cd archriced
    ```
 
-2. **Give execution permissions to the installer (if needed):**
+2. **Give execution permissions to the installer:**
    ```sh
    chmod +x install.sh
    ```
 
-3. **Run the installer:**
+3. **Run the unified installer:**
    ```sh
    ./install.sh
    ```
 
-The installation script:
+The unified installation script includes:
 - ✅ Updates the system
-- ✅ Installs all dependencies
+- ✅ Installs all dependencies (core + AUR)
 - ✅ Configures Hyprland and components
 - ✅ Installs system utilities
 - ✅ Configures development tools
 - ✅ Installs fonts and themes
 - ✅ Configures Hyperlock
 - ✅ Configures enhanced notifications
+- ✅ Installs multimedia tools (LMMS, Pixelorama, Upscayl)
+- ✅ Installs image support (Neovim + Kitty)
 - ✅ Copies all dotfiles to correct system locations
 - ✅ Verifies complete installation
 - ✅ Configures the system
 
-### Multimedia Tools Installation
+## 🗑️ Uninstallation
 
-For users who only want the multimedia tools (LMMS, Pixelorama, Upscayl):
-
-```bash
-# Install only multimedia tools
-./install-multimedia.sh
-```
-
-### Image and SVG Support Installation
-
-For users who only want image and SVG support in Neovim and Kitty:
+### Complete Uninstallation
 
 ```bash
-# Install only image support
-./install-image-support.sh
-```
-
-This script installs:
-- **LMMS** - Professional music production software
-- **Pixelorama** - Advanced pixel art editor
-- **Upscayl** - AI-powered image upscaler
-- **Image support** - View images and SVG in Neovim and Kitty
-
-### Complete uninstallation
-
-```bash
-# Uninstall everything
+# Uninstall everything with backup
 ./uninstall.sh
 ```
 
-The uninstallation script:
-- ✅ Creates a complete backup
-- ✅ Uninstalls all packages
-- ✅ Removes configurations
-- ✅ Restores default configurations
-- ✅ Cleans the system
+The unified uninstallation script:
+- ✅ Creates a complete backup of your current setup
+- ✅ Uninstalls all packages (core + AUR)
+- ✅ Removes all configurations
+- ✅ Restores default system configurations
+- ✅ Cleans the system completely
+- ✅ Provides backup location for restoration
+
+## 🔧 Maintenance & Repair
+
+### System Repair
+
+```bash
+# Full system repair and maintenance
+./repair.sh
+
+# Only diagnose problems
+./repair.sh --diagnose
+
+# Only repair found issues
+./repair.sh --repair
+
+# Only clean system
+./repair.sh --clean
+
+# Only update system and dotfiles
+./repair.sh --update
+
+# Show system information
+./repair.sh --info
+
+# Show help
+./repair.sh --help
+```
+
+The unified repair script includes:
+- ✅ **Diagnosis** - Detects missing packages, configs, and permissions
+- ✅ **Package Repair** - Fixes broken packages and AUR
+- ✅ **Config Repair** - Restores missing configurations
+- ✅ **Font Repair** - Reinstalls custom fonts
+- ✅ **Permission Repair** - Fixes file permissions
+- ✅ **System Cleaning** - Cleans cache and temporary files
+- ✅ **Neovim Cleaning** - Cleans and reinstalls Neovim plugins
+- ✅ **System Updates** - Updates system and dotfiles
+- ✅ **Verification** - Verifies all repairs were successful
 
 ## 🎨 Dynamic Login Features
 
@@ -198,452 +219,257 @@ SUPER + SHIFT + V
 SUPER + CTRL + V
 
 # Screenshot to clipboard
-SUPER + SHIFT + S
 ```
 
-**Included tools:**
-- **CopyQ** - Advanced clipboard manager with GUI
-- **cliphist** - Terminal clipboard history
-- **wl-clipboard** - Clipboard tools for Wayland
+## 🎮 Gaming Features
 
-## 📁 Installation Locations
+### Gaming Tools
 
-### System Directory Structure
-
-All components are installed in standard system locations:
-
-```
-~/.config/
-├── hypr/           # Hyprland configuration
-├── nvim/           # Neovim configuration
-├── fish/           # Fish shell configuration
-├── kitty/          # Kitty terminal configuration
-├── waybar/         # Waybar configuration
-├── eww/            # EWW widgets configuration
-├── wofi/           # Wofi launcher configuration
-├── mako/           # Notifications configuration
-├── swww/           # Wallpapers configuration
-├── tmux/           # TMUX configuration
-├── neofetch/       # Neofetch configuration
-├── fastfetch/      # Fastfetch configuration
-└── scripts/        # Utility scripts
-
-~/.local/
-├── bin/            # Executable scripts
-└── share/
-    └── wallpapers/ # System wallpapers
-
-~/.cache/
-└── nvim/           # Neovim cache
-```
-
-### Installation Verification
-
-The script includes automatic verification that checks:
-- ✅ All configurations in correct locations
-- ✅ Executable scripts with correct permissions
-- ✅ System directories created correctly
-- ✅ Main components working
-
-## 🐚 Shell Configuration
-
-### Fish Shell (No ZSH)
-
-This configuration uses **Fish shell** instead of zsh for the following reasons:
-
-- **Better Wayland integration** - Fish works better with Wayland applications
-- **Intelligent autocompletion** - Suggestions based on history
-- **Cleaner syntax** - Less complexity than zsh
-- **Included configuration** - Already configured with themes and plugins
-- **htop included** - Advanced process monitor
-
-### Fish Shell Features:
-
-```bash
-# Fish is already configured as default shell
-# You don't need to install zsh or oh-my-zsh
-
-# Useful Fish commands:
-fish_config web    # Configure Fish via web
-fish_update_completions  # Update completions
-```
-
-### htop - Process Monitor
-
-htop is included in the installation for advanced process monitoring:
-
-```bash
-# Open htop
-htop
-
-# Alternative with btop (more modern)
-btop
-```
-
-## 🎮 Gaming
-
-- **Steam** - Gaming platform
-- **Lutris** - Game manager
-- **Wine** - Windows compatibility
-- **GameMode** - Automatic optimization
+- **Steam** - Game distribution platform
+- **Lutris** - Game manager and launcher
+- **Wine** - Windows compatibility layer
+- **GameMode** - Performance optimization
 - **MangoHud** - Performance overlay
-- **Heroic Games Launcher** - Epic Games Store
+- **Heroic Games Launcher** - Epic Games launcher
 
-## 💻 Development
+### Gaming Configuration
 
-Included development tools:
+```bash
+# Enable GameMode for a game
+gamemoderun ./game
 
-- **Node.js & npm** - JavaScript runtime
-- **Python & pip** - Python interpreter
-- **Rust** - Rust programming language
-- **Go** - Go programming language
-- **Java JDK** - Java development kit
-- **GCC & CMake** - Compilers and build tools
-- **Git** - Version control
-- **LazyGit** - TUI for Git
-- **Neovim** - Editor configured with LSP
+# Check GameMode status
+gamemoded -t
 
-## 🖥️ Tmux Configuration
-
-Esta configuración de tmux está completamente gestionada por plugins usando TPM (Tmux Plugin Manager). No se utilizan scripts externos: todas las funcionalidades (batería, CPU, tema, yank, etc.) se implementan mediante plugins.
-
-### Plugins incluidos (por defecto):
-- `catppuccin/tmux` — Tema moderno Catppuccin
-- `tmux-plugins/tpm` — Gestor de plugins
-- `tmux-plugins/tmux-sensible` — Configuración sensata por defecto
-- `tmux-plugins/tmux-battery` — Indicador de batería
-- `tmux-plugins/tmux-cpu` — Monitor de CPU
-- `tmux-plugins/tmux-resurrect` — Guardado y restauración de sesiones
-- `tmux-plugins/tmux-continuum` — Guardado automático de sesiones
-- `tmux-plugins/tmux-yank` — Copiado fácil
-- `tmux-plugins/tmux-open` — Abrir URLs
-- `tmux-plugins/tmux-copycat` — Búsqueda avanzada
-- `tmux-plugins/tmux-urlview` — Vista de URLs
-- `tmux-plugins/tmux-sessionist` — Gestión de sesiones
-- `tmux-plugins/tmux-fpp` — Procesamiento de paths
-- `tmux-plugins/tmux-fingers` — Detección de archivos/URLs
-- `tmux-plugins/tmux-logging` — Logging de sesiones
-
-### Instalación y uso de plugins:
-1. Inicia tmux: `tmux`
-2. Presiona `Ctrl+Space` (o tu prefix) y luego `I` (mayúscula) para instalar los plugins.
-3. Para actualizar plugins: `prefix + U`
-4. Para eliminar un plugin, bórralo de la lista en `.tmux.conf` y ejecuta `prefix + alt+u`.
-
-### Ejemplo de configuración mínima en `.tmux.conf`:
-
-```tmux
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'catppuccin/tmux#v2.1.3'
-set -g @plugin 'tmux-plugins/tmux-battery'
-set -g @plugin 'tmux-plugins/tmux-cpu'
-# ...otros plugins
-
-# Inicializar TPM (debe ir al final)
-run '~/.tmux/plugins/tpm/tpm'
+# Configure MangoHud
+nano ~/.config/MangoHud/MangoHud.conf
 ```
-
-### Personalización:
-- El tema Catppuccin se configura automáticamente.
-- Puedes agregar más plugins editando la lista en `.tmux.conf`.
-- No es necesario ningún script externo: todo es gestionado por los plugins.
-
----
 
 ## 🎵 Multimedia Tools
 
-### LMMS (Linux MultiMedia Studio)
-Professional music production software with a user-friendly interface:
+### Included Tools
+
+- **LMMS** - Professional music production software
+- **Pixelorama** - Advanced pixel art editor
+- **Upscayl** - AI-powered image upscaler
+- **OBS Studio** - Video recording and streaming
+- **Krita** - Digital painting and illustration
+- **GIMP** - Image manipulation
+- **Inkscape** - Vector graphics editor
+
+### Multimedia Commands
 
 ```bash
-# Launch LMMS
+# Start LMMS
 lmms
 
-# Create new project
-Ctrl + N
-
-# Save project
-Ctrl + S
-
-# Export audio
-Ctrl + E
-```
-
-**Features:**
-- **Synthesizers** - Built-in synthesizers and effects
-- **VST Support** - Compatible with VST plugins
-- **MIDI Support** - Full MIDI keyboard support
-- **Audio Recording** - Record from microphone or line-in
-- **Project Templates** - Pre-configured templates
-- **Export Options** - Multiple audio formats (WAV, MP3, OGG, FLAC)
-
-**File locations:**
-- Projects: `~/.lmms/`
-- Plugins: `~/.lmms/plugins/`
-- Samples: `~/.lmms/samples/`
-
-### Pixelorama
-Advanced pixel art editor with animation support:
-
-```bash
-# Launch Pixelorama
+# Start Pixelorama
 pixelorama
 
-# New project
-Ctrl + N
-
-# Save project
-Ctrl + S
-
-# Export animation
-Ctrl + Shift + E
-```
-
-**Features:**
-- **Pixel-perfect drawing** - Precise pixel art tools
-- **Animation support** - Create animated sprites
-- **Layer system** - Multiple layers for complex artwork
-- **Palette management** - Custom color palettes
-- **Export options** - PNG, GIF, APNG formats
-- **Tilemap support** - Create game tiles and sprites
-
-**File locations:**
-- Projects: `~/.local/share/Pixelorama/`
-- Config: `~/.config/Pixelorama/`
-
-### Upscayl
-AI-powered image upscaler with multiple models:
-
-```bash
-# Launch Upscayl
+# Start Upscayl
 upscayl
 
-# Drag and drop images to upscale
-# Select AI model (Real-ESRGAN, Real-CUGAN, etc.)
-# Choose output format and quality
+# Start OBS Studio
+obs
 ```
 
-**Features:**
-- **Multiple AI Models** - Real-ESRGAN, Real-CUGAN, Waifu2x
-- **Batch Processing** - Upscale multiple images at once
-- **Quality Options** - Different upscaling factors (2x, 4x, 8x)
-- **Format Support** - PNG, JPG, WEBP output
-- **GPU Acceleration** - Uses GPU for faster processing
-- **Preview Mode** - See results before saving
+## 🖼️ Image & SVG Support
 
-**File locations:**
-- Config: `~/.config/upscayl/`
-- Models: `~/.local/share/upscayl/models/`
+### Neovim Image Support
 
-### Installation Options
+- **Image display** - View images directly in Neovim
+- **SVG support** - View SVG files with syntax highlighting
+- **Markdown preview** - Images in markdown files
+- **Image paste** - Paste images from clipboard
 
-**Full installation (recommended):**
+### Kitty Image Support
+
+- **Image protocols** - Display images in terminal
+- **Image caching** - Fast image loading
+- **SVG rendering** - Vector graphics support
+
+### Image Commands
+
 ```bash
-./install.sh
+# View image in Neovim
+nvim image.png
+
+# View SVG in Neovim
+nvim file.svg
+
+# View image in Kitty
+kitty +kitten icat image.png
+
+# Paste image in Neovim
+SUPER + SHIFT + P
 ```
 
-**Multimedia tools only:**
+## 🖥️ Screenshot Tools
+
+### Included Tools
+
+- **Flameshot** - Advanced screenshot tool
+- **Grim** - Wayland screenshot utility
+- **Slurp** - Wayland region selector
+- **Spectacle** - KDE screenshot tool
+- **Maim** - X11 screenshot tool
+- **Xclip** - Clipboard utility
+
+### Screenshot Commands
+
 ```bash
-./install-multimedia.sh
+# Take screenshot with Flameshot
+flameshot gui
+
+# Take screenshot with Grim
+grim screenshot.png
+
+# Select region and screenshot
+grim -g "$(slurp)" screenshot.png
+
+# Screenshot to clipboard
+maim -s | xclip -selection clipboard -t image/png
 ```
 
-**Manual installation:**
+## 🔧 Development Tools
+
+### Included Tools
+
+- **Node.js & npm** - JavaScript runtime
+- **Python & pip** - Python programming
+- **Rust** - Systems programming
+- **Go** - Programming language
+- **Java (OpenJDK)** - Java development
+- **Docker** - Containerization
+- **Git** - Version control
+
+### Development Configuration
+
 ```bash
-# LMMS
-sudo pacman -S lmms
+# Check Node.js version
+node --version
 
-# Pixelorama
-yay -S pixelorama
+# Check Python version
+python --version
 
-# Upscayl
-yay -S upscayl
+# Check Rust version
+rustc --version
+
+# Check Go version
+go version
+
+# Check Java version
+java --version
 ```
 
----
+## 📁 File Structure
 
-## ⌨️ Keyboard Shortcuts
-
-### Hyprland
-- `SUPER + RETURN` - Open terminal
-- `SUPER + D` - Application launcher
-- `SUPER + Q` - Close window
-- `SUPER + SHIFT + L` - Lock screen
-- `SUPER + SHIFT + C` - Reload configuration
-- `SUPER + SHIFT + Q` - Exit Hyprland
-
-### Navigation
-- `SUPER + HJKL` - Navigate between windows
-- `SUPER + 1-9` - Change workspace
-- `SUPER + SHIFT + HJKL` - Move windows
-- `SUPER + SHIFT + 1-9` - Move window to workspace
-
-### Multimedia
-- `XF86AudioPlay` - Play/Pause
-- `XF86AudioNext` - Next song
-- `XF86AudioPrev` - Previous song
-- `XF86AudioMute` - Mute (with animated notification)
-- `XF86AudioRaiseVolume` - Raise volume (with animated notification)
-- `XF86AudioLowerVolume` - Lower volume (with animated notification)
-- `XF86MonBrightnessUp` - Raise brightness (with animated notification)
-- `XF86MonBrightnessDown` - Lower brightness (with animated notification)
-
-### Multimedia Tools
-- `lmms` - Linux MultiMedia Studio (music production)
-- `pixelorama` - Pixel art editor
-- `upscayl` - AI image upscaler
-
-### Image and SVG Support
-- `<leader>ii` - Show image info
-- `<leader>ir` - Reload image
-- `<leader>ic` - Clear image
-- `<leader>ip` - Paste image from clipboard
-- `<leader>id` - Download image
-- `<leader>is` - Save image
-- `<leader>mp` - Markdown preview
-- `<leader>ms` - Stop preview
-- `<leader>mt` - Toggle preview
-
-### Clipboard
-- `SUPER + V` - Open CopyQ history
-- `SUPER + SHIFT + V` - Open cliphist history
-- `SUPER + CTRL + V` - Alternative cliphist
-- `SUPER + SHIFT + S` - Screenshot to clipboard
-
-### Tmux Integration
-- `CTRL + SHIFT + M` - Open tmux in new tab (Kitty)
-- `CTRL + SHIFT + ALT + M` - Open tmux in new window (Kitty)
-- `t` - Quick tmux session (Fish shell)
-- `tm` - Main tmux session (Fish shell)
-- `tdev` - Development tmux session (Fish shell)
-- `twork` - Work tmux session (Fish shell)
-- `./utils.sh tmux start [session]` - Start tmux session via utils
-
-### Neovim Editor
-- `<leader>e` - Toggle file explorer (NvimTree)
-- `<leader>ef` - Focus file explorer
-- `<leader>ec` - Collapse file explorer
-- `<leader>er` - Refresh file explorer
-- `CTRL + h` - Previous buffer
-- `CTRL + l` - Next buffer
-- `<leader>bd` - Close buffer
-- `<leader>bp` - Pick buffer
-- `<leader>1-9` - Go to buffer 1-9
-- `<leader>ff` - Find files (Telescope)
-- `<leader>fg` - Live grep (Telescope)
-- `<leader>fb` - Find buffers (Telescope)
-- `<leader>fo` - Recent files (Telescope)
-- `<leader>tabn` - New tab
-- `<leader>tabc` - Close tab
-- `<leader>tabl` - Next tab
-- `<leader>tabh` - Previous tab
-
-## 🎨 Themes and Customization
-
-### Included themes:
-- **Catppuccin** - Modern dark theme
-- **Papirus** - Consistent icons
-- **Bibata** - Animated cursor
-
-### Fonts:
-- **JetBrains Mono** - Programming font
-- **Fira Code** - Font with ligatures
-- **Noto Fonts** - Universal fonts
-
-## 🔧 Configuration
-
-### Main files:
-- `~/.config/hypr/hyprland.conf` - Hyprland configuration
-- `~/.config/waybar/config` - Waybar configuration
-- `~/.config/eww/eww.yuck` - EWW widgets
-- `~/.config/kitty/kitty.conf` - Terminal configuration
-- `~/.config/nvim/init.lua` - Neovim configuration
-
-### Customization:
-1. Edit configuration files
-2. Reload Hyprland with `SUPER + SHIFT + C`
-3. Changes apply immediately
-
-## 🐛 Troubleshooting
-
-### Common problems:
-
-**Hyprland doesn't start:**
-```bash
-# Check logs
-journalctl --user -f
-
-# Check configuration
-./utils.sh info
+```
+arch-dots/
+├── install.sh          # Unified installer
+├── uninstall.sh        # Unified uninstaller
+├── repair.sh           # Unified repair tool
+├── utils.sh            # Utility scripts
+├── README.md           # This file
+├── INTEGRATION_README.md
+├── LICENSE
+└── dotfiles/
+    ├── hypr/           # Hyprland configuration
+    ├── kitty/          # Terminal configuration
+    ├── nvim/           # Neovim configuration
+    ├── fish/           # Fish shell configuration
+    ├── eww/            # Desktop widgets
+    ├── waybar/         # Status bar
+    ├── wofi/           # Application launcher
+    ├── mako/           # Notifications
+    ├── swww/           # Wallpaper daemon
+    ├── hyprlock/       # Screen locker
+    ├── fonts/          # Custom fonts
+    ├── wallpapers/     # Wallpaper collection
+    ├── scripts/        # Utility scripts
+    └── ...
 ```
 
-**Wallpapers don't change:**
-```bash
-# Check swww
-./utils.sh info
+## 🚀 Quick Start
 
-# Restart daemon
-./utils.sh wallpaper-daemon restart
-```
+1. **Install everything:**
+   ```bash
+   ./install.sh
+   ```
 
-**Hyperlock doesn't work:**
+2. **Reboot your system**
+
+3. **Login with Hyprland**
+
+4. **Use the system:**
+   - `SUPER + RETURN` - Open terminal
+   - `SUPER + D` - Application launcher
+   - `SUPER + N` - Open Neovim
+   - `SUPER + Q` - Close window
+   - `SUPER + SHIFT + W` - Random wallpaper
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+1. **Hyprland not starting:**
+   ```bash
+   ./repair.sh --diagnose
+   ./repair.sh --repair
+   ```
+
+2. **Neovim not working:**
+   ```bash
+   ./repair.sh --clean
+   ```
+
+3. **Missing packages:**
+   ```bash
+   ./repair.sh --repair
+   ```
+
+4. **Permission issues:**
+   ```bash
+   ./repair.sh --repair
+   ```
+
+### System Information
+
 ```bash
+# Show system info
+./repair.sh --info
+
 # Check installation
-./utils.sh info
-
-# Reconfigure Hyperlock
-yay -S hyperlock --noconfirm
+./repair.sh --diagnose
 ```
 
-### Useful logs:
-- `~/.local/share/hyprland/hyprland.log` - Hyprland logs
-- `./utils.sh debug` - Complete debug
-- `journalctl --user -f` - User logs
+## 📝 Logs
 
-## 📁 Project Structure
+All operations are logged for debugging:
 
-```
-archriced/
-├── install.sh              # Complete installation
-├── uninstall.sh            # Complete uninstallation
-├── utils.sh                # Main utilities
-├── README.md               # Documentation
-└── dotfiles/               # Configurations
-    ├── hypr/               # Hyprland
-    ├── waybar/             # Status bar
-    ├── eww/                # Widgets
-    ├── kitty/              # Terminal
-    ├── nvim/               # Editor
-    ├── fish/               # Shell
-    └── wallpapers/         # Example wallpapers
-```
+- **Installation log:** `~/.archriced-install.log`
+- **Uninstall log:** `~/.archriced-uninstall.log`
+- **Repair log:** `~/.archriced-repair.log`
 
 ## 🤝 Contributing
 
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 
-This project is under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- [Hyprland](https://hyprland.org/) - Wayland compositor
-- [EWW](https://github.com/elkowar/eww) - Wayland widgets
-- [Catppuccin](https://github.com/catppuccin/catppuccin) - Color palette
-- [JaKooLit](https://github.com/JaKooLit/Arch-Hyprland) - Script inspiration
-
-## 📞 Support
-
-If you have problems or questions:
-
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Run `./utils.sh debug` and share the logs
-3. Open an issue on GitHub with detailed information
+- **Hyprland** - The amazing Wayland compositor
+- **Catppuccin** - Beautiful color scheme
+- **Nerd Fonts** - Icon fonts
+- **Arch Linux** - The best Linux distribution
 
 ---
 
-**Enjoy your new Hyprland configuration! 🎉** 
+**Made with ❤️ by maurux01** 

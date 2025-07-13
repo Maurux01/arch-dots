@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Script de desinstalación completa para Arch Dots
-# Desinstala todo automáticamente
+# =============================================================================
+#                           🗑️ ARCH DOTS UNINSTALLER
+# =============================================================================
+# Script de desinstalación unificado y completo para Arch Dots
+# Desinstala todo automáticamente con backup de seguridad
+# =============================================================================
 
 set -e
 
@@ -26,7 +30,7 @@ log() {
 
 print_header() {
     echo -e "${RED}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${RED}║                  DESINSTALADOR ARCHRICED                     ║${NC}"
+    echo -e "${RED}║                  🗑️ ARCH DOTS UNINSTALLER                   ║${NC}"
     echo -e "${RED}║                  Desinstalación completa automática          ║${NC}"
     echo -e "${RED}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
@@ -62,9 +66,32 @@ print_info() {
     log "INFO: $1"
 }
 
-# Función para confirmar desinstalación
+# =============================================================================
+#                           🔍 FUNCIONES DE VERIFICACIÓN
+# =============================================================================
+
+check_system() {
+    print_section "Verificando sistema..."
+    
+    if [ ! -f "/etc/arch-release" ]; then
+        print_error "Este script está diseñado solo para Arch Linux."
+        exit 1
+    fi
+    
+    if [ "$EUID" -eq 0 ]; then
+        print_error "No ejecutes este script como root."
+        exit 1
+    fi
+    
+    print_success "Sistema verificado."
+}
+
+# =============================================================================
+#                           ⚠️ FUNCIONES DE CONFIRMACIÓN
+# =============================================================================
+
 confirm_uninstall() {
-    echo -e "${RED}⚠️  ADVERTENCIA: Esta acción desinstalará completamente Archriced${NC}"
+    echo -e "${RED}⚠️  ADVERTENCIA: Esta acción desinstalará completamente Arch Dots${NC}"
     echo -e "${RED}Esto incluye:${NC}"
     echo "• Eliminar todos los paquetes instalados"
     echo "• Restaurar configuraciones originales"
@@ -84,7 +111,10 @@ confirm_uninstall() {
     echo ""
 }
 
-# Función para crear backup
+# =============================================================================
+#                           💾 FUNCIONES DE BACKUP
+# =============================================================================
+
 create_backup() {
     print_section "Creando backup de configuraciones..."
     
@@ -101,6 +131,7 @@ create_backup() {
         "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.profile"
         "$HOME/.zshrc" "$HOME/.zshenv" "$HOME/.config/fish"
         "$HOME/.local/share/applications" "$HOME/.local/bin"
+        "$HOME/.tmux.conf" "$HOME/.tmux"
     )
     
     for file in "${config_files[@]}"; do
@@ -113,11 +144,25 @@ create_backup() {
     sudo cp -r /etc/hypr "$BACKUP_DIR/etc-hypr" 2>/dev/null || true
     sudo cp /etc/mkinitcpio.conf "$BACKUP_DIR/" 2>/dev/null || true
     sudo cp /etc/modprobe.d/nvidia.conf "$BACKUP_DIR/" 2>/dev/null || true
+    sudo cp /etc/default/grub "$BACKUP_DIR/" 2>/dev/null || true
+    
+    print_step "Backup de wallpapers..."
+    if [ -d "$HOME/Pictures/wallpapers" ]; then
+        cp -r "$HOME/Pictures/wallpapers" "$BACKUP_DIR/"
+    fi
+    
+    print_step "Backup de fuentes personalizadas..."
+    if [ -d "$HOME/.local/share/fonts" ]; then
+        cp -r "$HOME/.local/share/fonts" "$BACKUP_DIR/"
+    fi
     
     print_success "Backup creado en $BACKUP_DIR"
 }
 
-# Función para desinstalar paquetes
+# =============================================================================
+#                           📦 FUNCIONES DE DESINSTALACIÓN
+# =============================================================================
+
 uninstall_packages() {
     print_section "Desinstalando paquetes..."
     
@@ -126,6 +171,7 @@ uninstall_packages() {
         "hyprland" "waybar" "eww" "swww" "wofi" "mako" "swaylock"
         "swayidle" "grim" "slurp" "wl-clipboard" "xdg-desktop-portal-hyprland"
         "xdg-desktop-portal-gtk" "kitty" "neovim" "fish" "starship"
+        "zoxide" "tmux"
     )
     
     for pkg in "${hyprland_packages[@]}"; do
@@ -140,6 +186,8 @@ uninstall_packages() {
         "bat" "fd" "ripgrep" "fzf" "lazygit" "yazi" "btop" "htop"
         "neofetch" "fastfetch" "cava" "pavucontrol" "blueman"
         "mpv" "vlc" "steam" "lutris" "wine" "gamemode" "mangohud"
+        "flameshot" "spectacle" "maim" "xclip" "imagemagick"
+        "ffmpeg" "v4l-utils" "pulseaudio-alsa"
     )
     
     for pkg in "${util_packages[@]}"; do
@@ -153,6 +201,7 @@ uninstall_packages() {
     local dev_packages=(
         "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
         "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
+        "docker" "docker-compose" "podman" "buildah" "skopeo"
     )
     
     for pkg in "${dev_packages[@]}"; do
@@ -162,10 +211,25 @@ uninstall_packages() {
         fi
     done
     
+    print_step "Desinstalando herramientas multimedia..."
+    local multimedia_packages=(
+        "lmms" "obs" "obs-studio" "krita" "gimp" "inkscape"
+        "spotify" "discord" "telegram-desktop"
+    )
+    
+    for pkg in "${multimedia_packages[@]}"; do
+        if pacman -Q "$pkg" >/dev/null 2>&1; then
+            print_step "Desinstalando $pkg..."
+            sudo pacman -R "$pkg" --noconfirm
+        fi
+    done
+    
     print_step "Desinstalando fuentes y temas..."
     local theme_packages=(
         "catppuccin-gtk-theme" "papirus-icon-theme" "bibata-cursor-theme"
-        "adwaita-icon-theme" "gnome-themes-extra"
+        "adwaita-icon-theme" "gnome-themes-extra" "nerd-fonts-complete"
+        "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation"
+        "ttf-jetbrains-mono"
     )
     
     for pkg in "${theme_packages[@]}"; do
@@ -176,7 +240,11 @@ uninstall_packages() {
     done
     
     print_step "Desinstalando paquetes AUR..."
-    local aur_packages=("heroic-games-launcher")
+    local aur_packages=(
+        "hyperlock" "oss" "heroic-games-launcher" "pixelorama" 
+        "upscayl" "citra-git"
+    )
+    
     for pkg in "${aur_packages[@]}"; do
         if yay -Q "$pkg" >/dev/null 2>&1; then
             print_step "Desinstalando $pkg..."
@@ -187,126 +255,257 @@ uninstall_packages() {
     print_success "Paquetes desinstalados"
 }
 
-# Función para desinstalar Hyperlock
-uninstall_hyperlock() {
-    print_section "Desinstalando Hyperlock..."
-    
-    print_step "Desinstalando Hyperlock..."
-    yay -R hyperlock --noconfirm 2>/dev/null || true
-    
-    print_step "Eliminando configuración de Hyperlock..."
-    rm -rf "$HOME/.config/hyperlock"
-    
-    print_success "Hyperlock desinstalado"
-}
+# =============================================================================
+#                           🗂️ FUNCIONES DE LIMPIEZA
+# =============================================================================
 
-# Función para limpiar dotfiles
-clean_dotfiles() {
-    print_section "Limpiando dotfiles..."
+clean_config_files() {
+    print_section "Limpiando archivos de configuración..."
     
     print_step "Eliminando configuraciones de Hyprland..."
-    rm -rf "$HOME/.config/hypr"
-    rm -rf "$HOME/.config/waybar"
-    rm -rf "$HOME/.config/eww"
-    rm -rf "$HOME/.config/wofi"
-    rm -rf "$HOME/.config/mako"
-    rm -rf "$HOME/.config/kitty"
-    rm -rf "$HOME/.config/nvim"
-    rm -rf "$HOME/.config/fish"
-    rm -rf "$HOME/.config/swww"
-    rm -rf "$HOME/.config/tmux"
-    rm -rf "$HOME/.config/neofetch"
-    rm -rf "$HOME/.config/fastfetch"
+    rm -rf "$HOME/.config/hypr" 2>/dev/null || true
+    rm -rf "$HOME/.config/hyprlock" 2>/dev/null || true
     
-    print_step "Eliminando scripts..."
-    rm -rf "$HOME/.config/scripts"
+    print_step "Eliminando configuraciones de terminal..."
+    rm -rf "$HOME/.config/kitty" 2>/dev/null || true
+    rm -rf "$HOME/.config/fish" 2>/dev/null || true
+    rm -rf "$HOME/.config/tmux" 2>/dev/null || true
+    rm -f "$HOME/.tmux.conf" 2>/dev/null || true
+    rm -rf "$HOME/.tmux" 2>/dev/null || true
     
-    print_step "Eliminando otros dotfiles..."
-    rm -rf "$HOME/.config/dotfiles"
-    rm -f "$HOME/.config/gtk-3.0/settings.ini"
-    rm -f "$HOME/.config/gtk-4.0/settings.ini"
+    print_step "Eliminando configuraciones de editores..."
+    rm -rf "$HOME/.config/nvim" 2>/dev/null || true
+    rm -rf "$HOME/.config/geany" 2>/dev/null || true
+    rm -rf "$HOME/.config/code" 2>/dev/null || true
     
-    print_success "Dotfiles eliminados"
+    print_step "Eliminando configuraciones de widgets..."
+    rm -rf "$HOME/.config/eww" 2>/dev/null || true
+    rm -rf "$HOME/.config/waybar" 2>/dev/null || true
+    rm -rf "$HOME/.config/wofi" 2>/dev/null || true
+    rm -rf "$HOME/.config/mako" 2>/dev/null || true
+    rm -rf "$HOME/.config/swww" 2>/dev/null || true
+    
+    print_step "Eliminando configuraciones de portapapeles..."
+    rm -rf "$HOME/.config/cliphist" 2>/dev/null || true
+    rm -rf "$HOME/.config/copyq" 2>/dev/null || true
+    
+    print_step "Eliminando configuraciones de utilidades..."
+    rm -rf "$HOME/.config/neofetch" 2>/dev/null || true
+    rm -f "$HOME/.config/fastfetch.jsonc" 2>/dev/null || true
+    rm -rf "$HOME/.config/scripts" 2>/dev/null || true
+    
+    print_step "Eliminando configuraciones de aplicaciones..."
+    rm -rf "$HOME/.config/obs" 2>/dev/null || true
+    rm -rf "$HOME/.config/krita" 2>/dev/null || true
+    rm -rf "$HOME/.config/gimp" 2>/dev/null || true
+    rm -rf "$HOME/.config/inkscape" 2>/dev/null || true
+    
+    print_success "Archivos de configuración limpiados"
 }
 
-# Función para restaurar configuraciones por defecto
-restore_defaults() {
-    print_section "Restaurando configuraciones por defecto..."
+clean_system_config() {
+    print_section "Limpiando configuraciones del sistema..."
     
-    print_step "Restaurando shell por defecto..."
-    sudo chsh -s /bin/bash "$USER"
-    
-    print_step "Restaurando configuración del sistema..."
-    if [ -f "$BACKUP_DIR/etc-hypr" ]; then
-        sudo cp -r "$BACKUP_DIR/etc-hypr" /etc/hypr
+    print_step "Restaurando configuración GRUB..."
+    if [ -f "$BACKUP_DIR/grub" ]; then
+        sudo cp "$BACKUP_DIR/grub" /etc/default/grub
+        sudo grub-mkconfig -o /boot/grub/grub.cfg
+        print_success "Configuración GRUB restaurada"
     else
-        sudo rm -rf /etc/hypr 2>/dev/null || true
+        print_step "Eliminando tema GRUB Catppuccin..."
+        sudo rm -rf /usr/share/grub/themes/catppuccin-grub-theme 2>/dev/null || true
+        sudo sed -i 's/GRUB_THEME=.*/GRUB_THEME=""/' /etc/default/grub 2>/dev/null || true
+        sudo grub-mkconfig -o /boot/grub/grub.cfg 2>/dev/null || true
     fi
     
-    print_step "Deshabilitando servicios..."
-    sudo systemctl disable NetworkManager bluetooth 2>/dev/null || true
+    print_step "Restaurando configuración SDDM..."
+    if [ -d "$BACKUP_DIR/sddm" ]; then
+        sudo cp -r "$BACKUP_DIR/sddm"/* /etc/sddm.conf.d/ 2>/dev/null || true
+    else
+        sudo rm -rf /etc/sddm.conf.d/* 2>/dev/null || true
+    fi
     
-    print_success "Configuraciones restauradas"
+    print_step "Eliminando sesión Hyprland de GDM..."
+    sudo rm -f /usr/share/wayland-sessions/hyprland.desktop 2>/dev/null || true
+    
+    print_step "Restaurando shell por defecto..."
+    if command -v bash >/dev/null 2>&1; then
+        sudo chsh -s /bin/bash "$USER"
+        print_success "Shell restaurado a bash"
+    fi
+    
+    print_success "Configuraciones del sistema limpiadas"
 }
 
-# Función para limpiar sistema
-clean_system() {
-    print_section "Limpiando sistema..."
+clean_fonts() {
+    print_section "Limpiando fuentes personalizadas..."
     
-    print_step "Limpiando caché de paquetes..."
-    sudo pacman -Sc --noconfirm
+    print_step "Eliminando fuentes de usuario..."
+    rm -rf "$HOME/.local/share/fonts" 2>/dev/null || true
     
-    print_step "Limpiando caché de AUR..."
-    yay -Sc --noconfirm 2>/dev/null || true
+    print_step "Eliminando fuentes del sistema..."
+    sudo rm -rf /usr/share/fonts/custom 2>/dev/null || true
     
-    print_step "Limpiando archivos temporales..."
-    sudo rm -rf /tmp/*
-    rm -rf "$HOME/.cache"
+    print_step "Actualizando caché de fuentes..."
+    fc-cache -fv 2>/dev/null || true
+    sudo fc-cache -fv 2>/dev/null || true
     
-    print_step "Limpiando logs..."
-    sudo journalctl --vacuum-time=1d
-    
-    print_success "Sistema limpiado"
+    print_success "Fuentes limpiadas"
 }
 
-# Función para mostrar información final
+clean_wallpapers() {
+    print_section "Limpiando wallpapers..."
+    
+    print_step "Eliminando wallpapers..."
+    rm -rf "$HOME/Pictures/wallpapers" 2>/dev/null || true
+    rm -f "$HOME/.local/share/wallpapers" 2>/dev/null || true
+    
+    print_step "Eliminando configuraciones de wallpaper..."
+    rm -rf "$HOME/.config/waypaper" 2>/dev/null || true
+    rm -f "$HOME/.config/autostart/waypaper.desktop" 2>/dev/null || true
+    
+    print_success "Wallpapers limpiados"
+}
+
+clean_autostart() {
+    print_section "Limpiando aplicaciones de inicio automático..."
+    
+    print_step "Eliminando aplicaciones de inicio automático..."
+    rm -f "$HOME/.config/autostart/waypaper.desktop" 2>/dev/null || true
+    rm -f "$HOME/.config/autostart/copyq.desktop" 2>/dev/null || true
+    
+    print_success "Aplicaciones de inicio automático limpiadas"
+}
+
+# =============================================================================
+#                           🔧 FUNCIONES DE RESTAURACIÓN
+# =============================================================================
+
+restore_default_configs() {
+    print_section "Restaurando configuraciones por defecto..."
+    
+    print_step "Creando configuraciones básicas..."
+    
+    # Fish config básico
+    mkdir -p "$HOME/.config/fish"
+    cat > "$HOME/.config/fish/config.fish" << 'EOF'
+# Fish shell configuration
+set -g fish_greeting ""
+
+# Add local bin to PATH
+set -gx PATH $HOME/.local/bin $PATH
+EOF
+    
+    # Bash config básico
+    cat > "$HOME/.bashrc" << 'EOF'
+# ~/.bashrc
+export PATH="$HOME/.local/bin:$PATH"
+EOF
+    
+    # Zsh config básico
+    cat > "$HOME/.zshrc" << 'EOF'
+# ~/.zshrc
+export PATH="$HOME/.local/bin:$PATH"
+EOF
+    
+    print_success "Configuraciones por defecto restauradas"
+}
+
+# =============================================================================
+#                           ✅ FUNCIONES DE VERIFICACIÓN
+# =============================================================================
+
+verify_uninstall() {
+    print_section "Verificando desinstalación..."
+    
+    local errors=0
+    
+    # Verificar que los directorios principales fueron eliminados
+    local dirs_to_check=(
+        "$HOME/.config/hypr"
+        "$HOME/.config/eww"
+        "$HOME/.config/waybar"
+        "$HOME/.config/wofi"
+        "$HOME/.config/mako"
+        "$HOME/.config/swww"
+        "$HOME/.config/hyprlock"
+    )
+    
+    for dir in "${dirs_to_check[@]}"; do
+        if [ -d "$dir" ]; then
+            print_error "✗ $dir aún existe"
+            ((errors++))
+        else
+            print_success "✓ $dir eliminado"
+        fi
+    done
+    
+    # Verificar que los paquetes principales fueron desinstalados
+    local packages_to_check=(
+        "hyprland" "waybar" "eww" "kitty" "fish" "neovim"
+    )
+    
+    for pkg in "${packages_to_check[@]}"; do
+        if pacman -Q "$pkg" >/dev/null 2>&1; then
+            print_error "✗ $pkg aún está instalado"
+            ((errors++))
+        else
+            print_success "✓ $pkg desinstalado"
+        fi
+    done
+    
+    if [ $errors -eq 0 ]; then
+        print_success "Desinstalación verificada exitosamente"
+    else
+        print_error "Se encontraron $errors error(es) en la desinstalación"
+    fi
+}
+
+# =============================================================================
+#                           📋 FUNCIÓN PRINCIPAL
+# =============================================================================
+
 show_final_info() {
-    echo -e "${GREEN}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║                  DESINSTALACIÓN COMPLETADA                  ║${NC}"
-    echo -e "${GREEN}╚══════════════════════════════════════════════════════════════╝${NC}"
+    echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${GREEN}║                    DESINSTALACIÓN COMPLETADA                               ║${NC}"
+    echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
     echo ""
     
-    print_info "Desinstalación completada:"
-    echo "• Todos los paquetes han sido desinstalados"
-    echo "• Las configuraciones han sido restauradas"
-    echo "• El sistema ha sido limpiado"
+    echo "Información importante:"
+    echo "• Se creó un backup en: $BACKUP_DIR"
+    echo "• Las configuraciones originales fueron respaldadas"
+    echo "• Los paquetes fueron desinstalados"
     echo ""
     
-    print_info "Backup disponible en:"
-    echo "$BACKUP_DIR"
+    echo "Para restaurar desde el backup:"
+    echo "• Copia los archivos desde $BACKUP_DIR a sus ubicaciones originales"
+    echo "• Reinstala los paquetes necesarios con pacman/yay"
     echo ""
     
-    print_warning "Próximos pasos:"
+    echo "Para reinstalar Arch Dots:"
+    echo "• Ejecuta ./install.sh desde el directorio del proyecto"
+    echo ""
+    
+    echo "Próximos pasos:"
     echo "1. Reinicia tu sistema"
-    echo "2. Instala un nuevo entorno de escritorio si es necesario"
-    echo "3. Restaura configuraciones desde el backup si lo necesitas"
-    echo ""
-    
-    print_info "Para restaurar desde backup:"
-    echo "cp -r $BACKUP_DIR/.config/* ~/.config/"
+    echo "2. Instala un entorno de escritorio alternativo si es necesario"
+    echo "3. Configura tu sistema según tus preferencias"
     echo ""
 }
 
-# Función principal
 main() {
     print_header
+    check_system
     confirm_uninstall
     create_backup
     uninstall_packages
-    uninstall_hyperlock
-    clean_dotfiles
-    restore_defaults
-    clean_system
+    clean_config_files
+    clean_system_config
+    clean_fonts
+    clean_wallpapers
+    clean_autostart
+    restore_default_configs
+    verify_uninstall
     show_final_info
 }
 
