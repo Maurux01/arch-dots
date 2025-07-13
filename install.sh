@@ -209,6 +209,9 @@ install_essential_packages() {
         "mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop"
         "obs" "obs-studio" "krita" "gimp" "inkscape"
         
+        # Herramientas de creación multimedia
+        "lmms" "pixelorama" "upscayl"
+        
         # Portapapeles e historial
         "cliphist" "copyq" "obsidian" "libreoffice" "firefox" "brave"
         "nautilus" "thunar" "geany" "code" "code-marketplace"
@@ -377,6 +380,28 @@ EOF
     chmod +x "$HOME/.config/autostart/waypaper.desktop"
     
     print_success "Waypaper configurado"
+}
+
+# Función para instalar herramientas multimedia
+install_multimedia_tools() {
+    print_section "Instalando herramientas multimedia..."
+    
+    print_step "Instalando LMMS (Linux MultiMedia Studio)..."
+    sudo pacman -S lmms --noconfirm --needed
+    
+    print_step "Instalando Pixelorama (Pixel Art)..."
+    yay -S pixelorama --noconfirm --needed
+    
+    print_step "Instalando Upscayl (AI Upscaler)..."
+    yay -S upscayl --noconfirm --needed
+    
+    print_step "Instalando dependencias adicionales para multimedia..."
+    sudo pacman -S ffmpeg v4l-utils pulseaudio-alsa --noconfirm --needed
+    
+    print_success "Herramientas multimedia instaladas"
+    print_info "LMMS: Editor de música y audio"
+    print_info "Pixelorama: Editor de pixel art"
+    print_info "Upscayl: Upscaler de imágenes con IA"
 }
 
 # Función para instalar tema GRUB Catppuccin
@@ -833,6 +858,12 @@ show_final_info() {
     echo "• Use ~/.config/scripts/change-font.sh --list to see options"
     echo ""
     
+    echo "Multimedia tools installed:"
+    echo "• LMMS - Linux MultiMedia Studio (music production)"
+    echo "• Pixelorama - Pixel art editor"
+    echo "• Upscayl - AI image upscaler"
+    echo ""
+    
     echo "To install more applications:"
     echo "• sudo pacman -S [package]"
     echo "• yay -S [aur-package]"
@@ -846,6 +877,7 @@ main() {
     update_system
     install_aur_helper
     install_essential_packages
+    install_multimedia_tools
     install_custom_fonts
     copy_wallpapers
     configure_hyprlock

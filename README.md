@@ -13,6 +13,7 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
 - **Fish Shell** - Interactive shell with autocompletion (not zsh)
 - **Gaming optimized** - Steam, Lutris, Wine, GameMode
 - **Development** - Node.js, Python, Rust, Go, Java
+- **Multimedia tools** - LMMS, Pixelorama, Upscayl
 - **Hyperlock** - Native Hyprland screen locker
 - **Enhanced notifications** - Notification system with animations and colors
 - **Proper installation** - Everything installed in standard system locations
@@ -47,6 +48,20 @@ The installation script:
 - ✅ Copies all dotfiles to correct system locations
 - ✅ Verifies complete installation
 - ✅ Configures the system
+
+### Multimedia Tools Installation
+
+For users who only want the multimedia tools (LMMS, Pixelorama, Upscayl):
+
+```bash
+# Install only multimedia tools
+./install-multimedia.sh
+```
+
+This script installs:
+- **LMMS** - Professional music production software
+- **Pixelorama** - Advanced pixel art editor
+- **Upscayl** - AI-powered image upscaler
 
 ### Complete uninstallation
 
@@ -324,6 +339,117 @@ run '~/.tmux/plugins/tpm/tpm'
 
 ---
 
+## 🎵 Multimedia Tools
+
+### LMMS (Linux MultiMedia Studio)
+Professional music production software with a user-friendly interface:
+
+```bash
+# Launch LMMS
+lmms
+
+# Create new project
+Ctrl + N
+
+# Save project
+Ctrl + S
+
+# Export audio
+Ctrl + E
+```
+
+**Features:**
+- **Synthesizers** - Built-in synthesizers and effects
+- **VST Support** - Compatible with VST plugins
+- **MIDI Support** - Full MIDI keyboard support
+- **Audio Recording** - Record from microphone or line-in
+- **Project Templates** - Pre-configured templates
+- **Export Options** - Multiple audio formats (WAV, MP3, OGG, FLAC)
+
+**File locations:**
+- Projects: `~/.lmms/`
+- Plugins: `~/.lmms/plugins/`
+- Samples: `~/.lmms/samples/`
+
+### Pixelorama
+Advanced pixel art editor with animation support:
+
+```bash
+# Launch Pixelorama
+pixelorama
+
+# New project
+Ctrl + N
+
+# Save project
+Ctrl + S
+
+# Export animation
+Ctrl + Shift + E
+```
+
+**Features:**
+- **Pixel-perfect drawing** - Precise pixel art tools
+- **Animation support** - Create animated sprites
+- **Layer system** - Multiple layers for complex artwork
+- **Palette management** - Custom color palettes
+- **Export options** - PNG, GIF, APNG formats
+- **Tilemap support** - Create game tiles and sprites
+
+**File locations:**
+- Projects: `~/.local/share/Pixelorama/`
+- Config: `~/.config/Pixelorama/`
+
+### Upscayl
+AI-powered image upscaler with multiple models:
+
+```bash
+# Launch Upscayl
+upscayl
+
+# Drag and drop images to upscale
+# Select AI model (Real-ESRGAN, Real-CUGAN, etc.)
+# Choose output format and quality
+```
+
+**Features:**
+- **Multiple AI Models** - Real-ESRGAN, Real-CUGAN, Waifu2x
+- **Batch Processing** - Upscale multiple images at once
+- **Quality Options** - Different upscaling factors (2x, 4x, 8x)
+- **Format Support** - PNG, JPG, WEBP output
+- **GPU Acceleration** - Uses GPU for faster processing
+- **Preview Mode** - See results before saving
+
+**File locations:**
+- Config: `~/.config/upscayl/`
+- Models: `~/.local/share/upscayl/models/`
+
+### Installation Options
+
+**Full installation (recommended):**
+```bash
+./install.sh
+```
+
+**Multimedia tools only:**
+```bash
+./install-multimedia.sh
+```
+
+**Manual installation:**
+```bash
+# LMMS
+sudo pacman -S lmms
+
+# Pixelorama
+yay -S pixelorama
+
+# Upscayl
+yay -S upscayl
+```
+
+---
+
 ## ⌨️ Keyboard Shortcuts
 
 ### Hyprland
@@ -349,6 +475,11 @@ run '~/.tmux/plugins/tpm/tpm'
 - `XF86AudioLowerVolume` - Lower volume (with animated notification)
 - `XF86MonBrightnessUp` - Raise brightness (with animated notification)
 - `XF86MonBrightnessDown` - Lower brightness (with animated notification)
+
+### Multimedia Tools
+- `lmms` - Linux MultiMedia Studio (music production)
+- `pixelorama` - Pixel art editor
+- `upscayl` - AI image upscaler
 
 ### Clipboard
 - `SUPER + V` - Open CopyQ history
