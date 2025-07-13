@@ -187,7 +187,7 @@ install_essential_packages() {
         "xdg-desktop-portal-gtk"
         
         # Terminal y shell
-        "kitty" "fish" "starship" "zoxide"
+        "kitty" "fish" "starship" "zoxide" "tmux"
         
         # Editores
         "nvim"
@@ -594,9 +594,14 @@ copy_dotfiles() {
                             
                             # Create tmux directory in home for plugins
                             mkdir -p "$HOME/.tmux"
-                            if [ -d "$item/scripts" ]; then
-                                cp -r "$item/scripts" "$HOME/.tmux/"
-                                print_success "Tmux scripts copied to $HOME/.tmux/scripts/"
+                            
+                            # Install Catppuccin tmux plugin
+                            print_step "Installing Catppuccin tmux plugin..."
+                            mkdir -p ~/.config/tmux/plugins/catppuccin
+                            if git clone -b v2.1.3 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux 2>/dev/null; then
+                                print_success "Catppuccin tmux plugin installed"
+                            else
+                                print_warning "Failed to install Catppuccin tmux plugin"
                             fi
                         else
                             print_error "Tmux config file not found"

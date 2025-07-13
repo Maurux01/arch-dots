@@ -190,6 +190,27 @@ function serve --argument-names port
     python3 -m http.server $server_port
 end
 
+# Easy tmux integration
+function tmux-session --argument-names session_name
+    if test -z "$session_name"
+        set session_name "main"
+    end
+    
+    if tmux has-session -t "$session_name" 2>/dev/null
+        echo "🔗 Conectando a sesión tmux existente: $session_name"
+        tmux attach-session -t "$session_name"
+    else
+        echo "🆕 Creando nueva sesión tmux: $session_name"
+        tmux new-session -s "$session_name"
+    end
+end
+
+# Alias for quick tmux access
+alias t="tmux-session"
+alias tm="tmux-session main"
+alias tdev="tmux-session dev"
+alias twork="tmux-session work"
+
 # Get cheat sheets from cheat.sh
 function cheat
     curl cheat.sh/$argv

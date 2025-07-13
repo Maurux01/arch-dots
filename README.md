@@ -277,6 +277,53 @@ Included development tools:
 - **LazyGit** - TUI for Git
 - **Neovim** - Editor configured with LSP
 
+## 🖥️ Tmux Configuration
+
+Esta configuración de tmux está completamente gestionada por plugins usando TPM (Tmux Plugin Manager). No se utilizan scripts externos: todas las funcionalidades (batería, CPU, tema, yank, etc.) se implementan mediante plugins.
+
+### Plugins incluidos (por defecto):
+- `catppuccin/tmux` — Tema moderno Catppuccin
+- `tmux-plugins/tpm` — Gestor de plugins
+- `tmux-plugins/tmux-sensible` — Configuración sensata por defecto
+- `tmux-plugins/tmux-battery` — Indicador de batería
+- `tmux-plugins/tmux-cpu` — Monitor de CPU
+- `tmux-plugins/tmux-resurrect` — Guardado y restauración de sesiones
+- `tmux-plugins/tmux-continuum` — Guardado automático de sesiones
+- `tmux-plugins/tmux-yank` — Copiado fácil
+- `tmux-plugins/tmux-open` — Abrir URLs
+- `tmux-plugins/tmux-copycat` — Búsqueda avanzada
+- `tmux-plugins/tmux-urlview` — Vista de URLs
+- `tmux-plugins/tmux-sessionist` — Gestión de sesiones
+- `tmux-plugins/tmux-fpp` — Procesamiento de paths
+- `tmux-plugins/tmux-fingers` — Detección de archivos/URLs
+- `tmux-plugins/tmux-logging` — Logging de sesiones
+
+### Instalación y uso de plugins:
+1. Inicia tmux: `tmux`
+2. Presiona `Ctrl+Space` (o tu prefix) y luego `I` (mayúscula) para instalar los plugins.
+3. Para actualizar plugins: `prefix + U`
+4. Para eliminar un plugin, bórralo de la lista en `.tmux.conf` y ejecuta `prefix + alt+u`.
+
+### Ejemplo de configuración mínima en `.tmux.conf`:
+
+```tmux
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'catppuccin/tmux#v2.1.3'
+set -g @plugin 'tmux-plugins/tmux-battery'
+set -g @plugin 'tmux-plugins/tmux-cpu'
+# ...otros plugins
+
+# Inicializar TPM (debe ir al final)
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+### Personalización:
+- El tema Catppuccin se configura automáticamente.
+- Puedes agregar más plugins editando la lista en `.tmux.conf`.
+- No es necesario ningún script externo: todo es gestionado por los plugins.
+
+---
+
 ## ⌨️ Keyboard Shortcuts
 
 ### Hyprland
@@ -308,6 +355,15 @@ Included development tools:
 - `SUPER + SHIFT + V` - Open cliphist history
 - `SUPER + CTRL + V` - Alternative cliphist
 - `SUPER + SHIFT + S` - Screenshot to clipboard
+
+### Tmux Integration
+- `CTRL + SHIFT + M` - Open tmux in new tab (Kitty)
+- `CTRL + SHIFT + ALT + M` - Open tmux in new window (Kitty)
+- `t` - Quick tmux session (Fish shell)
+- `tm` - Main tmux session (Fish shell)
+- `tdev` - Development tmux session (Fish shell)
+- `twork` - Work tmux session (Fish shell)
+- `./utils.sh tmux start [session]` - Start tmux session via utils
 
 ## 🎨 Themes and Customization
 

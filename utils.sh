@@ -385,35 +385,74 @@ install_grub_theme() {
     print_section "Instalando tema GRUB Catppuccin..."
     
     if [ -f "$HOME/.config/scripts/install-grub-theme.sh" ]; then
-        print_step "Ejecutando script de instalación..."
         "$HOME/.config/scripts/install-grub-theme.sh"
     else
-        print_error "Script de instalación no encontrado"
-        print_step "Instalando manualmente..."
-        
-        print_step "Clonando repositorio..."
-        cd /tmp
-        git clone https://github.com/catppuccin/grub.git catppuccin-grub
-        cd catppuccin-grub
-        
-        print_step "Instalando tema..."
-        sudo mkdir -p /usr/share/grub/themes/
-        sudo cp -r src/catppuccin-grub-theme /usr/share/grub/themes/
-        
-        print_step "Configurando GRUB..."
-        sudo cp /etc/default/grub /etc/default/grub.backup
-        sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/catppuccin-grub-theme/theme.txt"|' /etc/default/grub
-        
-        print_step "Actualizando GRUB..."
-        sudo grub-mkconfig -o /boot/grub/grub.cfg
-        
-        print_step "Limpiando..."
-        cd "$SCRIPT_DIR"
-        rm -rf /tmp/catppuccin-grub
-        
-        print_success "Tema GRUB instalado"
-        print_warning "Reinicia el sistema para ver el nuevo tema"
+        print_error "Script de instalación de tema GRUB no encontrado"
     fi
+}
+
+# Función para gestionar sesiones de tmux
+manage_tmux() {
+    local action="$1"
+    local session_name="$2"
+    
+    case "$action" in
+        "start"|"new")
+            if [ -z "$session_name" ]; then
+                session_name="main"
+            fi
+            print_section "Iniciando sesión tmux: $session_name"
+            if tmux has-session -t "$session_name" 2>/dev/null; then
+                print_step "Conectando a sesión existente..."
+                tmux attach-session -t "$session_name"
+            else
+                print_step "Creando nueva sesión..."
+                tmux new-session -s "$session_name"
+            fi
+            ;;
+        "list"|"ls")
+            print_section "Sesiones de tmux disponibles:"
+            tmux list-sessions 2>/dev/null || echo "No hay sesiones activas"
+            ;;
+        "kill"|"stop")
+            if [ -z "$session_name" ]; then
+                print_error "Especifica el nombre de la sesión"
+                return 1
+            fi
+            print_section "Deteniendo sesión tmux: $session_name"
+            tmux kill-session -t "$session_name" 2>/dev/null || print_warning "Sesión no encontrada"
+            ;;
+        "attach"|"a")
+            if [ -z "$session_name" ]; then
+                print_error "Especifica el nombre de la sesión"
+                return 1
+            fi
+            print_section "Conectando a sesión tmux: $session_name"
+            tmux attach-session -t "$session_name" 2>/dev/null || print_error "Sesión no encontrada"
+            ;;
+        "help"|"-h"|"--help"|"")
+            print_header "Gestor de sesiones tmux"
+            echo "Uso: $0 tmux [comando] [sesión]"
+            echo ""
+            echo "Comandos:"
+            echo "  start, new [sesión]  - Iniciar/conectar a sesión"
+            echo "  list, ls             - Listar sesiones"
+            echo "  kill, stop [sesión]  - Detener sesión"
+            echo "  attach, a [sesión]   - Conectar a sesión"
+            echo "  help                 - Mostrar esta ayuda"
+            echo ""
+            echo "Ejemplos:"
+            echo "  $0 tmux start        - Iniciar sesión 'main'"
+            echo "  $0 tmux start dev    - Iniciar sesión 'dev'"
+            echo "  $0 tmux list         - Listar sesiones"
+            echo "  $0 tmux kill dev     - Detener sesión 'dev'"
+            ;;
+        *)
+            print_error "Comando desconocido: $action"
+            echo "Usa '$0 tmux help' para ver opciones"
+            return 1
+            ;;
+    esac
 }
 
 # ============================================================================
@@ -447,7 +486,10 @@ show_menu() {
     echo "=== INFORMACIÓN ==="
     echo "15) Información del sistema"
     echo ""
-    echo "16) Salir"
+    echo "=== TMUX ==="
+    echo "16) Gestionar sesiones tmux"
+    echo ""
+    echo "17) Salir"
     echo ""
 }
 
@@ -460,7 +502,7 @@ main() {
     
     while true; do
         show_menu
-        read -p "Selecciona una opción (1-16): " choice
+        read -p "Selecciona una opción (1-17): " choice
         
         case "$choice" in
             1) change_random_wallpaper ;;
@@ -478,7 +520,8 @@ main() {
             13) check_system ;;
             14) optimize_system ;;
             15) show_system_info ;;
-            16) echo "¡Hasta luego!"; exit 0 ;;
+            16) manage_tmux "$2" "$3" ;;
+            17) echo "¡Hasta luego!"; exit 0 ;;
             *) print_error "Opción inválida" ;;
         esac
         
