@@ -163,71 +163,69 @@ install_compiler() {
 install_core_packages() {
     print_section "Instalando paquetes core..."
     
-    local core_packages=(
-        # Hyprland y componentes
-        "hyprland" "waybar" "eww" "swww" "wofi" "mako" "swaylock"
-        "swayidle" "grim" "slurp" "wl-clipboard" "xdg-desktop-portal-hyprland"
-        "xdg-desktop-portal-gtk"
-        
-        # Terminal y shell
-        "kitty" "fish" "starship" "zoxide" "tmux"
-        
-        # Editores
-        "neovim"
-        
-        # Utilidades del sistema
-        "bat" "fd" "ripgrep" "fzf" "btop" "exa" "htop" "ncdu" "iotop" "nvtop"
-        "pavucontrol" "blueman" "networkmanager" "network-manager-applet"
-        "speedtest-cli" "nmtui" "playerctl" "pamixer" "brightnessctl"
-        
-        # Herramientas de desarrollo
-        "nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk"
-        "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
-        "docker" "docker-compose" "podman" "buildah" "skopeo"
-        
-        # Herramientas de imagen y multimedia
-        "imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa"
-        "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib"
-        
-        # Herramientas de captura de pantalla
-        "flameshot" "grim" "slurp" "spectacle" "maim" "xclip"
-        
-        # Herramientas adicionales
-        "lazygit" "lazydocker" "yazi"
-        
-        # Reproductores multimedia
-        "mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop"
-        "obs" "obs-studio" "krita" "gimp" "inkscape"
-        
-        # Herramientas de creación multimedia
-        "lmms" "pixelorama" "upscayl"
-        
-        # Portapapeles e historial
-        "cliphist" "copyq" "obsidian" "libreoffice" "firefox" "brave"
-        "nautilus" "thunar" "geany" "code" "code-marketplace"
-        
-        # Fuentes y temas
-        "nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" 
-        "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono"
-        "papirus-icon-theme" "bibata-cursor-theme"
-        
-        # Gaming y desarrollo
-        "steam" "lutris" "wine" "gamemode" "mangohud" "heroic-games-launcher"
-        "retroarch" "dolphin-emu" "ppsspp" "citra-git"
-        
-        # Herramientas adicionales
-        "jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects"
-        "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper"
-        
-        # Herramientas de seguridad y red
-        "ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn"
-        "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp"
-        "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop"
-        "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs"
-    )
-    
     print_step "Instalando paquetes oficiales..."
-    sudo pacman -S "${core_packages[@]}" --noconfirm --needed
+    
+    # Instalar paquetes en grupos para evitar conflictos
+    local terminal_packages=("kitty" "fish" "starship" "zoxide" "tmux")
+    local editor_packages=("neovim")
+    local system_packages=("bat" "fd" "ripgrep" "fzf" "btop" "exa" "htop" "ncdu" "iotop" "nvtop")
+    local media_packages=("pavucontrol" "blueman" "networkmanager" "network-manager-applet" "speedtest-cli" "nmtui" "playerctl" "pamixer" "brightnessctl")
+    local dev_packages=("nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk" "gcc" "cmake" "ninja" "meson" "valgrind" "gdb")
+    local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
+    local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
+    local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
+    local utility_packages=("lazygit" "lazydocker" "yazi")
+    local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
+    local creation_packages=("obs" "obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
+    local clipboard_packages=("cliphist" "copyq" "obsidian" "libreoffice" "firefox" "brave" "nautilus" "thunar" "geany" "code" "code-marketplace")
+    local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
+    local gaming_packages=("steam" "lutris" "wine" "gamemode" "mangohud" "heroic-games-launcher" "retroarch" "dolphin-emu" "ppsspp" "citra-git")
+    local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper")
+    local security_packages=("ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn" "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp" "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop" "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs")
+    
+    # Instalar paquetes críticos primero
+    print_step "Instalando paquetes críticos..."
+    sudo pacman -S "${terminal_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de terminal fallaron"
+    
+    # Instalar paquetes del sistema
+    print_step "Instalando paquetes del sistema..."
+    sudo pacman -S "${system_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes del sistema fallaron"
+    
+    # Instalar paquetes de desarrollo
+    print_step "Instalando paquetes de desarrollo..."
+    sudo pacman -S "${dev_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de desarrollo fallaron"
+    
+    # Instalar paquetes multimedia
+    print_step "Instalando paquetes multimedia..."
+    sudo pacman -S "${media_packages[@]}" "${image_packages[@]}" "${media_player_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes multimedia fallaron"
+    
+    # Instalar paquetes de utilidades
+    print_step "Instalando paquetes de utilidades..."
+    sudo pacman -S "${utility_packages[@]}" "${capture_packages[@]}" "${additional_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de utilidades fallaron"
+    
+    # Instalar paquetes de creación
+    print_step "Instalando paquetes de creación..."
+    sudo pacman -S "${creation_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de creación fallaron"
+    
+    # Instalar paquetes de portapapeles
+    print_step "Instalando paquetes de portapapeles..."
+    sudo pacman -S "${clipboard_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de portapapeles fallaron"
+    
+    # Instalar paquetes de fuentes
+    print_step "Instalando paquetes de fuentes..."
+    sudo pacman -S "${font_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de fuentes fallaron"
+    
+    # Instalar paquetes de gaming
+    print_step "Instalando paquetes de gaming..."
+    sudo pacman -S "${gaming_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de gaming fallaron"
+    
+    # Instalar paquetes de seguridad
+    print_step "Instalando paquetes de seguridad..."
+    sudo pacman -S "${security_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de seguridad fallaron"
+    
+    # Instalar paquetes de Docker por separado
+    print_step "Instalando paquetes de Docker..."
+    sudo pacman -S "${docker_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de Docker fallaron"
     
     print_success "Paquetes core instalados."
 }
@@ -246,6 +244,21 @@ install_aur_packages() {
     done
     
     print_success "Paquetes AUR instalados."
+}
+
+install_wayland_components() {
+    print_section "Instalando componentes de Wayland..."
+    
+    local wayland_packages=(
+        "hyprland" "waybar" "eww" "swww" "wofi" "mako" "swaylock"
+        "swayidle" "grim" "slurp" "wl-clipboard" "xdg-desktop-portal-hyprland"
+        "xdg-desktop-portal-gtk"
+    )
+    
+    print_step "Instalando componentes de Wayland..."
+    sudo pacman -S "${wayland_packages[@]}" --noconfirm --needed || print_warning "Algunos componentes de Wayland fallaron"
+    
+    print_success "Componentes de Wayland instalados."
 }
 
 # =============================================================================
@@ -1244,6 +1257,9 @@ echo "Ctrl+a + n        - New window"
 echo "Ctrl+a + q        - Kill pane"
 echo "Ctrl+a + Q        - Kill window"
 echo "Ctrl+a + z        - Toggle zoom"
+echo "Ctrl+a + I        - Install plugins"
+echo "• ~/.tmux/tmux-diagnostic.sh - Diagnosticar problemas"
+echo ""
 
 echo -e "\n✅ Diagnostic complete!"
 EOF
@@ -1319,6 +1335,40 @@ verify_installation() {
     else
         print_error "Se encontraron $errors error(es) en la instalación"
     fi
+}
+
+verify_kitty_installation() {
+    print_section "Verificando instalación de Kitty..."
+    
+    print_step "Verificando si Kitty está instalado..."
+    if command -v kitty >/dev/null 2>&1; then
+        print_success "Kitty está instalado: $(kitty --version)"
+    else
+        print_warning "Kitty no está instalado, intentando instalar..."
+        sudo pacman -S kitty --noconfirm --needed
+        if command -v kitty >/dev/null 2>&1; then
+            print_success "Kitty instalado exitosamente"
+        else
+            print_error "Falló al instalar Kitty"
+        fi
+    fi
+    
+    print_step "Verificando configuración de Kitty..."
+    if [ -f "$HOME/.config/kitty/kitty.conf" ]; then
+        print_success "Configuración de Kitty encontrada"
+    else
+        print_warning "Configuración de Kitty no encontrada"
+    fi
+    
+    print_step "Verificando dependencias de Kitty..."
+    local kitty_deps=("fontconfig" "libxkbcommon" "libxkbcommon-x11" "libxkbcommon-x11" "libxkbcommon-x11")
+    for dep in "${kitty_deps[@]}"; do
+        if pacman -Q "$dep" >/dev/null 2>&1; then
+            print_success "Dependencia $dep instalada"
+        else
+            print_warning "Dependencia $dep faltante"
+        fi
+    done
 }
 
 # =============================================================================
@@ -1418,6 +1468,7 @@ main() {
     install_compiler
     install_core_packages
     install_aur_packages
+    install_wayland_components
     install_custom_fonts
     copy_wallpapers
     configure_hyprlock
@@ -1433,6 +1484,7 @@ main() {
     configure_network_monitoring
     configure_tmux
     verify_installation
+    verify_kitty_installation
     show_final_info
 }
 
