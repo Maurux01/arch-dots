@@ -24,8 +24,17 @@ require("lazy").setup({
     lazy = true,
     version = false,
   },
-  install = { colorscheme = { "tokyonight", "catppuccin", "gruvbox" } },
-  checker = { enabled = true },
+  install = { 
+    colorscheme = { "tokyonight", "catppuccin", "gruvbox" },
+    missing = true,
+  },
+  checker = { 
+    enabled = true,
+    notify = false,
+  },
+  change_detection = {
+    notify = false,
+  },
   performance = {
     rtp = {
       disabled_plugins = {
@@ -37,6 +46,33 @@ require("lazy").setup({
         "tohtml",
         "tutor",
         "zipPlugin",
+      },
+    },
+  },
+  ui = {
+    border = "rounded",
+    icons = {
+      cmd = " ",
+      config = " ",
+      event = " ",
+      ft = " ",
+      init = " ",
+      import = " ",
+      keys = " ",
+      lazy = " ",
+      loaded = " ",
+      not_loaded = " ",
+      plugin = " ",
+      runtime = " ",
+      require = " ",
+      source = " ",
+      start = " ",
+      task = " ",
+      list = {
+        " ",
+        " ",
+        " ",
+        " ",
       },
     },
   },

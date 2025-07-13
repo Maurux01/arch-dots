@@ -1,193 +1,140 @@
--- LSP y autocompletado mejorado
+-- LSP configuration
+-- This file is automatically loaded by lazy.nvim
+
 local M = {}
 
--- Configuración de Mason
-require('mason').setup({
-  ui = {
-    border = "rounded",
-    icons = {
-      package_installed = "✓",
-      package_pending = "⟳",
-      package_uninstalled = "✗",
-    },
-  },
-})
-
--- Configuración de Mason LSP
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    "lua_ls",
-    "pyright",
-    "tsserver",
-    "rust_analyzer",
-    "clangd",
-    "gopls",
-    "bashls",
-    "jsonls",
-    "yamlls",
-    "html",
-    "cssls",
-    "emmet_ls",
-  },
-  automatic_installation = true,
-})
-
--- Configuración de LSP
-local lspconfig = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
--- Configuración común para todos los LSPs
-local function setup_lsp(server_name, config)
-  config = config or {}
-  config.capabilities = capabilities
+-- Global on_attach function
+function M.on_attach(client, bufnr)
+  local opts = { noremap = true, silent = true, buffer = bufnr }
   
-  lspconfig[server_name].setup(config)
+  -- Keymaps
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+  vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+  
+  -- Format on save
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end
 end
 
--- Configurar LSPs específicos
-setup_lsp("lua_ls", {
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      telemetry = { enable = false },
-    },
-  },
-})
+-- LSP capabilities
+function M.capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+  return capabilities
+end
 
-setup_lsp("pyright", {
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-        diagnosticMode = "workspace",
-      },
-    },
-  },
-})
-
-setup_lsp("tsserver", {
-  settings = {
-    typescript = {
-      inlayHints = {
-        includeInlayParameterNameHints = "all",
-        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = true,
-        includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
+-- LSP servers configuration
+local servers = {
+  lua_ls = {
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = {
+            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+            [vim.fn.stdpath("config") .. "/lua"] = true,
+          },
+        },
       },
     },
   },
-})
-
-setup_lsp("rust_analyzer", {
-  settings = {
-    ["rust-analyzer"] = {
-      checkOnSave = {
-        command = "clippy",
+  pyright = {
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = "basic",
+        },
       },
     },
   },
-})
-
-setup_lsp("clangd", {
-  settings = {
-    clangd = {
-      arguments = {
-        "--background-index",
-        "--clang-tidy",
-        "--header-insertion=iwyu",
-        "--completion-style=detailed",
-        "--fallback-style=Google",
+  tsserver = {
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
       },
     },
   },
-})
-
-setup_lsp("gopls", {
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
+  rust_analyzer = {
+    settings = {
+      ["rust-analyzer"] = {
+        checkOnSave = {
+          command = "clippy",
+        },
       },
-      staticcheck = true,
     },
   },
-})
-
-setup_lsp("bashls")
-setup_lsp("jsonls")
-setup_lsp("yamlls")
-setup_lsp("html")
-setup_lsp("cssls")
-setup_lsp("emmet_ls")
-
--- nvim-cmp setup mejorado
-local cmp = require('cmp')
-local luasnip = require('luasnip')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
+  gopls = {
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+      },
+    },
   },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end),
-  }),
-  sources = {
-    { name = 'nvim_lsp', priority = 1000 },
-    { name = 'luasnip', priority = 750 },
-    { name = 'buffer', priority = 500 },
-    { name = 'path', priority = 250 },
+  clangd = {
+    settings = {
+      clangd = {
+        arguments = {
+          "--background-index",
+          "--clang-tidy",
+          "--header-insertion=iwyu",
+          "--completion-style=detailed",
+          "--fallback-style=llvm",
+        },
+      },
+    },
   },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  formatting = {
-    fields = { "kind", "abbr", "menu" },
-    format = function(entry, vim_item)
-      vim_item.kind = string.format("%s", vim_item.kind)
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
-      })[entry.source.name]
-      return vim_item
-    end,
-  },
-})
+}
 
--- Configurar luasnip
-require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip.loaders.from_lua").lazy_load()
+-- Setup LSP servers
+function M.setup()
+  local lspconfig = require("lspconfig")
+  
+  for server, config in pairs(servers) do
+    lspconfig[server].setup({
+      on_attach = M.on_attach,
+      capabilities = M.capabilities(),
+      settings = config.settings,
+    })
+  end
+end
 
 return M 
