@@ -524,23 +524,284 @@ copy_dotfiles() {
                         print_step "Saltando grub-themes (manejado por install_grub_theme)"
                         ;;
                     "tmux")
-                        print_step "Copiando configuración Tmux..."
+                        print_step "Configurando Tmux con TPM y keybindings..."
+                        
+                        # Crear directorio de configuración tmux
+                        mkdir -p "$HOME/.tmux"
+                        mkdir -p "$HOME/.tmux/plugins"
+                        
+                        # Instalar TPM si no existe
+                        if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+                            print_step "Instalando TPM (Tmux Plugin Manager)..."
+                            git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+                            print_success "TPM instalado"
+                        else
+                            print_success "TPM ya está instalado"
+                        fi
+                        
+                        # Copiar configuración tmux
                         if [ -f "$item/.tmux.conf" ]; then
                             cp "$item/.tmux.conf" "$HOME/.tmux.conf"
                             print_success "Configuración Tmux copiada a $HOME/.tmux.conf"
-                            
-                            mkdir -p "$HOME/.tmux"
-                            
-                            print_step "Instalando plugin Catppuccin tmux..."
-                            mkdir -p ~/.config/tmux/plugins/catppuccin
-                            if git clone -b v2.1.3 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux 2>/dev/null; then
-                                print_success "Plugin Catppuccin tmux instalado"
-                            else
-                                print_warning "Falló al instalar plugin Catppuccin tmux"
-                            fi
                         else
-                            print_error "Archivo de configuración Tmux no encontrado"
+                            print_warning "Archivo de configuración Tmux no encontrado, creando configuración básica"
+                            cat > "$HOME/.tmux.conf" << 'EOF'
+# =============================================================================
+# TMUX CONFIGURATION - Optimized for Neovim VimX
+# =============================================================================
+
+# =============================================================================
+# BASIC SETTINGS
+# =============================================================================
+
+# Set prefix to Ctrl+a (easy to reach and doesn't conflict)
+unbind C-b
+set -g prefix C-a
+bind a send-prefix
+
+# Enable mouse support
+set -g mouse on
+
+# Start window numbering at 1
+set -g base-index 1
+set -g pane-base-index 1
+
+# Automatically renumber windows
+set -g renumber-windows on
+
+# Increase scrollback buffer size
+set -g history-limit 50000
+
+# Increase message display time
+set -g display-time 4000
+
+# Set terminal colors
+set -g default-terminal "screen-256color"
+set -ga terminal-overrides ",xterm-256color:Tc"
+
+# Enable focus events
+set -g focus-events on
+
+# =============================================================================
+# PLUGIN MANAGER - TPM (Tmux Plugin Manager)
+# =============================================================================
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
+# Theme - Catppuccin
+set -g @plugin 'catppuccin/tmux#v2.1.3'
+set -g @catppuccin_flavor 'mocha' # latte, frappe, macchiato or mocha
+
+# Theme and Status Bar
+set -g @plugin 'tmux-plugins/tmux-pain-control'
+set -g @plugin 'tmux-plugins/tmux-battery'
+set -g @plugin 'tmux-plugins/tmux-cpu'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-urlview'
+
+# Session Management
+set -g @plugin 'tmux-plugins/tmux-sessionist'
+set -g @plugin 'tmux-plugins/tmux-fpp'
+
+# Navigation and Search
+set -g @plugin 'tmux-plugins/tmux-fingers'
+set -g @plugin 'tmux-plugins/tmux-logging'
+
+# =============================================================================
+# PLUGIN CONFIGURATION
+# =============================================================================
+
+# Resurrect - Save/Restore sessions
+set -g @resurrect-capture-pane-contents 'on'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-dir '~/.tmux/resurrect'
+
+# Continuum - Auto save every 15 minutes
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+
+# Battery
+set -g @batt_icon_charge_tier8 ' '
+set -g @batt_icon_charge_tier7 ' '
+set -g @batt_icon_charge_tier6 ' '
+set -g @batt_icon_charge_tier5 ' '
+set -g @batt_icon_charge_tier4 ' '
+set -g @batt_icon_charge_tier3 ' '
+set -g @batt_icon_charge_tier2 ' '
+set -g @batt_icon_charge_tier1 ' '
+
+# Catppuccin Theme Configuration
+set -g @catppuccin_window_left_separator "█"
+set -g @catppuccin_window_right_separator "█"
+set -g @catppuccin_window_middle_separator "█"
+set -g @catppuccin_window_number_position "right"
+set -g @catppuccin_window_default_fill "number"
+set -g @catppuccin_window_current_fill "number"
+set -g @catppuccin_window_default_text "#W"
+set -g @catppuccin_window_current_text "#W"
+set -g @catppuccin_status_modules_right "directory session"
+set -g @catppuccin_status_modules_left "session"
+set -g @catppuccin_status_left_separator "█"
+set -g @catppuccin_status_right_separator "█"
+set -g @catppuccin_status_right_separator_inverse "no"
+set -g @catppuccin_status_fill "icon"
+set -g @catppuccin_status_connect_separator "yes"
+
+# =============================================================================
+# CATPPUCCIN MOCHA CUSTOM COLORS
+# =============================================================================
+# Add the colors from the palette. Check the themes/ directory for all options.
+
+# Some basic mocha colors.
+set -g @ctp_bg "#24273a"
+set -g @ctp_surface_1 "#494d64"
+set -g @ctp_fg "#cad3f5"
+set -g @ctp_mauve "#c6a0f6"
+set -g @ctp_crust "#181926"
+
+# Status line
+set -gF status-style "bg=#{@ctp_bg},fg=#{@ctp_fg}"
+
+# Windows
+set -gF window-status-format "#[bg=#{@ctp_surface_1},fg=#{@ctp_fg}] ##I ##T "
+set -gF window-status-current-format "#[bg=#{@ctp_mauve},fg=#{@ctp_crust}] ##I ##T "
+
+# =============================================================================
+# STATUS BAR CONFIGURATION - Catppuccin Theme
+# =============================================================================
+
+# Status bar configuration is now handled by Catppuccin theme
+# The theme will automatically apply beautiful Catppuccin colors
+# and styling to the status bar
+
+# Window status
+set -g window-status-format " #I:#W#F "
+set -g window-status-current-format " #I:#W#F "
+set -g window-status-current-style bg=colour136,fg=colour235
+
+# =============================================================================
+# KEYBINDINGS - Optimized for Neovim VimX (Easy & Non-Conflicting)
+# =============================================================================
+
+# Reload config
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# =============================================================================
+# PANE MANAGEMENT - Easy Splits & Navigation
+# =============================================================================
+
+# Split panes - More intuitive keys
+bind v split-window -h -c "#{pane_current_path}"  # Vertical split (v for vertical)
+bind s split-window -v -c "#{pane_current_path}"  # Horizontal split (s for split)
+unbind '"'
+unbind %
+
+# Switch panes - Super easy navigation (no prefix needed)
+bind -n C-h select-pane -L  # Ctrl+h (like vim)
+bind -n C-j select-pane -D  # Ctrl+j (like vim)
+bind -n C-k select-pane -U  # Ctrl+k (like vim)
+bind -n C-l select-pane -R  # Ctrl+l (like vim)
+
+# Resize panes - Easy resize with Ctrl+Shift
+bind -n C-S-h resize-pane -L 5
+bind -n C-S-j resize-pane -D 5
+bind -n C-S-k resize-pane -U 5
+bind -n C-S-l resize-pane -R 5
+
+# =============================================================================
+# WINDOW MANAGEMENT - Easy Window Control
+# =============================================================================
+
+# Switch windows - Easy number keys
+bind -n C-1 select-window -t :1
+bind -n C-2 select-window -t :2
+bind -n C-3 select-window -t :3
+bind -n C-4 select-window -t :4
+bind -n C-5 select-window -t :5
+bind -n C-6 select-window -t :6
+bind -n C-7 select-window -t :7
+bind -n C-8 select-window -t :8
+bind -n C-9 select-window -t :9
+bind -n C-0 select-window -t :10
+
+# Quick window creation
+bind n new-window -c "#{pane_current_path}"  # n for new
+bind N new-window
+
+# Kill pane/window
+bind q kill-pane   # q for quit
+bind Q kill-window # Q for quit window
+
+# Toggle zoom
+bind z resize-pane -Z  # z for zoom
+
+# =============================================================================
+# COPY MODE - Easy Copy/Paste
+# =============================================================================
+
+# Enter copy mode
+bind -n C-b copy-mode  # Ctrl+b to enter copy mode
+
+# Search in copy mode
+bind -n C-f copy-mode \; send-keys -X search-forward
+bind -n C-g copy-mode \; send-keys -X search-backward
+
+# =============================================================================
+# PLUGIN KEYBINDINGS - Easy Access
+# =============================================================================
+
+# Resurrect - Save/Restore sessions
+bind S run-shell '~/.tmux/plugins/tmux-resurrect/scripts/save.sh'
+bind R run-shell '~/.tmux/plugins/tmux-resurrect/scripts/restore.sh'
+
+# Fingers - URL/file detection
+bind F run-shell -b "~/.tmux/plugins/tmux-fingers/scripts/tmux-fingers.sh"
+
+# URL View
+bind u run-shell "~/.tmux/plugins/tmux-urlview/scripts/tmux-urlview.sh"
+
+# Sessionist
+bind C-S-f run-shell "~/.tmux/plugins/tmux-sessionist/scripts/kill_session.sh"
+bind C-S-s run-shell "~/.tmux/plugins/tmux-sessionist/scripts/switch_session.sh"
+
+# =============================================================================
+# UTILITY KEYBINDINGS
+# =============================================================================
+
+# Synchronize panes
+bind y set-window-option synchronize-panes
+
+# Rename window
+bind , command-prompt -I "#W" "rename-window '%%'"
+
+# =============================================================================
+# INITIALIZE TPM
+# =============================================================================
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+EOF
                         fi
+                        
+                        print_step "Instalando plugins de Tmux..."
+                        # Crear script para instalar plugins después de la primera sesión
+                        cat > "$HOME/.tmux/install-plugins.sh" << 'EOF'
+#!/bin/bash
+# Script para instalar plugins de tmux
+echo "Instalando plugins de Tmux..."
+tmux source-file ~/.tmux.conf
+echo "Plugins instalados. Reinicia tmux para aplicar cambios."
+EOF
+                        chmod +x "$HOME/.tmux/install-plugins.sh"
+                        
+                        print_success "Tmux configurado con TPM y keybindings"
+                        print_info "Para instalar plugins: tmux new-session, luego Ctrl+a + I"
                         ;;
                     *)
                         if [[ "$target_path" == /etc/* ]]; then
@@ -835,6 +1096,142 @@ EOF
     print_info "Usa: sudo /usr/local/bin/network-monitor.sh"
 }
 
+configure_tmux() {
+    print_section "Configurando Tmux..."
+    
+    print_step "Verificando instalación de tmux..."
+    if ! command -v tmux >/dev/null 2>&1; then
+        print_step "Instalando tmux..."
+        sudo pacman -S tmux --noconfirm --needed
+    fi
+    
+    print_step "Creando directorios de configuración tmux..."
+    mkdir -p "$HOME/.tmux"
+    mkdir -p "$HOME/.tmux/plugins"
+    
+    print_step "Instalando TPM (Tmux Plugin Manager)..."
+    if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+        print_success "TPM instalado"
+    else
+        print_success "TPM ya está instalado"
+    fi
+    
+    print_step "Creando script de diagnóstico tmux..."
+    cat > "$HOME/.tmux/tmux-diagnostic.sh" << 'EOF'
+#!/bin/bash
+
+# =============================================================================
+# TMUX DIAGNOSTIC SCRIPT - Troubleshoot Keybinding Issues
+# =============================================================================
+
+echo "🔍 TMUX DIAGNOSTIC TOOL"
+echo "=========================="
+
+# Check if tmux is installed
+echo "1. Checking tmux installation..."
+if command -v tmux &> /dev/null; then
+    echo "✅ tmux is installed: $(tmux -V)"
+else
+    echo "❌ tmux is not installed"
+    exit 1
+fi
+
+# Check tmux configuration
+echo -e "\n2. Checking tmux configuration..."
+if [ -f ~/.tmux.conf ]; then
+    echo "✅ ~/.tmux.conf exists"
+    echo "   Size: $(wc -l < ~/.tmux.conf) lines"
+else
+    echo "❌ ~/.tmux.conf not found"
+fi
+
+# Check TPM installation
+echo -e "\n3. Checking TPM (Tmux Plugin Manager)..."
+if [ -d ~/.tmux/plugins/tpm ]; then
+    echo "✅ TPM is installed"
+    echo "   Plugins directory: ~/.tmux/plugins/"
+    echo "   Installed plugins:"
+    ls -la ~/.tmux/plugins/ 2>/dev/null || echo "   No plugins found"
+else
+    echo "❌ TPM not found at ~/.tmux/plugins/tpm"
+    echo "   Installing TPM..."
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
+# Check current tmux sessions
+echo -e "\n4. Checking tmux sessions..."
+if tmux list-sessions &> /dev/null; then
+    echo "✅ tmux sessions found:"
+    tmux list-sessions
+else
+    echo "ℹ️  No active tmux sessions"
+fi
+
+# Test keybindings
+echo -e "\n5. Testing keybindings..."
+echo "   Starting a test tmux session..."
+tmux new-session -d -s test_session
+sleep 2
+
+# Check if prefix is working
+echo "   Testing prefix key (Ctrl+a)..."
+tmux send-keys -t test_session "echo 'Testing prefix...'" Enter
+sleep 1
+
+# List all keybindings
+echo -e "\n6. Current keybindings:"
+tmux list-keys -t test_session | head -20
+
+# Check for conflicts
+echo -e "\n7. Checking for potential conflicts..."
+echo "   Common issues:"
+echo "   - Terminal emulator key conflicts"
+echo "   - System-wide shortcuts"
+echo "   - Other applications using Ctrl+Space"
+
+# Cleanup
+echo -e "\n8. Cleaning up test session..."
+tmux kill-session -t test_session
+
+echo -e "\n🔧 TROUBLESHOOTING TIPS:"
+echo "=========================="
+echo "1. Make sure you're pressing Ctrl+a (not Ctrl+b)"
+echo "2. Try: tmux source-file ~/.tmux.conf"
+echo "3. Check if your terminal supports the key combinations"
+echo "4. Verify TPM plugins are installed: prefix + I"
+echo "5. Test in a fresh tmux session: tmux new-session"
+
+echo -e "\n📋 COMMON KEYBINDINGS:"
+echo "========================"
+echo "Ctrl+a + v        - Vertical split"
+echo "Ctrl+a + s        - Horizontal split"
+echo "Ctrl+h/j/k/l      - Navigate panes (no prefix needed)"
+echo "Ctrl+1-9          - Switch windows (no prefix needed)"
+echo "Ctrl+a + n        - New window"
+echo "Ctrl+a + q        - Kill pane"
+echo "Ctrl+a + Q        - Kill window"
+echo "Ctrl+a + z        - Toggle zoom"
+
+echo -e "\n✅ Diagnostic complete!"
+EOF
+    chmod +x "$HOME/.tmux/tmux-diagnostic.sh"
+    
+    print_step "Creando script de instalación de plugins..."
+    cat > "$HOME/.tmux/install-plugins.sh" << 'EOF'
+#!/bin/bash
+# Script para instalar plugins de tmux
+echo "Instalando plugins de Tmux..."
+tmux source-file ~/.tmux.conf
+echo "Plugins instalados. Reinicia tmux para aplicar cambios."
+EOF
+    chmod +x "$HOME/.tmux/install-plugins.sh"
+    
+    print_success "Tmux configurado con TPM y herramientas de diagnóstico"
+    print_info "Para diagnosticar problemas: ~/.tmux/tmux-diagnostic.sh"
+    print_info "Para instalar plugins: tmux new-session, luego Ctrl+a + I"
+}
+
 # =============================================================================
 #                           ✅ FUNCIONES DE VERIFICACIÓN
 # =============================================================================
@@ -916,6 +1313,20 @@ show_final_info() {
     echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
     
+    echo "📋 Comandos Tmux:"
+    echo "• tmux new-session - Iniciar nueva sesión"
+    echo "• Ctrl+a + v - División vertical"
+    echo "• Ctrl+a + s - División horizontal"
+    echo "• Ctrl+h/j/k/l - Navegar entre paneles (sin prefix)"
+    echo "• Ctrl+1-9 - Cambiar ventanas (sin prefix)"
+    echo "• Ctrl+a + n - Nueva ventana"
+    echo "• Ctrl+a + q - Cerrar panel"
+    echo "• Ctrl+a + Q - Cerrar ventana"
+    echo "• Ctrl+a + z - Alternar zoom"
+    echo "• Ctrl+a + I - Instalar plugins"
+    echo "• ~/.tmux/tmux-diagnostic.sh - Diagnosticar problemas"
+    echo ""
+    
     echo "🛡️ Comandos de seguridad:"
     echo "• sudo ufw status - Estado del firewall"
     echo "• sudo ufw allow [puerto] - Permitir puerto"
@@ -987,6 +1398,7 @@ main() {
     configure_vpn
     configure_security_tools
     configure_network_monitoring
+    configure_tmux
     verify_installation
     show_final_info
 }
