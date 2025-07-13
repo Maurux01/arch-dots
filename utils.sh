@@ -22,7 +22,7 @@ WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 print_header() {
     echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║                    UTILIDADES ARCH DOTS                      ║${NC}"
-    echo -e "${BLUE}║                    Script consolidado                       ║${NC}"
+    echo -e "${BLUE}║                    Script consolidado                        ║${NC}"
     echo -e "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
 }
