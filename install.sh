@@ -531,7 +531,7 @@ copy_dotfiles() {
         ["mako"]="$HOME/.config/mako"
         ["swww"]="$HOME/.config/swww"
         ["fish"]="$HOME/.config/fish"
-        ["tmux"]="$HOME/.config/tmux"
+        ["tmux"]="$HOME/.tmux.conf"
         ["neofetch"]="$HOME/.config/neofetch"
         ["sddm"]="/etc/sddm.conf.d"
         ["grub-themes"]="/usr/share/grub/themes"
@@ -583,6 +583,16 @@ copy_dotfiles() {
                     "grub-themes")
                         # Skip grub themes as they're handled separately
                         print_step "Skipping grub-themes (handled by install_grub_theme function)"
+                        ;;
+                    "tmux")
+                        # Copy tmux config to the correct location
+                        print_step "Copying Tmux configuration..."
+                        if [ -f "$item/.tmux.conf" ]; then
+                            cp "$item/.tmux.conf" "$target_path"
+                            print_success "Tmux config copied to $target_path"
+                        else
+                            print_error "Tmux config file not found"
+                        fi
                         ;;
                     *)
                         # Standard copy for other configs
