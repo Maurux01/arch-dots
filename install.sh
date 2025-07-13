@@ -232,57 +232,33 @@ install_essential_packages() {
     print_success "Paquetes esenciales instalados"
 }
 
-# Función para configurar Hyperlock
-configure_hyperlock() {
-    print_section "Configurando Hyperlock..."
+# Función para configurar Hyprlock
+configure_hyprlock() {
+    print_section "Configurando Hyprlock..."
     
-    print_step "Instalando Hyperlock..."
-    yay -S "hyperlock" --noconfirm --needed
+    print_step "Verificando instalación de hyprlock..."
+    if ! command -v hyprlock >/dev/null 2>&1; then
+        print_step "Instalando hyprlock..."
+        yay -S "hyprlock" --noconfirm --needed
+    fi
     
-    print_step "Configurando Hyperlock..."
-    mkdir -p "$HOME/.config/hyperlock"
+    print_step "Configurando Hyprlock..."
+    mkdir -p "$HOME/.config/hyprlock"
     
-    # Crear configuración básica de Hyperlock
-    cat > "$HOME/.config/hyperlock/config.toml" << 'EOF'
-# Configuración de Hyperlock
-[general]
-idle_timeout = 300
-show_indicator = true
-indicator_position = "top"
-indicator_color = "#89b4fa"
-indicator_size = 2
-show_datetime = true
-datetime_format = "%H:%M"
-datetime_position = "center"
-datetime_color = "#cdd6f4"
-datetime_font_size = 24
-show_background = true
-background_blur = 10
-background_opacity = 0.8
-show_lock_message = true
-lock_message = "Pantalla bloqueada"
-lock_message_color = "#cdd6f4"
-lock_message_font_size = 16
-lock_message_position = "bottom"
-play_sound = false
-show_battery = true
-show_network = true
-show_volume = true
-
-[colors]
-background = "#1e1e2e"
-surface = "#313244"
-primary = "#89b4fa"
-secondary = "#f5c2e7"
-accent = "#f38ba8"
-text = "#cdd6f4"
-text_secondary = "#a6adc8"
-error = "#f38ba8"
-success = "#a6e3a1"
-warning = "#f9e2af"
-EOF
-    
-    print_success "Hyperlock configurado"
+    # Si existe configuración en dotfiles, copiarla
+    if [ -f "$DOTFILES_DIR/hyprlock/hyprlock.conf" ]; then
+        print_step "Copiando configuración de hyprlock desde dotfiles..."
+        cp "$DOTFILES_DIR/hyprlock/hyprlock.conf" "$HOME/.config/hyprlock/"
+        
+        # Copiar assets si existen
+        if [ -d "$DOTFILES_DIR/hyprlock/assets" ]; then
+            cp -r "$DOTFILES_DIR/hyprlock/assets" "$HOME/.config/hyprlock/"
+        fi
+        
+        print_success "Configuración de hyprlock copiada"
+    else
+        print_warning "No se encontró configuración de hyprlock en dotfiles"
+    fi
 }
 
 # Función para configurar portapapeles e historial
@@ -517,10 +493,9 @@ copy_dotfiles() {
     
     print_step "Copying configurations..."
     
-    # Map folders to their correct paths
+    # Map folders to their correct paths with specific handling
     declare -A config_paths=(
         ["hypr"]="$HOME/.config/hypr"
-        ["waybar"]="$HOME/.config/waybar"
         ["kitty"]="$HOME/.config/kitty"
         ["nvim"]="$HOME/.config/nvim"
         ["eww"]="$HOME/.config/eww"
@@ -530,6 +505,8 @@ copy_dotfiles() {
         ["fish"]="$HOME/.config/fish"
         ["tmux"]="$HOME/.config/tmux"
         ["neofetch"]="$HOME/.config/neofetch"
+        ["sddm"]="/etc/sddm.conf.d"
+        ["grub-themes"]="/usr/share/grub/themes"
     )
     
     # Copy each folder to its correct location
@@ -541,20 +518,53 @@ copy_dotfiles() {
             if [ -n "$target_path" ]; then
                 print_step "Copying $dirname to $target_path..."
                 mkdir -p "$(dirname "$target_path")"
-                cp -r "$item"/* "$target_path/" 2>/dev/null || cp -r "$item" "$(dirname "$target_path")/"
+                
+                # Special handling for different types of configs
+                case "$dirname" in
+                    "nvim")
+                        # Copy nvim config with backup handling
+                        if [ -d "$HOME/.config/nvim" ]; then
+                            print_step "Backing up existing nvim config..."
+                            mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
+                        fi
+                        cp -r "$item" "$HOME/.config/nvim"
+                        print_success "Neovim config copied"
+                        ;;
+                    "sddm")
+                        # Copy SDDM config to system location
+                        print_step "Copying SDDM configuration..."
+                        sudo cp "$item"/* "$target_path/" 2>/dev/null || true
+                        print_success "SDDM config copied"
+                        ;;
+                    "grub-themes")
+                        # Skip grub themes as they're handled separately
+                        print_step "Skipping grub-themes (handled by install_grub_theme function)"
+                        ;;
+                    *)
+                        # Standard copy for other configs
+                        if [[ "$target_path" == /etc/* ]]; then
+                            # System configs need sudo
+                            sudo cp -r "$item"/* "$target_path/" 2>/dev/null || sudo cp -r "$item" "$(dirname "$target_path")/"
+                        else
+                            # User configs
+                            cp -r "$item"/* "$target_path/" 2>/dev/null || cp -r "$item" "$(dirname "$target_path")/"
+                        fi
+                        print_success "$dirname copied to $target_path"
+                        ;;
+                esac
             else
                 print_step "Copying $dirname to ~/.config/$dirname..."
                 cp -r "$item" "$HOME/.config/"
+                print_success "$dirname copied to ~/.config/$dirname"
             fi
         fi
     done
     
     # Make scripts executable
     print_step "Making scripts executable..."
-    chmod +x "$HOME/.config/waybar/scripts"/*.sh 2>/dev/null || true
-    chmod +x "$HOME/.config/scripts"/*.sh 2>/dev/null || true
+    find "$HOME/.config" -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null || true
     
-    # Copy scripts
+    # Copy scripts to proper location
     if [ -d "$DOTFILES_DIR/scripts" ]; then
         print_step "Copying scripts..."
         mkdir -p "$HOME/.config/scripts"
@@ -563,25 +573,146 @@ copy_dotfiles() {
         print_success "Scripts copied to ~/.config/scripts/"
     fi
     
-    # Copy specific configuration files
+    # Copy specific configuration files with proper handling
     if [ -f "$DOTFILES_DIR/fish/config.fish" ]; then
         print_step "Copying Fish configuration..."
         mkdir -p "$HOME/.config/fish"
         cp "$DOTFILES_DIR/fish/config.fish" "$HOME/.config/fish/"
+        print_success "Fish config copied"
     fi
     
     if [ -f "$DOTFILES_DIR/neofetch/neofetch.conf" ]; then
         print_step "Copying Neofetch configuration..."
         mkdir -p "$HOME/.config/neofetch"
         cp "$DOTFILES_DIR/neofetch/neofetch.conf" "$HOME/.config/neofetch/"
+        print_success "Neofetch config copied"
     fi
     
     if [ -f "$DOTFILES_DIR/neofetch/fastfetch.jsonc" ]; then
         print_step "Copying Fastfetch configuration..."
         cp "$DOTFILES_DIR/neofetch/fastfetch.jsonc" "$HOME/.config/"
+        print_success "Fastfetch config copied"
     fi
     
-    print_success "Dotfiles copied."
+    # Copy SDDM configuration files
+    if [ -d "$DOTFILES_DIR/sddm" ]; then
+        print_step "Copying SDDM configuration..."
+        sudo mkdir -p /etc/sddm.conf.d
+        sudo cp "$DOTFILES_DIR/sddm"/* /etc/sddm.conf.d/ 2>/dev/null || true
+        print_success "SDDM config copied"
+    fi
+    
+    # Copy hyprlock configuration
+    if [ -f "$DOTFILES_DIR/hyprlock/hyprlock.conf" ]; then
+        print_step "Copying Hyprlock configuration..."
+        mkdir -p "$HOME/.config/hyprlock"
+        cp "$DOTFILES_DIR/hyprlock/hyprlock.conf" "$HOME/.config/hyprlock/"
+        print_success "Hyprlock config copied"
+    fi
+    
+    print_success "All dotfiles copied successfully."
+}
+
+# Verification function
+verify_installation() {
+    print_section "Verificando instalación..."
+    
+    local errors=0
+    
+    # Check essential directories
+    local essential_dirs=(
+        "$HOME/.config/hypr"
+        "$HOME/.config/kitty"
+        "$HOME/.config/fish"
+        "$HOME/.config/nvim"
+        "$HOME/.config/eww"
+        "$HOME/.config/wofi"
+        "$HOME/.config/mako"
+        "$HOME/.config/swww"
+    )
+    
+    for dir in "${essential_dirs[@]}"; do
+        if [ -d "$dir" ]; then
+            print_success "✓ $dir exists"
+        else
+            print_error "✗ $dir missing"
+            ((errors++))
+        fi
+    done
+    
+    # Check essential files
+    local essential_files=(
+        "$HOME/.config/hypr/hyprland.conf"
+        "$HOME/.config/fish/config.fish"
+        "$HOME/.config/kitty/kitty.conf"
+    )
+    
+    for file in "${essential_files[@]}"; do
+        if [ -f "$file" ]; then
+            print_success "✓ $file exists"
+        else
+            print_error "✗ $file missing"
+            ((errors++))
+        fi
+    done
+    
+    # Check if fish is default shell
+    if [ "$SHELL" = "/usr/bin/fish" ]; then
+        print_success "✓ Fish is default shell"
+    else
+        print_warning "⚠ Fish is not default shell (current: $SHELL)"
+    fi
+    
+    if [ $errors -eq 0 ]; then
+        print_success "All essential components verified successfully"
+    else
+        print_error "Found $errors error(s) in installation"
+    fi
+}
+
+# Fish shell configuration function
+configure_fish_shell() {
+    print_section "Configuring Fish shell..."
+    
+    print_step "Setting Fish as default shell..."
+    # Add fish to /etc/shells if not already there
+    if ! grep -q "/usr/bin/fish" /etc/shells; then
+        echo "/usr/bin/fish" | sudo tee -a /etc/shells
+    fi
+    
+    # Change default shell to fish
+    sudo chsh -s /usr/bin/fish "$USER"
+    print_success "Fish shell set as default"
+    
+    print_step "Configuring Fish environment..."
+    # Create fish config directory if it doesn't exist
+    mkdir -p "$HOME/.config/fish"
+    
+    # Ensure fish config is properly set up
+    if [ -f "$HOME/.config/fish/config.fish" ]; then
+        print_success "Fish configuration found"
+    else
+        print_warning "Fish configuration not found, creating basic config"
+        cat > "$HOME/.config/fish/config.fish" << 'EOF'
+# Fish shell configuration
+set -g fish_greeting ""
+
+# Add local bin to PATH
+set -gx PATH $HOME/.local/bin $PATH
+
+# Source starship if available
+if command -q starship
+    starship init fish | source
+end
+
+# Source zoxide if available
+if command -q zoxide
+    zoxide init fish | source
+end
+EOF
+    fi
+    
+    print_success "Fish shell configured"
 }
 
 # Basic system configuration function
@@ -592,7 +723,6 @@ configure_system() {
     # Do everything in parallel for speed
     sudo usermod -aG wheel "$USER" &
     sudo systemctl enable NetworkManager bluetooth gdm &
-    sudo chsh -s /usr/bin/fish "$USER" &
     wait
     
     print_step "Configuring GDM for Hyprland..."
@@ -651,12 +781,14 @@ main() {
     install_essential_packages
     install_custom_fonts
     copy_wallpapers
-    configure_hyperlock
+    configure_hyprlock
     configure_clipboard
     configure_waypaper
     install_grub_theme
     copy_dotfiles
+    configure_fish_shell
     configure_system
+    verify_installation
     show_final_info
 }
 
