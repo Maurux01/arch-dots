@@ -47,6 +47,13 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias home='cd ~'
 
+# Terminal management
+alias q='exit'  # Quick exit from terminal
+alias t='tmux-session'  # Quick tmux session
+alias tm='tmux-session main'
+alias tdev='tmux-session dev'
+alias twork='tmux-session work'
+
 # Git
 alias gs='git status'
 alias ga='git add .'
@@ -204,12 +211,6 @@ function tmux-session --argument-names session_name
         tmux new-session -s "$session_name"
     end
 end
-
-# Alias for quick tmux access
-alias t="tmux-session"
-alias tm="tmux-session main"
-alias tdev="tmux-session dev"
-alias twork="tmux-session work"
 
 # Get cheat sheets from cheat.sh
 function cheat
