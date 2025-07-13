@@ -6,7 +6,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     keys = {
-      { "<leader>e", "<cmd>TSPlaygroundToggle<cr>", desc = "Toggle Treesitter playground" },
+      { "<leader>e", "<cmd>lua require('snacks').explorer()<cr>", desc = "Open Snacks Explorer" },
       { "<leader>ef", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
       { "<leader>ec", "<cmd>NvimTreeCollapse<cr>", desc = "Collapse file explorer" },
       { "<leader>er", "<cmd>NvimTreeRefresh<cr>", desc = "Refresh file explorer" },
