@@ -585,11 +585,19 @@ copy_dotfiles() {
                         print_step "Skipping grub-themes (handled by install_grub_theme function)"
                         ;;
                     "tmux")
-                        # Copy tmux config to the correct location
+                        # Copy tmux config and create tmux directory in home
                         print_step "Copying Tmux configuration..."
                         if [ -f "$item/.tmux.conf" ]; then
-                            cp "$item/.tmux.conf" "$target_path"
-                            print_success "Tmux config copied to $target_path"
+                            # Copy tmux.conf to home directory
+                            cp "$item/.tmux.conf" "$HOME/.tmux.conf"
+                            print_success "Tmux config copied to $HOME/.tmux.conf"
+                            
+                            # Create tmux directory in home for plugins
+                            mkdir -p "$HOME/.tmux"
+                            if [ -d "$item/scripts" ]; then
+                                cp -r "$item/scripts" "$HOME/.tmux/"
+                                print_success "Tmux scripts copied to $HOME/.tmux/scripts/"
+                            fi
                         else
                             print_error "Tmux config file not found"
                         fi

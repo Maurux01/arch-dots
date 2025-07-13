@@ -55,23 +55,33 @@ backup_config() {
 update_tmux() {
     print_section "🖥️  ACTUALIZANDO CONFIGURACIÓN DE TMUX"
     
+    # Get the script directory
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    
     # Backup existing tmux config
     backup_config "$HOME/.tmux.conf" "$HOME/.tmux.conf.backup.$(date +%Y%m%d_%H%M%S)"
     
     # Copy tmux config
     print_step "Copiando configuración de Tmux..."
-    if [ -f "dotfiles/tmux/.tmux.conf" ]; then
-        cp "dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
+    if [ -f "$SCRIPT_DIR/dotfiles/tmux/.tmux.conf" ]; then
+        cp "$SCRIPT_DIR/dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
         print_success "Configuración de Tmux actualizada"
         
-        # Create tmux plugins directory if it doesn't exist
+        # Create tmux directory and plugins directory if they don't exist
         mkdir -p "$HOME/.tmux/plugins"
+        
+        # Copy tmux scripts if they exist
+        if [ -d "$SCRIPT_DIR/dotfiles/tmux/scripts" ]; then
+            mkdir -p "$HOME/.tmux/scripts"
+            cp -r "$SCRIPT_DIR/dotfiles/tmux/scripts"/* "$HOME/.tmux/scripts/"
+            print_success "Tmux scripts copied to $HOME/.tmux/scripts/"
+        fi
         
         print_warning "Para instalar plugins de Tmux, ejecuta en una sesión de tmux:"
         echo -e "${CYAN}  Ctrl+Space + I${NC} (mayúscula i)"
         
     else
-        print_error "No se encontró dotfiles/tmux/.tmux.conf"
+        print_error "No se encontró $SCRIPT_DIR/dotfiles/tmux/.tmux.conf"
         return 1
     fi
 }
@@ -79,6 +89,9 @@ update_tmux() {
 # Function to update Kitty config
 update_kitty() {
     print_section "🐱 ACTUALIZANDO CONFIGURACIÓN DE KITTY"
+    
+    # Get the script directory
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     
     # Create kitty config directory if it doesn't exist
     mkdir -p "$HOME/.config/kitty"
@@ -88,19 +101,19 @@ update_kitty() {
     
     # Copy kitty config
     print_step "Copiando configuración de Kitty..."
-    if [ -f "dotfiles/kitty/kitty.conf" ]; then
-        cp "dotfiles/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+    if [ -f "$SCRIPT_DIR/dotfiles/kitty/kitty.conf" ]; then
+        cp "$SCRIPT_DIR/dotfiles/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
         print_success "Configuración de Kitty actualizada"
         
         # Copy theme switcher if it exists
-        if [ -f "dotfiles/kitty/theme-switcher.sh" ]; then
-            cp "dotfiles/kitty/theme-switcher.sh" "$HOME/.config/kitty/"
+        if [ -f "$SCRIPT_DIR/dotfiles/kitty/theme-switcher.sh" ]; then
+            cp "$SCRIPT_DIR/dotfiles/kitty/theme-switcher.sh" "$HOME/.config/kitty/"
             chmod +x "$HOME/.config/kitty/theme-switcher.sh"
             print_success "Theme switcher copiado"
         fi
         
     else
-        print_error "No se encontró dotfiles/kitty/kitty.conf"
+        print_error "No se encontró $SCRIPT_DIR/dotfiles/kitty/kitty.conf"
         return 1
     fi
 }
