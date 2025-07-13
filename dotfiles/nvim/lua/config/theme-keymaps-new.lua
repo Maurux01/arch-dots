@@ -152,6 +152,15 @@ vim.keymap.set("n", "<leader>tP", function() set_theme("papercolor") end, { desc
 vim.keymap.set("n", "<leader>t?", show_theme_status, { desc = "Show Theme Status" })
 vim.keymap.set("n", "<leader>tl", list_themes, { desc = "List Themes" })
 
+local function tbl_index(tbl, value)
+  for i, v in ipairs(tbl) do
+    if v == value then
+      return i
+    end
+  end
+  return nil
+end
+
 -- Initialize current theme index based on saved theme
 local function init_theme_index()
   local saved_theme = get_current_theme()
@@ -167,14 +176,4 @@ vim.api.nvim_create_autocmd("VimEnter", {
     local saved_theme = get_current_theme()
     vim.cmd.colorscheme(saved_theme)
   end,
-  priority = 1000,
-})
-
-local function tbl_index(tbl, value)
-  for i, v in ipairs(tbl) do
-    if v == value then
-      return i
-    end
-  end
-  return nil
-end 
+}) 

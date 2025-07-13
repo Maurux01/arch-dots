@@ -21,9 +21,6 @@ require("config.theme-debug")
 -- 🎯 CUSTOM KEYMAPS
 -- =============================================================================
 
--- Disable any default Space + E keybind that might interfere
-vim.keymap.del("n", "<leader>E", { silent = true })
-
 -- Add useful Space + E keybind for Telescope find_files
 vim.keymap.set("n", "<leader>E", "<cmd>Telescope find_files<cr>", { 
   desc = "Find Files (Telescope)",
