@@ -6,7 +6,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     keys = {
-      { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+      { "<leader>e", "<cmd>TSPlaygroundToggle<cr>", desc = "Toggle Treesitter playground" },
       { "<leader>ef", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
       { "<leader>ec", "<cmd>NvimTreeCollapse<cr>", desc = "Collapse file explorer" },
       { "<leader>er", "<cmd>NvimTreeRefresh<cr>", desc = "Refresh file explorer" },
