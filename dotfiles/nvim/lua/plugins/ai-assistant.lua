@@ -332,14 +332,34 @@ return {
     },
     config = function()
       require("avante").setup({
-        -- Provider configuration (OpenAI by default)
+        -- Provider configuration - Múltiples opciones disponibles:
+        -- "openai", "anthropic", "gemini", "ollama", "local"
         provider = {
-          name = "openai",
+          name = "gemini", -- Cambia aquí: "openai", "gemini", "anthropic", etc.
           config = {
-            api_key = os.getenv("OPENAI_API_KEY"),
-            model = "gpt-4",
+            -- Para Gemini:
+            api_key = os.getenv("GEMINI_API_KEY"), -- Variable de entorno para Gemini
+            model = "gemini-pro", -- Modelo de Gemini
             temperature = 0.1,
             max_tokens = 2000,
+            
+            -- Para OpenAI (descomenta si cambias a "openai"):
+            -- api_key = os.getenv("OPENAI_API_KEY"),
+            -- model = "gpt-4",
+            -- temperature = 0.1,
+            -- max_tokens = 2000,
+            
+            -- Para Anthropic Claude (descomenta si cambias a "anthropic"):
+            -- api_key = os.getenv("ANTHROPIC_API_KEY"),
+            -- model = "claude-3-sonnet-20240229",
+            -- temperature = 0.1,
+            -- max_tokens = 2000,
+            
+            -- Para Ollama (descomenta si cambias a "ollama"):
+            -- base_url = "http://localhost:11434",
+            -- model = "llama2",
+            -- temperature = 0.1,
+            -- max_tokens = 2000,
           },
         },
         
