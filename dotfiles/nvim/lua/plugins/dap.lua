@@ -1,12 +1,11 @@
 return {
-  -- DAP (Debug Adapter Protocol)
+  -- DAP (Debug Adapter Protocol) - Configuración general
   {
     "mfussenegger/nvim-dap",
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
       "nvim-telescope/telescope-dap.nvim",
-      "microsoft/vscode-js-debug",
     },
     keys = {
       { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
@@ -66,138 +65,53 @@ return {
         virt_text_win_col = nil
       })
       
-      -- Configuración para JavaScript/Node.js debugging
-      dap.adapters.node2 = {
-        type = 'executable',
-        command = 'node',
-        args = { os.getenv('HOME') .. '/.local/share/nvim/dapinstall/jsnode_modules/js-debug/src/dapDebugServer.js', '8143' },
-        sourceMaps = true,
-        protocol = 'inspector',
-        cwd = vim.fn.getcwd(),
-        console = 'integratedTerminal',
-      }
-      
-      -- Configuración para Chrome debugging
-      dap.adapters.chrome = {
-        type = "executable",
-        command = "node",
-        args = { os.getenv('HOME') .. '/.local/share/nvim/dapinstall/jsnode_modules/js-debug/src/dapDebugServer.js', '9222' },
-        sourceMaps = true,
-        protocol = "inspector",
-        webRoot = "${workspaceFolder}",
-      }
-      
-      -- Configuración para Firefox debugging
-      dap.adapters.firefox = {
-        type = "executable",
-        command = "node",
-        args = { os.getenv('HOME') .. '/.local/share/nvim/dapinstall/jsnode_modules/js-debug/src/dapDebugServer.js', '9222' },
-        sourceMaps = true,
-        protocol = "inspector",
-        webRoot = "${workspaceFolder}",
-      }
-      
-      -- Configuraciones para JavaScript
-      dap.configurations.javascript = {
+      -- Configuraciones para otros lenguajes (Python, Rust, Go, etc.)
+      dap.configurations.python = {
         {
-          name = "Launch Node.js",
-          type = "node2",
+          name = "Launch Python",
+          type = "python",
           request = "launch",
           program = "${file}",
-          cwd = vim.fn.getcwd(),
-          sourceMaps = true,
-          protocol = "inspector",
           console = "integratedTerminal",
         },
         {
-          name = "Attach to Node.js",
-          type = "node2",
+          name = "Attach to Python",
+          type = "python",
           request = "attach",
-          port = 9229,
-          sourceMaps = true,
-          localRoot = "${workspaceFolder}",
-          remoteRoot = "/",
-        },
-        {
-          name = "Launch Chrome",
-          type = "chrome",
-          request = "launch",
-          url = "http://localhost:3000",
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-        },
-        {
-          name = "Attach to Chrome",
-          type = "chrome",
-          request = "attach",
-          port = 9222,
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
+          connect = {
+            host = "localhost",
+            port = 5678,
+          },
         },
       }
       
-      -- Configuraciones para TypeScript
-      dap.configurations.typescript = {
+      dap.configurations.rust = {
         {
-          name = "Launch TypeScript",
-          type = "node2",
+          name = "Launch Rust",
+          type = "lldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+          args = {},
+        },
+      }
+      
+      dap.configurations.go = {
+        {
+          name = "Launch Go",
+          type = "delve",
           request = "launch",
           program = "${file}",
-          cwd = vim.fn.getcwd(),
-          sourceMaps = true,
-          protocol = "inspector",
-          console = "integratedTerminal",
-          skipFiles = { "<node_internals>/**" },
         },
         {
-          name = "Attach to TypeScript",
-          type = "node2",
+          name = "Attach to Go",
+          type = "delve",
           request = "attach",
-          port = 9229,
-          sourceMaps = true,
-          localRoot = "${workspaceFolder}",
-          remoteRoot = "/",
-        },
-      }
-      
-      -- Configuraciones para React/Next.js
-      dap.configurations.javascriptreact = {
-        {
-          name = "Launch Chrome (React)",
-          type = "chrome",
-          request = "launch",
-          url = "http://localhost:3000",
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-          userDataDir = "${workspaceFolder}/.vscode/chrome-debug-profile",
-        },
-        {
-          name = "Attach to Chrome (React)",
-          type = "chrome",
-          request = "attach",
-          port = 9222,
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-        },
-      }
-      
-      dap.configurations.typescriptreact = {
-        {
-          name = "Launch Chrome (TypeScript React)",
-          type = "chrome",
-          request = "launch",
-          url = "http://localhost:3000",
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-          userDataDir = "${workspaceFolder}/.vscode/chrome-debug-profile",
-        },
-        {
-          name = "Attach to Chrome (TypeScript React)",
-          type = "chrome",
-          request = "attach",
-          port = 9222,
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
+          mode = "local",
+          program = "${file}",
         },
       }
       
