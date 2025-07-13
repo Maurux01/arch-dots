@@ -1,24 +1,43 @@
-# Arch Dots - Hyprland Configuration
+# 🚀 Arch Dots - Complete Hyprland Configuration
 
-A complete and modern Hyprland configuration for Arch Linux with a dynamic login system based on wallpapers.
+A complete and modern Hyprland configuration for Arch Linux with dynamic login system, development tools, gaming optimization, and comprehensive multimedia support.
 
-## 🚀 Features
+## ✨ Features
 
+### 🖥️ **Desktop Environment**
 - **Hyprland** - Modern and fast Wayland compositor
 - **Dynamic login** - Lock screen theme that adapts to your wallpaper
-- **EWW widgets** - Customizable desktop widgets
-- **Waybar** - Minimalist status bar
-- **Kitty** - GPU-accelerated terminal
-- **Neovim** - Editor configured with LSP and plugins
-- **Fish Shell** - Interactive shell with autocompletion (not zsh)
-- **Gaming optimized** - Steam, Lutris, Wine, GameMode
-- **Development** - Node.js, Python, Rust, Go, Java
-- **Multimedia tools** - LMMS, Pixelorama, Upscayl
-- **Image & SVG support** - View images and SVG in Neovim and Kitty
-- **Hyperlock** - Native Hyprland screen locker
-- **Enhanced notifications** - Notification system with animations and colors
-- **Proper installation** - Everything installed in standard system locations
-- **Security tools** - UFW firewall, WireGuard VPN, Fail2ban, ClamAV
+- **EWW widgets** - Customizable desktop widgets with weather, music, battery
+- **Waybar** - Minimalist status bar with system monitoring
+- **Kitty** - GPU-accelerated terminal with image support
+- **Fish Shell** - Interactive shell with autocompletion and modern tools
+- **Hyperlock** - Native Hyprland screen locker with dynamic themes
+
+### 🎨 **Themes & Appearance**
+- **Dynamic wallpaper system** - Automatic wallpaper rotation and analysis
+- **Multiple Neovim themes** - Tokyo Night, Catppuccin, Gruvbox, Dracula, Habamax
+- **Custom fonts** - Nerd Fonts Adwaita Mono throughout the system
+- **Icon themes** - Papirus icon theme with Bibata cursor
+- **Color schemes** - Consistent theming across all applications
+
+### 💻 **Development Environment**
+- **Neovim** - Fully configured editor with LSP, AI assistants, and plugins
+- **Multiple languages** - Node.js, Python, Rust, Go, Java, C/C++
+- **Docker support** - Docker, Docker Compose, Podman, Buildah
+- **Git tools** - LazyGit, Git signs, blame, conflict resolution
+- **Terminal tools** - fzf, zoxide, atuin, bat, fd, ripgrep, btop
+
+### 🎮 **Gaming & Multimedia**
+- **Gaming tools** - Steam, Lutris, Wine, GameMode, MangoHud
+- **Multimedia** - MPV, VLC, Spotify, Discord, Telegram
+- **Content creation** - LMMS, Pixelorama, Upscayl, OBS Studio
+- **Image editing** - GIMP, Krita, Inkscape with SVG support
+
+### 🔒 **Security & System**
+- **Firewall** - UFW with automatic configuration
+- **VPN support** - WireGuard, OpenVPN, PPTP, L2TP
+- **Security tools** - Fail2ban, ClamAV, rkhunter
+- **Network tools** - NetworkManager, nmap, Wireshark
 
 ## 📦 Installation
 
@@ -30,7 +49,7 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
    cd archriced
    ```
 
-2. **Give execution permissions to the installer:**
+2. **Give execution permissions:**
    ```sh
    chmod +x install.sh
    ```
@@ -41,21 +60,17 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
    ```
 
 The unified installation script includes:
-- ✅ Updates the system
-- ✅ Installs all dependencies (core + AUR)
-- ✅ Configures Hyprland and components
-- ✅ Installs system utilities
-- ✅ Configures development tools
+- ✅ Updates the system and installs AUR helper (yay)
+- ✅ Installs all dependencies (core + AUR packages)
+- ✅ Configures Hyprland and all components
+- ✅ Installs development tools and languages
+- ✅ Configures Neovim with all plugins and themes
+- ✅ Installs multimedia tools (Spotify, Discord, etc.)
+- ✅ Configures Fish shell with modern tools
 - ✅ Installs fonts and themes
-- ✅ Configures Hyperlock
-- ✅ Configures enhanced notifications
-- ✅ Installs multimedia tools (LMMS, Pixelorama, Upscayl)
-- ✅ Installs image support (Neovim + Kitty)
-- ✅ Installs security tools (UFW, WireGuard, Fail2ban, ClamAV)
-- ✅ Configures firewall and VPN
+- ✅ Configures Hyperlock with dynamic themes
+- ✅ Sets up security tools and firewall
 - ✅ Copies all dotfiles to correct system locations
-- ✅ Verifies complete installation
-- ✅ Configures the system
 
 ## 🗑️ Uninstallation
 
@@ -72,7 +87,6 @@ The unified uninstallation script:
 - ✅ Removes all configurations
 - ✅ Restores default system configurations
 - ✅ Cleans the system completely
-- ✅ Provides backup location for restoration
 
 ## 🔧 Maintenance & Repair
 
@@ -96,9 +110,6 @@ The unified uninstallation script:
 
 # Show system information
 ./repair.sh --info
-
-# Show help
-./repair.sh --help
 ```
 
 The unified repair script includes:
@@ -110,21 +121,18 @@ The unified repair script includes:
 - ✅ **System Cleaning** - Cleans cache and temporary files
 - ✅ **Neovim Cleaning** - Cleans and reinstalls Neovim plugins
 - ✅ **System Updates** - Updates system and dotfiles
-- ✅ **Verification** - Verifies all repairs were successful
 
-## 🎨 Dynamic Login Features
+## 🎨 Dynamic Login System
 
 The dynamic login system automatically analyzes your wallpaper and generates a lock screen theme that adapts to the dominant colors.
 
-### Included functions:
-
-- **Wallpaper analysis** - Extracts dominant colors
-- **Theme generation** - Creates swaylock themes automatically
+### Features:
+- **Wallpaper analysis** - Extracts dominant colors automatically
+- **Theme generation** - Creates swaylock themes dynamically
 - **Automatic rotation** - Changes wallpapers automatically
 - **Control widget** - EWW widget to manage wallpapers
 
-### Useful commands:
-
+### Commands:
 ```bash
 # Lock screen with dynamic theme
 ./utils.sh lock
@@ -139,12 +147,133 @@ The dynamic login system automatically analyzes your wallpaper and generates a l
 ./utils.sh analyze-wallpaper
 ```
 
+## 🖥️ Neovim Configuration
+
+### ✨ Features
+- **Modern UI** - Clean interface with statusline and notifications
+- **Theme Switching** - 5 themes with easy switching
+- **LSP Support** - Full language server protocol support
+- **AI Assistants** - Codeium, Tabnine, ChatGPT.nvim
+- **Git Integration** - LazyGit, Git signs, blame, conflict resolution
+- **Docker Integration** - LazyDocker for container management
+- **Web Development** - Specialized tools for HTML, CSS, JavaScript, TypeScript
+- **Image Support** - View images and SVG directly in Neovim
+
+### 🎨 Themes
+- Tokyo Night (default)
+- Catppuccin
+- Gruvbox
+- Dracula
+- Habamax
+
+### ⌨️ Key Bindings
+
+#### **Navigation & File Management**
+- `<leader>ff` - Find files (Telescope)
+- `<leader>fg` - Live grep
+- `<leader>e` - Oil explorer
+- `<C-l/h>` - Next/Previous buffer
+- `<leader>1-9` - Go to buffer 1-9
+
+#### **LSP & Development**
+- `gd` - Go to definition
+- `gr` - References
+- `K` - Hover
+- `<leader>ca` - Code actions
+- `<leader>rn` - Rename
+- `<leader>f` - Format
+
+#### **AI Assistants**
+- `<Tab>` - Accept AI suggestion
+- `<C-]>` - Dismiss suggestion
+- `<leader>ai` - Open ChatGPT
+- `<leader>ae` - Edit with ChatGPT
+- `<leader>at` - Explain code
+- `<leader>af` - Fix bug
+
+#### **Git & Docker**
+- `<leader>gg` - Open LazyGit
+- `<leader>dd` - Open LazyDocker
+- `]c/[c` - Next/Previous Git hunk
+- `<leader>tb` - Toggle Git blame
+
+#### **Theme Controls**
+- `<leader>ut` - Toggle theme
+- `<leader>uN` - Next theme
+- `<leader>up` - Previous theme
+- `<leader>u1-5` - Quick theme selection
+
+## 🐟 Fish Shell Configuration
+
+### 🌟 Features
+- **Oh My Fish** with **bobthefish** theme
+- **Modern tools** - fzf, zoxide, atuin, bat, fd, ripgrep, btop
+- **Git integration** - Enhanced Git commands and aliases
+- **Development support** - Node.js, Python, Rust, Go, Java
+- **Useful aliases** - Shortcuts for common commands
+
+### 🚀 Modern Tools Included
+- **fzf** - Intelligent fuzzy search
+- **zoxide** - Smart directory navigation
+- **atuin** - Enhanced history with search
+- **bat** - Cat with syntax highlighting
+- **fd** - Modern and fast find
+- **btop** - Modern system monitor
+- **yazi** - Terminal file manager
+- **lazygit** - Incredible Git TUI
+
+### 💻 Useful Aliases
+```bash
+# Git shortcuts
+gs    # git status
+ga    # git add
+gc    # git commit
+gp    # git push
+gl    # git pull
+gco   # git checkout
+gcb   # git checkout -b
+
+# System shortcuts
+ll    # ls -la
+la    # ls -A
+..    # cd ..
+...   # cd ../..
+....  # cd ../../..
+
+# Development shortcuts
+nv    # neovim
+lg    # lazygit
+cat   # bat
+find  # fd
+grep  # rg
+top   # btop
+```
+
+## 🎮 Gaming Features
+
+### Gaming Tools
+- **Steam** - Game distribution platform
+- **Lutris** - Game manager and launcher
+- **Wine** - Windows compatibility layer
+- **GameMode** - Performance optimization
+- **MangoHud** - Performance overlay
+- **Heroic Games Launcher** - Epic Games launcher
+
+### Gaming Configuration
+```bash
+# Enable GameMode for a game
+gamemoderun ./game
+
+# Check GameMode status
+gamemoded -t
+
+# Configure MangoHud
+nano ~/.config/MangoHud/MangoHud.conf
+```
+
 ## 🛠️ Utility Scripts
 
-### `utils.sh`
-
-Main utility script with multiple functions:
-
+### `utils.sh` - Main Utility Script
 ```bash
 # See all options
 ./utils.sh
@@ -166,24 +295,8 @@ Main utility script with multiple functions:
 ./utils.sh analyze-wallpaper [path]
 ```
 
-### Hyperlock
-
-Native Hyprland screen locker:
-
-```bash
-# Lock screen
-hyperlock
-
-# Configure Hyperlock
-nano ~/.config/hyperlock/config.toml
-
-# Check Hyperlock status
-systemctl --user status hyperlock
-```
-
 ### Enhanced Notifications
-
-Notification system with animations, colors and intelligent handling of multiple notifications:
+Notification system with animations, colors and intelligent handling:
 
 ```bash
 # Test volume notifications
@@ -199,16 +312,14 @@ Notification system with animations, colors and intelligent handling of multiple
 ~/.config/scripts/notification-enhancer.sh system "Test message" normal
 ```
 
-**Included features:**
+**Features:**
 - **Colors by application** - Discord (blue), Spotify (green), Firefox (orange)
 - **Visual progress bars** - For volume and brightness
 - **Multiple notification handling** - Intelligent queue
 - **Smooth animations** - Fluid transitions
 - **Specific icons** - By application type
-- **System notifications** - With different urgency levels
 
 ### Clipboard and History
-
 Complete clipboard system with history:
 
 ```bash
@@ -224,350 +335,285 @@ SUPER + CTRL + V
 # Screenshot to clipboard
 ```
 
-## 🎮 Gaming Features
+## 🎨 EWW Widgets
 
-### Gaming Tools
+### Available Widgets
+- **Clock** - Current time and date
+- **Battery** - Battery status and percentage
+- **Volume** - Audio volume control
+- **Weather** - Current weather information
+- **Music** - Music player controls
+- **Notifications** - System notifications
+- **Calendar** - Calendar widget
+- **ASCII Art** - Custom ASCII art display
 
-- **Steam** - Game distribution platform
-- **Lutris** - Game manager and launcher
-- **Wine** - Windows compatibility layer
-- **GameMode** - Performance optimization
-- **MangoHud** - Performance overlay
-- **Heroic Games Launcher** - Epic Games launcher
-
-### Gaming Configuration
-
+### Widget Controls
 ```bash
-# Enable GameMode for a game
-gamemoderun ./game
+# Restart EWW
+eww kill && eww daemon && eww open bar
 
-# Check GameMode status
-gamemoded -t
+# Reload widgets
+eww reload
 
-# Configure MangoHud
-nano ~/.config/MangoHud/MangoHud.conf
+# Check EWW status
+eww daemon --status
 ```
 
-## 🎵 Multimedia Tools
+## 🔒 Security Features
 
-### Included Tools
+### Firewall & Network
+- **UFW** - Uncomplicated Firewall with automatic configuration
+- **WireGuard** - Modern VPN protocol
+- **OpenVPN** - Traditional VPN support
+- **NetworkManager** - Network management with GUI
 
-- **LMMS** - Professional music production software
-- **Pixelorama** - Advanced pixel art editor
-- **Upscayl** - AI-powered image upscaler
-- **OBS Studio** - Video recording and streaming
-- **Krita** - Digital painting and illustration
-- **GIMP** - Image manipulation
-- **Inkscape** - Vector graphics editor
+### Security Tools
+- **Fail2ban** - Intrusion prevention
+- **ClamAV** - Antivirus scanning
+- **rkhunter** - Rootkit detection
+- **nmap** - Network scanning
+- **Wireshark** - Network analysis
 
-### Multimedia Commands
-
-```bash
-# Start LMMS
-lmms
-
-# Start Pixelorama
-pixelorama
-
-# Start Upscayl
-upscayl
-
-# Start OBS Studio
-obs
-```
-
-## 🖼️ Image & SVG Support
-
-### Neovim Image Support
-
-- **Image display** - View images directly in Neovim
-- **SVG support** - View SVG files with syntax highlighting
-- **Markdown preview** - Images in markdown files
-- **Image paste** - Paste images from clipboard
-
-### Kitty Image Support
-
-- **Image protocols** - Display images in terminal
-- **Image caching** - Fast image loading
-- **SVG rendering** - Vector graphics support
-
-### Image Commands
-
-```bash
-# View image in Neovim
-nvim image.png
-
-# View SVG in Neovim
-nvim file.svg
-
-# View image in Kitty
-kitty +kitten icat image.png
-
-# Paste image in Neovim
-SUPER + SHIFT + P
-```
-
-## 🛡️ Security Tools
-
-### Included Security Tools
-
-- **UFW** - Uncomplicated Firewall (simple and effective)
-- **WireGuard** - Modern and fast VPN
-- **Fail2ban** - Protection against brute force attacks
-- **ClamAV** - Antivirus scanner
-- **RKHunter** - Rootkit detection
-- **Network monitoring tools** - nmap, tcpdump, netcat
-
-### Security Configuration
-
+### Security Commands
 ```bash
 # Check firewall status
 sudo ufw status
 
-# Allow specific port
-sudo ufw allow 8080
+# Enable/disable firewall
+sudo ufw enable
+sudo ufw disable
 
-# Start WireGuard VPN
-sudo wg-quick up wg0
-
-# Stop WireGuard VPN
-sudo wg-quick down wg0
-
-# Check Fail2ban status
-sudo fail2ban-client status
-
-# Update ClamAV database
-sudo freshclam
-
-# Run RKHunter scan
+# Scan for rootkits
 sudo rkhunter --check
 
-# Network monitoring
-sudo /usr/local/bin/network-monitor.sh
-
-# Security manager (easier interface)
-./security-manager.sh firewall status
-./security-manager.sh vpn start wg0
-./security-manager.sh clamav scan /home
+# Update virus definitions
+sudo freshclam
 ```
 
-### Security Features
+## 🎵 Multimedia Support
 
-- **Automatic firewall configuration** - UFW with sensible defaults
-- **VPN setup** - WireGuard with key generation
-- **Intrusion detection** - Fail2ban with SSH protection
-- **Malware scanning** - ClamAV with automatic updates
-- **Rootkit detection** - RKHunter with daily scans
-- **Network monitoring** - Tools for network analysis
-- **Security Manager** - Easy-to-use interface for all security tools
+### Audio & Video
+- **MPV** - Lightweight video player
+- **VLC** - Full-featured media player
+- **Spotify** - Music streaming
+- **Cava** - Audio visualizer
+- **OSS** - Open Sound System
 
-## 🛡️ Security Manager
+### Content Creation
+- **LMMS** - Digital audio workstation
+- **Pixelorama** - Pixel art editor
+- **Upscayl** - AI image upscaling
+- **OBS Studio** - Screen recording and streaming
+- **GIMP** - Image editing
+- **Krita** - Digital painting
+- **Inkscape** - Vector graphics
 
-### Easy Security Management
+### Image Support
+- **Neovim** - View images directly in editor
+- **Kitty** - Display images in terminal
+- **SWWW** - Wallpaper management
+- **ImageMagick** - Image processing tools
 
-The `security-manager.sh` script provides an easy interface to manage all security tools:
+## 🚀 Development Tools
 
+### Languages & Runtimes
+- **Node.js** - JavaScript runtime
+- **Python** - Python with pip and virtualenv
+- **Rust** - Rust programming language
+- **Go** - Go programming language
+- **Java** - OpenJDK
+- **C/C++** - GCC, CMake, Ninja, Meson
+
+### Development Tools
+- **Docker** - Container platform
+- **Git** - Version control with enhanced tools
+- **LazyGit** - Git TUI
+- **LazyDocker** - Docker TUI
+- **Valgrind** - Memory debugging
+- **GDB** - GNU debugger
+
+### IDE Features
+- **LSP Support** - Language Server Protocol
+- **Code completion** - AI-powered suggestions
+- **Debugging** - Integrated debugging
+- **Testing** - Test runners and frameworks
+- **Formatting** - Code formatting and linting
+
+## 📱 Applications Included
+
+### System Tools
+- **Kitty** - GPU-accelerated terminal
+- **Fish** - Interactive shell
+- **Tmux** - Terminal multiplexer
+- **Starship** - Cross-shell prompt
+- **Zoxide** - Smart cd replacement
+
+### File Management
+- **Nautilus** - GNOME file manager
+- **Thunar** - XFCE file manager
+- **Yazi** - Terminal file manager
+- **Ranger** - Terminal file manager
+
+### Web Browsers
+- **Firefox** - Mozilla browser
+- **Brave** - Privacy-focused browser
+
+### Office & Productivity
+- **LibreOffice** - Office suite
+- **Obsidian** - Note-taking app
+- **Geany** - Lightweight IDE
+- **VS Code** - Code editor
+
+## 🎯 Quick Reference
+
+### Essential Commands
 ```bash
-# Firewall management
-./security-manager.sh firewall status
-./security-manager.sh firewall allow 8080
-./security-manager.sh firewall deny 22
+# System
+./install.sh          # Install everything
+./uninstall.sh        # Uninstall everything
+./repair.sh           # Repair system
+./utils.sh            # Utility functions
 
-# VPN management
-./security-manager.sh vpn status
-./security-manager.sh vpn start wg0
-./security-manager.sh vpn stop wg0
-./security-manager.sh vpn keys
+# Neovim
+nvim                  # Open Neovim
+nvim --headless       # Headless mode
 
-# Security scanning
-./security-manager.sh clamav scan /home
-./security-manager.sh clamav update
-./security-manager.sh rkhunter scan
-./security-manager.sh rkhunter update
+# Fish Shell
+fish                  # Open Fish shell
+fish_config           # Configure Fish
 
-# Network monitoring
-./security-manager.sh network monitor
-./security-manager.sh port scan 192.168.1.1
-./security-manager.sh traffic monitor
+# Hyprland
+hyprctl               # Hyprland control
+hyprctl dispatch      # Send commands
 
-# Show help
-./security-manager.sh help
+# Lock Screen
+hyperlock             # Lock screen
+swaylock              # Alternative lock
+
+# Wallpaper
+swww img [path]       # Set wallpaper
+swww kill             # Kill wallpaper daemon
 ```
 
-### Security Manager Features
-
-- **Firewall control** - Easy UFW management
-- **VPN management** - WireGuard interface control
-- **Security scanning** - ClamAV and RKHunter integration
-- **Network monitoring** - Built-in network analysis tools
-- **Unified interface** - All security tools in one place
-
-## 🖥️ Screenshot Tools
-
-### Included Tools
-
-- **Flameshot** - Advanced screenshot tool
-- **Grim** - Wayland screenshot utility
-- **Slurp** - Wayland region selector
-- **Spectacle** - KDE screenshot tool
-- **Maim** - X11 screenshot tool
-- **Xclip** - Clipboard utility
-
-### Screenshot Commands
-
+### Key Bindings
 ```bash
-# Take screenshot with Flameshot
-flameshot gui
+# Hyprland
+SUPER + Q             # Close window
+SUPER + M             # Maximize window
+SUPER + F             # Fullscreen
+SUPER + D             # Application launcher
+SUPER + R             # Command runner
 
-# Take screenshot with Grim
-grim screenshot.png
+# Neovim
+<leader>ff            # Find files
+<leader>gg            # LazyGit
+<leader>t             # Terminal
+<leader>ut            # Toggle theme
 
-# Select region and screenshot
-grim -g "$(slurp)" screenshot.png
-
-# Screenshot to clipboard
-maim -s | xclip -selection clipboard -t image/png
+# Fish Shell
+Ctrl + R              # Search history
+Ctrl + F              # Fuzzy finder
+Alt + C               # Change directory
 ```
 
-## 🔧 Development Tools
-
-### Included Tools
-
-- **Node.js & npm** - JavaScript runtime
-- **Python & pip** - Python programming
-- **Rust** - Systems programming
-- **Go** - Programming language
-- **Java (OpenJDK)** - Java development
-- **Docker** - Containerization
-- **Git** - Version control
-
-### Development Configuration
-
-```bash
-# Check Node.js version
-node --version
-
-# Check Python version
-python --version
-
-# Check Rust version
-rustc --version
-
-# Check Go version
-go version
-
-# Check Java version
-java --version
-```
-
-## 📁 File Structure
-
-```
-arch-dots/
-├── install.sh          # Unified installer
-├── uninstall.sh        # Unified uninstaller
-├── repair.sh           # Unified repair tool
-├── utils.sh            # Utility scripts
-├── README.md           # This file
-├── INTEGRATION_README.md
-├── LICENSE
-└── dotfiles/
-    ├── hypr/           # Hyprland configuration
-    ├── kitty/          # Terminal configuration
-    ├── nvim/           # Neovim configuration
-    ├── fish/           # Fish shell configuration
-    ├── eww/            # Desktop widgets
-    ├── waybar/         # Status bar
-    ├── wofi/           # Application launcher
-    ├── mako/           # Notifications
-    ├── swww/           # Wallpaper daemon
-    ├── hyprlock/       # Screen locker
-    ├── fonts/          # Custom fonts
-    ├── wallpapers/     # Wallpaper collection
-    ├── scripts/        # Utility scripts
-    └── ...
-```
-
-## 🚀 Quick Start
-
-1. **Install everything:**
-   ```bash
-   ./install.sh
-   ```
-
-2. **Reboot your system**
-
-3. **Login with Hyprland**
-
-4. **Use the system:**
-   - `SUPER + RETURN` - Open terminal
-   - `SUPER + D` - Application launcher
-   - `SUPER + N` - Open Neovim
-   - `SUPER + Q` - Close window
-   - `SUPER + SHIFT + W` - Random wallpaper
-
-## 🛠️ Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
-1. **Hyprland not starting:**
-   ```bash
-   ./repair.sh --diagnose
-   ./repair.sh --repair
-   ```
-
-2. **Neovim not working:**
-   ```bash
-   ./repair.sh --clean
-   ```
-
-3. **Missing packages:**
-   ```bash
-   ./repair.sh --repair
-   ```
-
-4. **Permission issues:**
-   ```bash
-   ./repair.sh --repair
-   ```
-
-### System Information
-
+#### **Neovim Issues**
 ```bash
-# Show system info
-./repair.sh --info
+# Check Neovim plugins
+nvim --headless -c "Lazy! sync" -c "qa"
 
-# Check installation
-./repair.sh --diagnose
+# Reset Neovim
+rm -rf ~/.local/share/nvim
+rm -rf ~/.cache/nvim
+
+# Check LSP
+nvim --headless -c "LspInfo" -c "qa"
 ```
 
-## 📝 Logs
+#### **Hyprland Issues**
+```bash
+# Check Hyprland logs
+journalctl --user -u hyprland
 
-All operations are logged for debugging:
+# Reset Hyprland config
+cp ~/.config/hypr/hyprland.conf ~/.config/hypr/hyprland.conf.backup
 
-- **Installation log:** `~/.archriced-install.log`
-- **Uninstall log:** `~/.archriced-uninstall.log`
-- **Repair log:** `~/.archriced-repair.log`
+# Check Wayland session
+echo $XDG_SESSION_TYPE
+```
+
+#### **Font Issues**
+```bash
+# Refresh font cache
+fc-cache -fv
+
+# Check font installation
+fc-list | grep -i "nerd"
+
+# Reinstall fonts
+sudo pacman -S nerd-fonts-complete
+```
+
+#### **Audio Issues**
+```bash
+# Check audio devices
+pactl list short sinks
+pactl list short sources
+
+# Restart PulseAudio
+pulseaudio --kill
+pulseaudio --start
+
+# Check ALSA
+alsamixer
+```
+
+### Diagnostic Commands
+```bash
+# System information
+./repair.sh --info
+
+# Check missing packages
+./repair.sh --diagnose
+
+# Verify installation
+./repair.sh --verify
+
+# Check permissions
+./repair.sh --permissions
+```
+
+## 📚 Additional Resources
+
+### Documentation
+- [Hyprland Wiki](https://wiki.hyprland.org/)
+- [Neovim Documentation](https://neovim.io/doc/)
+- [Fish Shell Documentation](https://fishshell.com/docs/)
+- [Arch Linux Wiki](https://wiki.archlinux.org/)
+
+### Useful Links
+- [Nerd Fonts](https://www.nerdfonts.com/)
+- [LazyVim](https://www.lazyvim.org/)
+- [Oh My Fish](https://github.com/oh-my-fish/oh-my-fish)
+- [EWW Widgets](https://elkowar.github.io/eww/)
 
 ## 🤝 Contributing
 
+Contributions are welcome! If you have ideas to improve the configuration:
+
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a branch for your feature
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Hyprland** - The amazing Wayland compositor
-- **Catppuccin** - Beautiful color scheme
-- **Nerd Fonts** - Icon fonts
-- **Arch Linux** - The best Linux distribution
+MIT License - Use this configuration however you want!
 
 ---
 
-**Made with ❤️ by maurux01** 
+**Enjoy your complete Arch Linux setup! 🚀✨** 
