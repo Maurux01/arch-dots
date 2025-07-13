@@ -277,3 +277,14 @@ keymap("n", "<leader>rp", "<cmd>lua require('refactoring').debug.printf({below =
 keymap("n", "<leader>rv", "<cmd>lua require('refactoring').debug.print_var({normal = true})<cr>", { desc = "Debug Print Var" })
 keymap("v", "<leader>rv", "<cmd>lua require('refactoring').debug.print_var({})<cr>", { desc = "Debug Print Var" })
 keymap("n", "<leader>rc", "<cmd>lua require('refactoring').debug.cleanup({})<cr>", { desc = "Debug Cleanup" })
+
+-- Image and SVG Support
+keymap("n", "<leader>ii", "<cmd>ImageInfo<cr>", { desc = "Show image info" })
+keymap("n", "<leader>ir", "<cmd>ImageReload<cr>", { desc = "Reload image" })
+keymap("n", "<leader>ic", "<cmd>ImageClear<cr>", { desc = "Clear image" })
+keymap("n", "<leader>ip", "<cmd>ImagePaste<cr>", { desc = "Paste image" })
+keymap("n", "<leader>id", "<cmd>ImageDownload<cr>", { desc = "Download image" })
+keymap("n", "<leader>is", "<cmd>ImageSave<cr>", { desc = "Save image" })
+keymap("n", "<leader>mp", "<cmd>MarkdownPreview<cr>", { desc = "Markdown preview" })
+keymap("n", "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", { desc = "Stop preview" })
+keymap("n", "<leader>mt", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Toggle preview" })

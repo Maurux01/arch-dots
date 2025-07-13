@@ -202,6 +202,13 @@ install_essential_packages() {
         "gcc" "cmake" "ninja" "meson" "valgrind" "gdb"
         "docker" "docker-compose" "podman" "buildah" "skopeo"
         
+        # Herramientas de imagen y multimedia
+        "imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa"
+        "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib"
+        
+        # Herramientas de captura de pantalla
+        "flameshot" "grim" "slurp" "spectacle" "maim" "xclip"
+        
         # Herramientas adicionales
         "lazygit" "lazydocker" "yazi"
         

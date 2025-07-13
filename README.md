@@ -14,6 +14,7 @@ A complete and modern Hyprland configuration for Arch Linux with a dynamic login
 - **Gaming optimized** - Steam, Lutris, Wine, GameMode
 - **Development** - Node.js, Python, Rust, Go, Java
 - **Multimedia tools** - LMMS, Pixelorama, Upscayl
+- **Image & SVG support** - View images and SVG in Neovim and Kitty
 - **Hyperlock** - Native Hyprland screen locker
 - **Enhanced notifications** - Notification system with animations and colors
 - **Proper installation** - Everything installed in standard system locations
@@ -58,10 +59,20 @@ For users who only want the multimedia tools (LMMS, Pixelorama, Upscayl):
 ./install-multimedia.sh
 ```
 
+### Image and SVG Support Installation
+
+For users who only want image and SVG support in Neovim and Kitty:
+
+```bash
+# Install only image support
+./install-image-support.sh
+```
+
 This script installs:
 - **LMMS** - Professional music production software
 - **Pixelorama** - Advanced pixel art editor
 - **Upscayl** - AI-powered image upscaler
+- **Image support** - View images and SVG in Neovim and Kitty
 
 ### Complete uninstallation
 
@@ -480,6 +491,17 @@ yay -S upscayl
 - `lmms` - Linux MultiMedia Studio (music production)
 - `pixelorama` - Pixel art editor
 - `upscayl` - AI image upscaler
+
+### Image and SVG Support
+- `<leader>ii` - Show image info
+- `<leader>ir` - Reload image
+- `<leader>ic` - Clear image
+- `<leader>ip` - Paste image from clipboard
+- `<leader>id` - Download image
+- `<leader>is` - Save image
+- `<leader>mp` - Markdown preview
+- `<leader>ms` - Stop preview
+- `<leader>mt` - Toggle preview
 
 ### Clipboard
 - `SUPER + V` - Open CopyQ history
