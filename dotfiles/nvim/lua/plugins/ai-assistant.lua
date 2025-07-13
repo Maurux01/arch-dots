@@ -263,4 +263,119 @@ return {
       })
     end,
   },
+
+  -- Avante.nvim - AI-powered Neovim IDE
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-tree",
+    },
+    keys = {
+      -- Avante keybindings (conflict-free with existing plugins)
+      {
+        "<leader>aa",
+        function()
+          require("avante").toggle()
+        end,
+        desc = "Avante: Toggle chat",
+      },
+      {
+        "<leader>ap",
+        function()
+          require("avante").planning()
+        end,
+        desc = "Avante: Planning mode",
+      },
+      {
+        "<leader>ae",
+        function()
+          require("avante").editing()
+        end,
+        desc = "Avante: Editing mode",
+      },
+      {
+        "<leader>as",
+        function()
+          require("avante").suggesting()
+        end,
+        desc = "Avante: Suggesting mode",
+      },
+      {
+        "<leader>ac",
+        function()
+          require("avante").chat()
+        end,
+        desc = "Avante: Chat mode",
+      },
+      -- NvimTree integration
+      {
+        "<leader>a+",
+        function()
+          local tree_ext = require("avante.extensions.nvim_tree")
+          tree_ext.add_file()
+        end,
+        desc = "Avante: Select file in NvimTree",
+        ft = "NvimTree",
+      },
+      {
+        "<leader>a-",
+        function()
+          local tree_ext = require("avante.extensions.nvim_tree")
+          tree_ext.remove_file()
+        end,
+        desc = "Avante: Deselect file in NvimTree",
+        ft = "NvimTree",
+      },
+    },
+    config = function()
+      require("avante").setup({
+        -- Provider configuration (OpenAI by default)
+        provider = {
+          name = "openai",
+          config = {
+            api_key = os.getenv("OPENAI_API_KEY"),
+            model = "gpt-4",
+            temperature = 0.1,
+            max_tokens = 2000,
+          },
+        },
+        
+        -- Selector configuration
+        selector = {
+          exclude_auto_select = { "NvimTree", "TelescopePrompt", "Trouble" },
+          auto_select = true,
+        },
+        
+        -- UI configuration
+        ui = {
+          border = "rounded",
+          width = 0.8,
+          height = 0.8,
+          relative = "editor",
+        },
+        
+        -- Rules configuration
+        rules = {
+          project_dir = ".avante/rules",
+          global_dir = "~/.config/avante/rules",
+        },
+        
+        -- Override prompt directory (optional)
+        -- override_prompt_dir = "~/.config/nvim/avante_prompts",
+        
+        -- Integration with existing plugins
+        integrations = {
+          nvim_tree = {
+            enabled = true,
+          },
+          telescope = {
+            enabled = true,
+          },
+        },
+      })
+    end,
+  },
 } 
