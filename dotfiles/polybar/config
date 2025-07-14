@@ -1,0 +1,31 @@
+[bar/main]
+width = 100%
+height = 30
+background = #1e1e2e
+foreground = #cdd6f4
+modules-left = date
+modules-center = window_title
+modules-right = cpu memory
+font-0 = JetBrainsMono Nerd Font:size=10;2
+
+include-file = ~/.config/polybar/themes/catppuccin.ini
+
+[module/date]
+type = internal/date
+interval = 1
+format = <label>
+label = %Y-%m-%d %H:%M:%S
+
+[module/window_title]
+type = internal/xwindow
+label = %title%
+
+[module/cpu]
+type = internal/cpu
+format = <label>
+label = CPU: %percentage%%
+
+[module/memory]
+type = internal/memory
+format = <label>
+label = RAM: %percentage_used%% 
