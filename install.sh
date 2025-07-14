@@ -610,30 +610,151 @@ EOF
 }
 
 install_grub_theme() {
-    print_section "Instalando tema GRUB Catppuccin..."
+    print_section "Instalando tema GRUB personalizado..."
     
-    print_step "Clonando repositorio Catppuccin GRUB..."
-    cd /tmp
-    git clone https://github.com/catppuccin/grub.git catppuccin-grub
-    cd catppuccin-grub
+    local grub_themes_dir="$DOTFILES_DIR/grub-themes"
+    local grub_system_dir="/boot/grub/themes"
     
-    print_step "Instalando tema GRUB (mocha)..."
-    sudo cp -r src/catppuccin-mocha-grub-theme /usr/share/grub/themes/
-    
-    print_step "Configurando GRUB..."
-    sudo cp /etc/default/grub /etc/default/grub.backup
-    
-    sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
-    
-    print_step "Actualizando GRUB..."
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-    
-    print_step "Limpiando archivos temporales..."
-    cd "$SCRIPT_DIR"
-    rm -rf /tmp/catppuccin-grub
-    
-    print_success "Tema GRUB Catppuccin (mocha) instalado"
-    print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+    if [ -d "$grub_themes_dir" ]; then
+        print_step "Verificando temas GRUB disponibles..."
+        
+        # Buscar temas disponibles
+        local themes_found=()
+        for theme_dir in "$grub_themes_dir"/*; do
+            if [ -d "$theme_dir" ] && [ -f "$theme_dir/theme.txt" ]; then
+                local theme_name=$(basename "$theme_dir")
+                themes_found+=("$theme_name")
+            fi
+        done
+        
+        if [ ${#themes_found[@]} -gt 0 ]; then
+            print_step "Temas encontrados: ${themes_found[*]}"
+            
+            # Instalar el primer tema encontrado (puedes modificar para seleccionar uno específico)
+            local selected_theme="${themes_found[0]}"
+            local theme_path="$grub_themes_dir/$selected_theme"
+            
+            print_step "Instalando tema: $selected_theme"
+            
+            # Crear directorio de temas GRUB si no existe
+            sudo mkdir -p "$grub_system_dir"
+            
+            # Hacer backup del tema anterior si existe
+            if [ -d "$grub_system_dir/$selected_theme" ]; then
+                print_step "Haciendo backup del tema anterior..."
+                sudo mv "$grub_system_dir/$selected_theme" "$grub_system_dir/${selected_theme}.backup.$(date +%Y%m%d_%H%M%S)"
+            fi
+            
+            # Copiar el tema
+            print_step "Copiando tema a $grub_system_dir/$selected_theme..."
+            sudo cp -r "$theme_path" "$grub_system_dir/$selected_theme"
+            
+            # Hacer backup de la configuración GRUB
+            print_step "Haciendo backup de la configuración GRUB..."
+            sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
+            
+            # Configurar el tema en GRUB
+            print_step "Configurando tema en GRUB..."
+            
+            # Verificar si ya existe una configuración de tema
+            if grep -q "GRUB_THEME=" /etc/default/grub; then
+                # Actualizar tema existente
+                sudo sed -i "s|GRUB_THEME=.*|GRUB_THEME=\"$grub_system_dir/$selected_theme/theme.txt\"|" /etc/default/grub
+            else
+                # Agregar configuración de tema
+                echo "GRUB_THEME=\"$grub_system_dir/$selected_theme/theme.txt\"" | sudo tee -a /etc/default/grub
+            fi
+            
+            # Configurar resolución si no está configurada
+            if ! grep -q "GRUB_GFXMODE=" /etc/default/grub; then
+                print_step "Configurando resolución GRUB..."
+                echo "GRUB_GFXMODE=1920x1080,1600x900,1366x768,1024x768" | sudo tee -a /etc/default/grub
+            fi
+            
+            # Configurar timeout si no está configurado
+            if ! grep -q "GRUB_TIMEOUT=" /etc/default/grub; then
+                print_step "Configurando timeout GRUB..."
+                echo "GRUB_TIMEOUT=5" | sudo tee -a /etc/default/grub
+            fi
+            
+            # Actualizar configuración GRUB
+            print_step "Actualizando configuración GRUB..."
+            sudo grub-mkconfig -o /boot/grub/grub.cfg
+            
+            print_success "Tema GRUB '$selected_theme' instalado correctamente"
+            print_info "Tema ubicado en: $grub_system_dir/$selected_theme"
+            print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+            
+            # Mostrar información adicional
+            if [ -f "$theme_path/README.md" ]; then
+                print_info "Información del tema:"
+                cat "$theme_path/README.md" | head -10
+            fi
+            
+        else
+            print_warning "No se encontraron temas GRUB válidos en $grub_themes_dir"
+            print_step "Instalando tema GRUB por defecto..."
+            
+            # Instalar tema por defecto (Catppuccin) como fallback
+            cd /tmp
+            git clone https://github.com/catppuccin/grub.git catppuccin-grub 2>/dev/null || {
+                print_error "No se pudo descargar tema de respaldo"
+                return 1
+            }
+            cd catppuccin-grub
+            
+            sudo mkdir -p "$grub_system_dir"
+            sudo cp -r src/catppuccin-mocha-grub-theme "$grub_system_dir/"
+            
+            # Configurar tema por defecto
+            sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
+            
+            if grep -q "GRUB_THEME=" /etc/default/grub; then
+                sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
+            else
+                echo 'GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"' | sudo tee -a /etc/default/grub
+            fi
+            
+            sudo grub-mkconfig -o /boot/grub/grub.cfg
+            
+            cd "$SCRIPT_DIR"
+            rm -rf /tmp/catppuccin-grub
+            
+            print_success "Tema GRUB por defecto instalado"
+            print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+        fi
+    else
+        print_warning "Directorio de temas GRUB no encontrado en dotfiles"
+        print_step "Instalando tema GRUB por defecto..."
+        
+        # Instalar tema por defecto (Catppuccin) como fallback
+        cd /tmp
+        git clone https://github.com/catppuccin/grub.git catppuccin-grub 2>/dev/null || {
+            print_error "No se pudo descargar tema de respaldo"
+            return 1
+        }
+        cd catppuccin-grub
+        
+        sudo mkdir -p "$grub_system_dir"
+        sudo cp -r src/catppuccin-mocha-grub-theme "$grub_system_dir/"
+        
+        # Configurar tema por defecto
+        sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
+        
+        if grep -q "GRUB_THEME=" /etc/default/grub; then
+            sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
+        else
+            echo 'GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"' | sudo tee -a /etc/default/grub
+        fi
+        
+        sudo grub-mkconfig -o /boot/grub/grub.cfg
+        
+        cd "$SCRIPT_DIR"
+        rm -rf /tmp/catppuccin-grub
+        
+        print_success "Tema GRUB por defecto instalado"
+        print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+    fi
 }
 
 # =============================================================================
@@ -774,9 +895,9 @@ copy_dotfiles() {
                         ;;
                     "tmux")
                         print_step "Configurando Tmux con TPM y keybindings..."
-                        
+                            
                         # Crear directorio de configuración tmux
-                        mkdir -p "$HOME/.tmux"
+                            mkdir -p "$HOME/.tmux"
                         mkdir -p "$HOME/.tmux/plugins"
                         
                         # Instalar TPM si no existe
@@ -1614,6 +1735,47 @@ verify_browser_and_notes() {
     fi
 }
 
+install_sddm_and_theme() {
+    print_section "Instalando y configurando SDDM con tema NetLogin..."
+
+    # Instalar SDDM si no está instalado
+    if ! pacman -Q sddm &>/dev/null; then
+        print_step "Instalando SDDM..."
+        sudo pacman -S sddm --noconfirm --needed
+        print_success "SDDM instalado"
+    else
+        print_success "SDDM ya está instalado"
+    fi
+
+    # Crear directorio de temas si no existe
+    local sddm_themes_dir="/usr/share/sddm/themes"
+    sudo mkdir -p "$sddm_themes_dir"
+
+    # Extraer y copiar el tema NetLogin
+    local netlogin_tar="$DOTFILES_DIR/sddm/NetLogin.tar.gz"
+    if [ -f "$netlogin_tar" ]; then
+        print_step "Extrayendo tema NetLogin..."
+        tmpdir=$(mktemp -d)
+        tar -xzf "$netlogin_tar" -C "$tmpdir"
+        sudo cp -r "$tmpdir/NetLogin" "$sddm_themes_dir/"
+        rm -rf "$tmpdir"
+        print_success "Tema NetLogin instalado en $sddm_themes_dir/NetLogin"
+    else
+        print_warning "No se encontró NetLogin.tar.gz en dotfiles/sddm"
+    fi
+
+    # Configurar SDDM para usar NetLogin
+    local sddm_conf="/etc/sddm.conf.d/theme.conf"
+    sudo mkdir -p /etc/sddm.conf.d
+    echo -e "[Theme]\nCurrent=NetLogin" | sudo tee "$sddm_conf" > /dev/null
+    print_success "SDDM configurado para usar el tema NetLogin"
+
+    # Habilitar el servicio SDDM
+    print_step "Habilitando servicio SDDM..."
+    sudo systemctl enable sddm.service
+    print_success "Servicio SDDM habilitado"
+}
+
 # =============================================================================
 #                           📋 FUNCIÓN PRINCIPAL
 # =============================================================================
@@ -1729,6 +1891,7 @@ main() {
     configure_waypaper
     install_grub_theme
     copy_dotfiles
+    install_sddm_and_theme
     configure_fish_shell
     configure_system
     configure_firewall
