@@ -693,67 +693,11 @@ install_grub_theme() {
             
         else
             print_warning "No se encontraron temas GRUB válidos en $grub_themes_dir"
-            print_step "Instalando tema GRUB por defecto..."
-            
-            # Instalar tema por defecto (Catppuccin) como fallback
-            cd /tmp
-            git clone https://github.com/catppuccin/grub.git catppuccin-grub 2>/dev/null || {
-                print_error "No se pudo descargar tema de respaldo"
-                return 1
-            }
-            cd catppuccin-grub
-            
-            sudo mkdir -p "$grub_system_dir"
-            sudo cp -r src/catppuccin-mocha-grub-theme "$grub_system_dir/"
-            
-            # Configurar tema por defecto
-            sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
-            
-            if grep -q "GRUB_THEME=" /etc/default/grub; then
-                sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
-            else
-                echo 'GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"' | sudo tee -a /etc/default/grub
-            fi
-            
-            sudo grub-mkconfig -o /boot/grub/grub.cfg
-            
-            cd "$SCRIPT_DIR"
-            rm -rf /tmp/catppuccin-grub
-            
-            print_success "Tema GRUB por defecto instalado"
-            print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+            print_error "No se instalará ningún tema GRUB. Agrega un tema válido a dotfiles/grub-themes."
         fi
     else
         print_warning "Directorio de temas GRUB no encontrado en dotfiles"
-        print_step "Instalando tema GRUB por defecto..."
-        
-        # Instalar tema por defecto (Catppuccin) como fallback
-        cd /tmp
-        git clone https://github.com/catppuccin/grub.git catppuccin-grub 2>/dev/null || {
-            print_error "No se pudo descargar tema de respaldo"
-            return 1
-        }
-        cd catppuccin-grub
-        
-        sudo mkdir -p "$grub_system_dir"
-        sudo cp -r src/catppuccin-mocha-grub-theme "$grub_system_dir/"
-        
-        # Configurar tema por defecto
-        sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
-        
-        if grep -q "GRUB_THEME=" /etc/default/grub; then
-            sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
-        else
-            echo 'GRUB_THEME="/boot/grub/themes/catppuccin-mocha-grub-theme/theme.txt"' | sudo tee -a /etc/default/grub
-        fi
-        
-        sudo grub-mkconfig -o /boot/grub/grub.cfg
-        
-        cd "$SCRIPT_DIR"
-        rm -rf /tmp/catppuccin-grub
-        
-        print_success "Tema GRUB por defecto instalado"
-        print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
+        print_error "No se instalará ningún tema GRUB. Agrega un tema válido a dotfiles/grub-themes."
     fi
 }
 
