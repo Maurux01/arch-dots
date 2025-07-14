@@ -174,7 +174,7 @@ install_core_packages() {
     local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
     local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
-    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin")
+    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
     local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
