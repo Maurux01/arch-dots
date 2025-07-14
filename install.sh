@@ -174,7 +174,7 @@ install_core_packages() {
     local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
     local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
-    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer")
+    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
     local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
@@ -235,7 +235,7 @@ install_aur_packages() {
     
     local aur_packages=(
         "hyperlock" "oss" "nerd-fonts-complete" "heroic-games-launcher"
-        "pixelorama" "upscayl" "appflowy" "figma-linux"
+        "pixelorama" "upscayl" "appflowy" "figma-linux" "zeal" "trello" "betterdiscord" "opentabletdriver"
     )
     
     for pkg in "${aur_packages[@]}"; do
