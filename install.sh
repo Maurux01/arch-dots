@@ -230,6 +230,210 @@ install_core_packages() {
     print_success "Paquetes core instalados."
 }
 
+install_custom_icons_cursors() {
+    print_section "Instalando iconos y cursores personalizados..."
+    
+    # Directorios de destino
+    local icons_dir="$HOME/.local/share/icons"
+    local cursors_dir="$HOME/.local/share/icons"
+    local system_icons_dir="/usr/share/icons"
+    local system_cursors_dir="/usr/share/icons"
+    
+    print_step "Creando directorios de destino..."
+    mkdir -p "$icons_dir"
+    mkdir -p "$cursors_dir"
+    
+    # Instalar iconos personalizados
+    if [ -d "$DOTFILES_DIR/icons" ]; then
+        print_step "Instalando iconos personalizados..."
+        
+        cd "$DOTFILES_DIR/icons"
+        
+        # Instalar Gradient-Dark-Icons
+        if [ -f "Gradient-Dark-Icons.tar.gz" ]; then
+            print_step "Instalando Gradient-Dark-Icons..."
+            tar -xzf "Gradient-Dark-Icons.tar.gz" -C "$icons_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Gradient-Dark-Icons"
+            }
+        fi
+        
+        # Instalar Tela-circle icons
+        if [ -f "01-Tela-circle.tar.xz" ]; then
+            print_step "Instalando Tela-circle icons..."
+            tar -xf "01-Tela-circle.tar.xz" -C "$icons_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Tela-circle icons"
+            }
+        fi
+        
+        # Instalar candy-icons
+        if [ -f "candy-icons.tar.xz" ]; then
+            print_step "Instalando candy-icons..."
+            tar -xf "candy-icons.tar.xz" -C "$icons_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer candy-icons"
+            }
+        fi
+        
+        # Instalar Ketsa-icons
+        if [ -f "Ketsa-icons.tar.xz" ]; then
+            print_step "Instalando Ketsa-icons..."
+            tar -xf "Ketsa-icons.tar.xz" -C "$icons_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Ketsa-icons"
+            }
+        fi
+        
+        print_success "Iconos personalizados instalados"
+    else
+        print_warning "Directorio de iconos no encontrado en dotfiles"
+    fi
+    
+    # Instalar cursores personalizados
+    if [ -d "$DOTFILES_DIR/cursor" ]; then
+        print_step "Instalando cursores personalizados..."
+        
+        cd "$DOTFILES_DIR/cursor"
+        
+        # Instalar Bibata-Rainbow-Modern
+        if [ -f "Bibata-Rainbow-Modern.tar.gz" ]; then
+            print_step "Instalando Bibata-Rainbow-Modern cursor..."
+            tar -xzf "Bibata-Rainbow-Modern.tar.gz" -C "$cursors_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Bibata-Rainbow-Modern cursor"
+            }
+        fi
+        
+        # Instalar Night Diamond cursors
+        if [ -f "Night Diamond (Red).tar" ]; then
+            print_step "Instalando Night Diamond (Red) cursor..."
+            tar -xf "Night Diamond (Red).tar" -C "$cursors_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Night Diamond (Red) cursor"
+            }
+        fi
+        
+        if [ -f "Night Diamond (Blue).tar" ]; then
+            print_step "Instalando Night Diamond (Blue) cursor..."
+            tar -xf "Night Diamond (Blue).tar" -C "$cursors_dir" 2>/dev/null || {
+                print_warning "No se pudo extraer Night Diamond (Blue) cursor"
+            }
+        fi
+        
+        print_success "Cursores personalizados instalados"
+    else
+        print_warning "Directorio de cursores no encontrado en dotfiles"
+    fi
+    
+    # Actualizar caché de iconos
+    print_step "Actualizando caché de iconos..."
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        gtk-update-icon-cache -f -t "$icons_dir" 2>/dev/null || true
+    fi
+    
+    if command -v update-icon-caches >/dev/null 2>&1; then
+        update-icon-caches "$icons_dir" 2>/dev/null || true
+    fi
+    
+    # Configurar iconos por defecto
+    print_step "Configurando iconos por defecto..."
+    mkdir -p "$HOME/.config/gtk-3.0"
+    
+    cat > "$HOME/.config/gtk-3.0/settings.ini" << 'EOF'
+[Settings]
+gtk-icon-theme-name = Gradient-Dark-Icons
+gtk-cursor-theme-name = Bibata-Rainbow-Modern
+gtk-toolbar-style = GTK_TOOLBAR_ICONS
+gtk-menu-images = 1
+gtk-button-images = 1
+gtk-enable-animations = 1
+gtk-primary-button-warps-slider = 0
+gtk-enable-mnemonics = 1
+gtk-auto-mnemonics = 1
+gtk-recent-files-enabled = 1
+gtk-recent-files-max-age = 30
+gtk-can-change-accels = 0
+gtk-color-scheme = "selected_bg_color:#3584e4\nselected_fg_color:#ffffff\nbase_color:#ffffff\nfg_color:#2c2c2c\ntooltip_bg_color:#f5f5b5\ntooltip_fg_color:#000000"
+gtk-toolbar-icon-size = GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-im-module = gtk-im-context-simple
+gtk-menu-popup-delay = 0
+gtk-menu-popdown-delay = 0
+gtk-enable-accels = 1
+gtk-modules = gail:atk-bridge
+EOF
+    
+    # Configurar para GTK4
+    mkdir -p "$HOME/.config/gtk-4.0"
+    cat > "$HOME/.config/gtk-4.0/settings.ini" << 'EOF'
+[Settings]
+gtk-icon-theme-name = Gradient-Dark-Icons
+gtk-cursor-theme-name = Bibata-Rainbow-Modern
+gtk-toolbar-style = GTK_TOOLBAR_ICONS
+gtk-menu-images = 1
+gtk-button-images = 1
+gtk-enable-animations = 1
+gtk-primary-button-warps-slider = 0
+gtk-enable-mnemonics = 1
+gtk-auto-mnemonics = 1
+gtk-recent-files-enabled = 1
+gtk-recent-files-max-age = 30
+gtk-can-change-accels = 0
+gtk-toolbar-icon-size = GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-im-module = gtk-im-context-simple
+gtk-menu-popup-delay = 0
+gtk-menu-popdown-delay = 0
+gtk-enable-accels = 1
+EOF
+    
+    # Configurar para aplicaciones Qt
+    mkdir -p "$HOME/.config/qt5ct"
+    cat > "$HOME/.config/qt5ct/qt5ct.conf" << 'EOF'
+[Appearance]
+icon_theme = Gradient-Dark-Icons
+color_scheme_path = 
+custom_palette = false
+standard_dialogs = false
+style = GTK2
+EOF
+    
+    mkdir -p "$HOME/.config/qt6ct"
+    cat > "$HOME/.config/qt6ct/qt6ct.conf" << 'EOF'
+[Appearance]
+icon_theme = Gradient-Dark-Icons
+color_scheme_path = 
+custom_palette = false
+standard_dialogs = false
+style = GTK2
+EOF
+    
+    # Configurar variables de entorno
+    print_step "Configurando variables de entorno..."
+    cat >> "$HOME/.bashrc" << 'EOF'
+
+# Iconos y cursores personalizados
+export GTK_ICON_THEME=Gradient-Dark-Icons
+export XCURSOR_THEME=Bibata-Rainbow-Modern
+export QT_ICON_THEME=Gradient-Dark-Icons
+EOF
+    
+    if [ -f "$HOME/.zshrc" ]; then
+        cat >> "$HOME/.zshrc" << 'EOF'
+
+# Iconos y cursores personalizados
+export GTK_ICON_THEME=Gradient-Dark-Icons
+export XCURSOR_THEME=Bibata-Rainbow-Modern
+export QT_ICON_THEME=Gradient-Dark-Icons
+EOF
+    fi
+    
+    if [ -f "$HOME/.config/fish/config.fish" ]; then
+        cat >> "$HOME/.config/fish/config.fish" << 'EOF'
+
+# Iconos y cursores personalizados
+set -gx GTK_ICON_THEME Gradient-Dark-Icons
+set -gx XCURSOR_THEME Bibata-Rainbow-Modern
+set -gx QT_ICON_THEME Gradient-Dark-Icons
+EOF
+    fi
+    
+    print_success "Iconos y cursores personalizados instalados y configurados"
+}
+
 install_aur_packages() {
     print_section "Instalando paquetes AUR..."
     
@@ -1515,6 +1719,7 @@ main() {
     install_aur_helper
     install_compiler
     install_core_packages
+    install_custom_icons_cursors
     install_aur_packages
     install_wayland_components
     install_custom_fonts
