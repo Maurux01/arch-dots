@@ -176,7 +176,7 @@ install_core_packages() {
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
     local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
-    local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
+    local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
     local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
     local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
@@ -235,7 +235,7 @@ install_aur_packages() {
     
     local aur_packages=(
         "hyperlock" "oss" "nerd-fonts-complete" "heroic-games-launcher"
-        "pixelorama" "upscayl" "appflowy"
+        "pixelorama" "upscayl" "appflowy" "figma-linux"
     )
     
     for pkg in "${aur_packages[@]}"; do
