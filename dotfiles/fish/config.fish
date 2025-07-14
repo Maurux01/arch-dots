@@ -94,6 +94,11 @@ alias vim='nvim'
 alias vi='nvim'
 alias e='eww'
 alias h='hyprctl'
+alias mp='mpd'
+alias rmpc='rmpc'
+alias spot='spotify-cli'
+alias gem='gemini-cli'
+alias yt='ytui-music'
 
 # GRUB theme
 alias grub-theme='~/.config/scripts/install-grub-theme.sh'
