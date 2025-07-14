@@ -46,6 +46,10 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias home='cd ~'
+alias c='cd'
+alias d='rf-rm'
+alias s='sudo'
+alias p='pacman'
 
 # Terminal management
 alias q='exit'  # Quick exit from terminal
@@ -90,6 +94,11 @@ alias vim='nvim'
 alias vi='nvim'
 alias e='eww'
 alias h='hyprctl'
+alias mp='mpd'
+alias rmpc='rmpc'
+alias spot='spotify-cli'
+alias gem='gemini-cli'
+alias yt='ytui-music'
 
 # GRUB theme
 alias grub-theme='~/.config/scripts/install-grub-theme.sh'
@@ -114,9 +123,9 @@ end
 # Update Arch Linux system
 function update
     echo "🔄 Actualizando sistema (Pacman)..."
-    sudo pacman -Syu --noconfirm
+    s pacman -Syu --noconfirm
     echo "🧹 Limpiando caché de paquetes..."
-    sudo pacman -Sc --noconfirm
+    s pacman -Sc --noconfirm
     echo "✅ Sistema actualizado!"
 end
 
@@ -126,11 +135,11 @@ function search
 end
 
 function install
-    sudo pacman -S $argv
+    s pacman -S $argv
 end
 
 function remove
-    sudo pacman -Rns $argv
+    s pacman -Rns $argv
 end
 
 # Show system info

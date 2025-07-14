@@ -174,9 +174,9 @@ install_core_packages() {
     local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
     local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
-    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin")
-    local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop")
-    local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl")
+    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac")
+    local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop" "mpd" "mpc")
+    local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
     local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
     local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
@@ -235,7 +235,7 @@ install_aur_packages() {
     
     local aur_packages=(
         "hyperlock" "oss" "nerd-fonts-complete" "heroic-games-launcher"
-        "pixelorama" "upscayl" "appflowy"
+        "pixelorama" "upscayl" "appflowy" "figma-linux" "zeal" "trello" "betterdiscord" "opentabletdriver" "rmpc" "spotify-cli" "gemini-cli" "ytui-music"
     )
     
     for pkg in "${aur_packages[@]}"; do
@@ -413,13 +413,13 @@ install_grub_theme() {
     git clone https://github.com/catppuccin/grub.git catppuccin-grub
     cd catppuccin-grub
     
-    print_step "Instalando tema GRUB..."
-    sudo cp -r src/catppuccin-grub-theme /usr/share/grub/themes/
+    print_step "Instalando tema GRUB (mocha)..."
+    sudo cp -r src/catppuccin-mocha-grub-theme /usr/share/grub/themes/
     
     print_step "Configurando GRUB..."
     sudo cp /etc/default/grub /etc/default/grub.backup
     
-    sudo sed -i 's/GRUB_THEME=.*/GRUB_THEME="\/usr\/share\/grub\/themes\/catppuccin-grub-theme\/theme.txt"/' /etc/default/grub
+    sudo sed -i 's|GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/catppuccin-mocha-grub-theme/theme.txt"|' /etc/default/grub
     
     print_step "Actualizando GRUB..."
     sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -428,7 +428,7 @@ install_grub_theme() {
     cd "$SCRIPT_DIR"
     rm -rf /tmp/catppuccin-grub
     
-    print_success "Tema GRUB Catppuccin instalado"
+    print_success "Tema GRUB Catppuccin (mocha) instalado"
     print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
 }
 

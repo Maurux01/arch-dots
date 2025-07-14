@@ -1,14 +1,13 @@
-/* # By knightfall01 on Github as a part of https://github.com/Knightfall01/Hyprland-config */
-
-
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  color: #c4d3da;
+  font-family: "Fira Code", "Symbols Nerd Font Mono";
+  color: #cdd6f4;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 window {
-  border: 3px solid #90cdfa;
-  background: #1e2030;
+  border: 2px solid #cdd6f4;
+  background: #11111b;
   border-radius: 15px;
 }
 
@@ -43,7 +42,7 @@ window {
 
 #text {
   margin-left: 0.5em;
-  color: #c4d3da;
+  color: #cdd6f4;
 }
 
 #text:selected {
