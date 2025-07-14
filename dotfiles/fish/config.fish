@@ -47,6 +47,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias home='cd ~'
 alias c='cd'
+alias d='rf-rm'
 
 # Terminal management
 alias q='exit'  # Quick exit from terminal
