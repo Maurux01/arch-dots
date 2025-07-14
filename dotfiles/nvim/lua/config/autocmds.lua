@@ -1,4 +1,4 @@
-c -- Autocmds are automatically loaded on the VeryLazy event
+-- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 --
 -- Add any additional autocmds here
@@ -7,9 +7,11 @@ c -- Autocmds are automatically loaded on the VeryLazy event
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
--- Asegurar que Neovim inicie en modo normal
-vim.api.nvim_create_autocmd("VimEnter", {
+-- Asegurar que el dashboard se muestre correctamente
+vim.api.nvim_create_autocmd("User", {
+  pattern = "DashboardLoaded",
   callback = function()
+    -- Asegurar que el dashboard esté en modo normal
     vim.cmd("normal!")
   end,
 })

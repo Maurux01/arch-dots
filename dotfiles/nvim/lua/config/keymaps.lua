@@ -135,6 +135,9 @@ keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh file exp
 -- Lazy
 keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" })
 
+-- Dashboard
+keymap("n", "<leader>d", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
+
 -- Surround
 keymap("n", "ys", "<cmd>lua require('mini.surround').add()<cr>", { desc = "Add surround" })
 keymap("n", "ds", "<cmd>lua require('mini.surround').delete()<cr>", { desc = "Delete surround" })
