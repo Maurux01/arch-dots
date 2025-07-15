@@ -1728,12 +1728,12 @@ install_sddm_and_theme() {
 # Utilidades adicionales solicitadas por el usuario (sin duplicados, sin zsh ni upscayl)
 # =====================
 # Oficiales (pacman)
-local extra_official_packages=(
-    xournalpp kubectl remmina bitwarden beekeeper-studio zeal nano figlet toilet fortune-mod cava
+extra_official_packages=(
+    xournalpp kubectl remmina bitwarden beekeeper-studio zeal nano figlet toilet fortune-mod cava buzz lm-studio missioncenter ora hanabi parrot-terminal
 )
 # AUR (yay)
-local extra_aur_packages=(
-    buzz frog lm-studio missioncenter foliate ora hanabi hidamari ferdium zen cavalier helix cacher betterbird terminus-beta qownnotes zenkit parrot-terminal pulsar-bin
+extra_aur_packages=(
+    frog foliate ferdium zen cavalier helix cacher betterbird qownnotes zenkit pulsar-bin
 )
 
 # Limpiar duplicados de las listas existentes
