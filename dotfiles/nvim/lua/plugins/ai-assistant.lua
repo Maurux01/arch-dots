@@ -1,4 +1,4 @@
--- AI Assistant Plugins - Configuración limpia y optimizada
+ -- AI Assistant Plugins - Configuración limpia y optimizada
 return {
   -- Codeium (Free AI code completion)
   {
