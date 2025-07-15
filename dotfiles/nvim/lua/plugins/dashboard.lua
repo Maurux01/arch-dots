@@ -10,34 +10,29 @@ return {
     opts = function()
       local git_dashboard = require('git-dashboard-nvim').setup {}
 
-      -- Custom Neovim banner
-      local neovim_banner = {
-        '               ▄▄██████████▄▄             ',
-        '               ▀▀▀   ██   ▀▀▀             ',
-        '       ▄██▄   ▄▄████████████▄▄   ▄██▄     ',
-        '     ▄███▀  ▄████▀▀▀    ▀▀▀████▄  ▀███▄   ',
-        '    ████▄ ▄███▀              ▀███▄ ▄████  ',
-        '   ███▀█████▀▄████▄      ▄████▄▀█████▀███ ',
-        '   ██▀  ███▀ ██████      ██████ ▀███  ▀██ ',
-        '    ▀  ▄██▀  ▀████▀  ▄▄  ▀████▀  ▀██▄  ▀  ',
-        '       ███           ▀▀           ███     ',
-        '       ██████████████████████████████     ',
-        '   ▄█  ▀██  ███   ██    ██   ███  ██▀  █▄ ',
-        '   ███  ███ ███   ██    ██   ███▄███  ███ ',
-        '   ▀██▄████████   ██    ██   ████████▄██▀ ',
-        '    ▀███▀ ▀████   ██    ██   ████▀ ▀███▀  ',
-        '     ▀███▄  ▀███████    ███████▀  ▄███▀   ',
-        '       ▀███    ▀▀██████████▀▀▀   ███▀     ',
-        '         ▀    ▄▄▄    ██    ▄▄▄    ▀       ',
-        '               ▀████████████▀             ',
+      -- Custom FRIDAY banner (like in the image)
+      local friday_banner = {
+        '               ███████╗██████╗ ██╗██████╗  █████╗ ██╗   ██╗',
+        '               ██╔════╝██╔══██╗██║██╔══██╗██╔══██╗╚██╗ ██╔╝',
+        '               █████╗  ██████╔╝██║██║  ██║███████║ ╚████╔╝ ',
+        '               ██╔══╝  ██╔══██╗██║██║  ██║██╔══██║  ╚██╔╝  ',
+        '               ██║     ██║  ██║██║██████╔╝██║  ██║   ██║   ',
+        '               ╚═╝     ╚═╝  ╚═╝╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ',
       }
 
-      -- Combine git dashboard with Neovim banner
+      -- Combine FRIDAY banner with git dashboard
       local combined_header = {}
-      for _, line in ipairs(neovim_banner) do
+      for _, line in ipairs(friday_banner) do
         table.insert(combined_header, line)
       end
       table.insert(combined_header, '') -- Empty line for spacing
+      
+      -- Add date and time info like in the image
+      local current_time = os.date("%Y-%m-%d %H:%M:%S")
+      table.insert(combined_header, current_time)
+      table.insert(combined_header, '宜 : 祈福,入学,开市,求医,成服 忌 : 词讼,安门,移徙')
+      table.insert(combined_header, '') -- Empty line for spacing
+      
       for _, line in ipairs(git_dashboard) do
         table.insert(combined_header, line)
       end
@@ -69,9 +64,7 @@ return {
               key = 'a',
               key_hl = 'DashboardShortCut',
               desc_hl = 'DashboardDesc',
-              action = function()
-                require('telescope').extensions.app.default()
-              end,
+              action = 'Telescope find_files find_command=fd,--type,executable',
             },
             {
               icon = '󰙯 ',
@@ -103,7 +96,7 @@ return {
         },
         project = {
           enable = true,
-          limit = 8,
+          limit = 7,
           icon = '󰉋 ',
           label = 'Recently Projects:',
           action = 'Telescope find_files cwd=',
