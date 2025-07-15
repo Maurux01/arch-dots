@@ -49,7 +49,7 @@ alias home='cd ~'
 alias c='cd'
 alias d='rf-rm'
 alias s='sudo'
-alias p='pacman'
+abbr -a p pacman
 
 # Terminal management
 alias q='exit'  # Quick exit from terminal
@@ -359,3 +359,5 @@ add_path /snap/bin
 add_path /var/lib/flatpak/exports/bin
 
 # --- End of config.fish ---
+
+alias r='reset'
