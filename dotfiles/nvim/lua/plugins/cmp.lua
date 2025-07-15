@@ -193,10 +193,7 @@ return {
       store_selection_keys = "<Tab>",
       -- Prevent duplicate snippets
       update_events = { "TextChanged", "TextChangedI" },
-      -- Smart snippet loading with deduplication
-      load_ft_func = function(ft)
-        return require("luasnip.loaders.from_vscode").load_ft_func(ft)
-      end,
+      -- (Eliminada la opción load_ft_func que causaba error)
     },
     keys = {
       {
