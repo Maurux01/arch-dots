@@ -340,6 +340,10 @@ return {
     },
     config = function(_, opts)
       local copilot_cmp = require("copilot_cmp")
+      local ok, copilot_format = pcall(require, 'copilot_cmp.format')
+      if ok then
+        -- Usa copilot_format si es necesario
+      end
       copilot_cmp.setup(opts)
     end,
   },
