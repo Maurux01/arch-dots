@@ -174,7 +174,7 @@ install_core_packages() {
     local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
     local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
     local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
-    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac" "polybar" "qalculate-gtk" "gnome-clocks")
+    local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac" "polybar" "qalculate-gtk" "gnome-clocks" "w3m" "w3m-img")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop" "mpd" "mpc")
     local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
@@ -1723,6 +1723,36 @@ install_sddm_and_theme() {
     sudo systemctl enable sddm.service
     print_success "Servicio SDDM habilitado"
 }
+
+# =====================
+# Utilidades adicionales solicitadas por el usuario (sin duplicados, sin zsh ni upscayl)
+# =====================
+# Oficiales (pacman)
+local extra_official_packages=(
+    xournalpp kubectl remmina bitwarden beekeeper-studio zeal nano figlet toilet fortune-mod cava
+)
+# AUR (yay)
+local extra_aur_packages=(
+    buzz frog lm-studio missioncenter foliate ora hanabi hidamari ferdium zen cavalier helix cacher betterbird terminus-beta qownnotes zenkit parrot-terminal pulsar-bin
+)
+
+# Limpiar duplicados de las listas existentes
+# (Ejemplo: utility_packages, additional_packages, aur_packages, etc.)
+# Eliminar zsh y upscayl de cualquier lista
+utility_packages=( $(printf "%s\n" "${utility_packages[@]}" | grep -v -E '^zsh$|^upscayl$' | sort -u) )
+additional_packages=( $(printf "%s\n" "${additional_packages[@]}" | grep -v -E '^zsh$|^upscayl$' | sort -u) )
+
+# Instalar paquetes oficiales extra
+print_step "Instalando utilidades extra (oficiales)..."
+sudo pacman -S "${extra_official_packages[@]}" --noconfirm --needed || print_warning "Algunas utilidades extra fallaron"
+
+# Instalar paquetes de AUR extra si yay está disponible
+if command -v yay >/dev/null; then
+    print_step "Instalando utilidades extra de AUR..."
+    yay -S --noconfirm --needed "${extra_aur_packages[@]}" || print_warning "Algunas utilidades extra de AUR fallaron"
+else
+    print_warning "yay no está instalado, no se instalarán utilidades extra de AUR"
+fi
 
 # =============================================================================
 #                           📋 FUNCIÓN PRINCIPAL
