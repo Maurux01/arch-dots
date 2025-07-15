@@ -1,6 +1,5 @@
 -- lua/plugins/dashboard.lua
 -- Dashboard funcional con logo de Neovim
-
 return {
   {
     "nvimdev/dashboard-nvim",
