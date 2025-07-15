@@ -10,10 +10,42 @@ return {
     opts = function()
       local git_dashboard = require('git-dashboard-nvim').setup {}
 
+      -- Custom Neovim banner
+      local neovim_banner = {
+        '               ▄▄██████████▄▄             ',
+        '               ▀▀▀   ██   ▀▀▀             ',
+        '       ▄██▄   ▄▄████████████▄▄   ▄██▄     ',
+        '     ▄███▀  ▄████▀▀▀    ▀▀▀████▄  ▀███▄   ',
+        '    ████▄ ▄███▀              ▀███▄ ▄████  ',
+        '   ███▀█████▀▄████▄      ▄████▄▀█████▀███ ',
+        '   ██▀  ███▀ ██████      ██████ ▀███  ▀██ ',
+        '    ▀  ▄██▀  ▀████▀  ▄▄  ▀████▀  ▀██▄  ▀  ',
+        '       ███           ▀▀           ███     ',
+        '       ██████████████████████████████     ',
+        '   ▄█  ▀██  ███   ██    ██   ███  ██▀  █▄ ',
+        '   ███  ███ ███   ██    ██   ███▄███  ███ ',
+        '   ▀██▄████████   ██    ██   ████████▄██▀ ',
+        '    ▀███▀ ▀████   ██    ██   ████▀ ▀███▀  ',
+        '     ▀███▄  ▀███████    ███████▀  ▄███▀   ',
+        '       ▀███    ▀▀██████████▀▀▀   ███▀     ',
+        '         ▀    ▄▄▄    ██    ▄▄▄    ▀       ',
+        '               ▀████████████▀             ',
+      }
+
+      -- Combine git dashboard with Neovim banner
+      local combined_header = {}
+      for _, line in ipairs(neovim_banner) do
+        table.insert(combined_header, line)
+      end
+      table.insert(combined_header, '') -- Empty line for spacing
+      for _, line in ipairs(git_dashboard) do
+        table.insert(combined_header, line)
+      end
+
       local opts = {
         theme = 'doom',
         config = {
-          header = git_dashboard,
+          header = combined_header,
           center = {
             {
               icon = '󰑓 ',
