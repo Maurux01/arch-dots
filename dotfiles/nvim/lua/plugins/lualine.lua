@@ -1,5 +1,5 @@
 -- lua/plugins/lualine.lua
--- Unified Lualine configuration with comprehensive features and animations
+-- Beautiful and elegant Lualine configuration with stunning visuals
 return {
   {
     'nvim-lualine/lualine.nvim',
@@ -7,22 +7,39 @@ return {
     config = function()
       local lualine = require('lualine')
       
-      -- Colors for different modes
+      -- Beautiful color palette
       local colors = {
-        blue = '#61afef',
-        green = '#98c379',
-        purple = '#c678dd',
-        red1 = '#e06c75',
-        red2 = '#be5046',
-        yellow = '#e5c07b',
-        gray1 = '#5c6370',
-        gray2 = '#2c323c',
-        gray3 = '#3e4452',
+        -- Primary colors
+        blue = '#7aa2f7',
+        cyan = '#7dcfff',
+        green = '#9ece6a',
+        purple = '#bb9af7',
+        red = '#f7768e',
+        orange = '#ff9e64',
+        yellow = '#e0af68',
+        pink = '#f7768e',
+        
+        -- Background colors
+        bg = '#1a1b26',
+        bg_alt = '#16161e',
+        bg_light = '#24283b',
+        
+        -- Text colors
+        fg = '#a9b1d6',
+        fg_alt = '#7982a9',
+        fg_dark = '#565a6e',
+        
+        -- Accent colors
+        accent1 = '#7aa2f7',
+        accent2 = '#bb9af7',
+        accent3 = '#7dcfff',
+        accent4 = '#9ece6a',
+        accent5 = '#f7768e',
       }
 
-      -- Custom components
+      -- Custom components with beautiful icons
       local function get_lsp_name()
-        local msg = 'No Active Lsp'
+        local msg = '󰒋 No LSP'
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
         local clients = vim.lsp.get_active_clients()
         if next(clients) == nil then
@@ -31,7 +48,7 @@ return {
         for _, client in ipairs(clients) do
           local filetypes = client.config.filetypes
           if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-            return client.name
+            return '󰒋 ' .. client.name
           end
         end
         return msg
@@ -84,14 +101,23 @@ return {
           size = size / 1024
           i = i + 1
         end
-        return string.format('%.1f%s', size, suffixes[i])
+        return string.format('󰇚 %.1f%s', size, suffixes[i])
       end
 
       local function get_cursor_position()
         local line = vim.fn.line('.')
         local col = vim.fn.col('.')
         local total_lines = vim.fn.line('$')
-        return string.format('%d:%d/%d', line, col, total_lines)
+        return string.format('󰍡 %d:%d/%d', line, col, total_lines)
+      end
+
+      local function get_file_icon()
+        local file = vim.fn.expand('%:t')
+        if file == '' then
+          return '󰈙'
+        end
+        local icon = require('nvim-web-devicons').get_icon(file, vim.fn.expand('%:e'))
+        return icon or '󰈙'
       end
 
       -- Choose configuration style (complete or minimal)
@@ -99,12 +125,12 @@ return {
       
       local config
       if use_minimal then
-        -- Minimal configuration
+        -- Minimal but beautiful configuration
         config = {
           options = {
             icons_enabled = true,
             theme = 'auto',
-            component_separators = { left = '|', right = '|'},
+            component_separators = { left = ' ', right = ' '},
             section_separators = { left = '', right = ''},
             disabled_filetypes = {
               statusline = {},
@@ -119,26 +145,35 @@ return {
                 'mode',
                 separator = { left = '', right = ''},
                 right_padding = 2,
+                color = { fg = colors.bg, bg = colors.accent1, gui = 'bold' },
               }
             },
             lualine_b = {
               {
                 get_git_branch,
-                color = { fg = colors.purple },
+                color = { fg = colors.accent2 },
+                separator = { left = '', right = ' '},
               },
               {
                 'diff',
                 symbols = { added = ' 󰐕', modified = ' 󰆓', removed = ' 󰩺' },
-                color = { fg = colors.gray },
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
               {
                 'diagnostics',
                 sources = { 'nvim_diagnostic' },
                 symbols = { error = ' 󰅚', warn = ' 󰀪', info = ' 󰋼', hint = ' 󰌵' },
-                color = { fg = colors.gray },
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
             },
             lualine_c = {
+              {
+                get_file_icon,
+                color = { fg = colors.accent3 },
+                separator = { left = '', right = ' '},
+              },
               {
                 'filename',
                 file_status = true,
@@ -148,44 +183,46 @@ return {
                   readonly = ' 󰀾',
                   unnamed = '[No Name]',
                   newfile = '[New]',
-                }
+                },
+                color = { fg = colors.fg },
+                separator = { left = '', right = ' '},
               },
               {
                 get_lsp_name,
-                icon = ' 󰒋',
-                color = { fg = colors.blue },
+                color = { fg = colors.accent4 },
+                separator = { left = '', right = ''},
               },
             },
             lualine_x = {
               {
                 'encoding',
-                separator = { left = '', right = ''},
-                right_padding = 2,
+                color = { fg = colors.fg_alt },
+                separator = { left = ' ', right = ' '},
               },
               {
                 'filetype',
-                separator = { left = '', right = ''},
-                right_padding = 2,
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
             },
             lualine_y = {
               {
                 'progress',
-                separator = { left = '', right = ''},
-                left_padding = 2,
+                color = { fg = colors.accent5 },
+                separator = { left = ' ', right = ' '},
               },
             },
             lualine_z = {
               {
                 'location',
-                separator = { left = '', right = ''},
-                left_padding = 2,
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
               {
                 'datetime',
                 style = '%H:%M',
+                color = { fg = colors.fg_alt },
                 separator = { left = '', right = ''},
-                left_padding = 2,
               },
             },
           },
@@ -203,7 +240,7 @@ return {
           extensions = { 'nvim-tree', 'trouble', 'lazy', 'toggleterm' },
         }
       else
-        -- Complete configuration
+        -- Complete and beautiful configuration
         config = {
           options = {
             icons_enabled = true,
@@ -229,27 +266,36 @@ return {
                 'mode',
                 separator = { left = '', right = ''},
                 right_padding = 2,
+                color = { fg = colors.bg, bg = colors.accent1, gui = 'bold' },
               }
             },
             lualine_b = {
               {
                 'b:gitsigns_head',
                 icon = ' 󰘬',
-                color = { fg = colors.purple },
+                color = { fg = colors.accent2 },
+                separator = { left = '', right = ' '},
               },
               {
                 'diff',
                 symbols = { added = ' 󰐕 ', modified = ' 󰆓 ', removed = ' 󰩺 ' },
-                color = { fg = colors.gray1 },
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
               {
                 'diagnostics',
                 sources = { 'nvim_diagnostic' },
                 symbols = { error = ' 󰅚 ', warn = ' 󰀪 ', info = ' 󰋼 ', hint = ' 󰌵 ' },
-                color = { fg = colors.gray1 },
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
               },
             },
             lualine_c = {
+              {
+                get_file_icon,
+                color = { fg = colors.accent3 },
+                separator = { left = '', right = ' '},
+              },
               {
                 'filename',
                 file_status = true,
@@ -259,57 +305,67 @@ return {
                   readonly = ' 󰀾',
                   unnamed = '[No Name]',
                   newfile = '[New]',
-                }
+                },
+                color = { fg = colors.fg },
+                separator = { left = '', right = ' '},
               },
               {
                 get_lsp_name,
-                icon = ' 󰒋',
-                color = { fg = colors.blue },
+                color = { fg = colors.accent4 },
+                separator = { left = '', right = ' '},
               },
             },
             lualine_x = {
               {
                 'encoding',
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = ' ', right = ' '},
                 right_padding = 2,
               },
               {
                 'fileformat',
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
                 right_padding = 2,
               },
               {
                 'filetype',
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
                 right_padding = 2,
               },
               {
                 get_file_size,
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
                 right_padding = 2,
               },
             },
             lualine_y = {
               {
                 'progress',
-                separator = { left = '', right = ''},
+                color = { fg = colors.accent5 },
+                separator = { left = ' ', right = ' '},
                 left_padding = 2,
               },
               {
                 get_cursor_position,
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
                 left_padding = 2,
               },
             },
             lualine_z = {
               {
                 'location',
-                separator = { left = '', right = ''},
+                color = { fg = colors.fg_alt },
+                separator = { left = '', right = ' '},
                 left_padding = 2,
               },
               {
                 'datetime',
                 style = '%H:%M',
+                color = { fg = colors.fg_alt },
                 separator = { left = '', right = ''},
                 left_padding = 2,
               },
@@ -330,35 +386,35 @@ return {
         }
       end
 
-      -- Customize colors for different modes
-      local function custom_theme()
+      -- Beautiful custom theme
+      local function beautiful_theme()
         return {
           normal = {
-            a = { fg = colors.gray2, bg = colors.blue, gui = 'bold' },
-            b = { fg = colors.gray1, bg = colors.gray3 },
-            c = { fg = colors.gray1, bg = colors.gray3 },
+            a = { fg = colors.bg, bg = colors.accent1, gui = 'bold' },
+            b = { fg = colors.fg_alt, bg = colors.bg_light },
+            c = { fg = colors.fg, bg = colors.bg_alt },
           },
           insert = {
-            a = { fg = colors.gray2, bg = colors.green, gui = 'bold' },
+            a = { fg = colors.bg, bg = colors.accent4, gui = 'bold' },
           },
           visual = {
-            a = { fg = colors.gray2, bg = colors.purple, gui = 'bold' },
+            a = { fg = colors.bg, bg = colors.accent2, gui = 'bold' },
           },
           replace = {
-            a = { fg = colors.gray2, bg = colors.red1, gui = 'bold' },
+            a = { fg = colors.bg, bg = colors.accent5, gui = 'bold' },
           },
           command = {
-            a = { fg = colors.gray2, bg = colors.yellow, gui = 'bold' },
+            a = { fg = colors.bg, bg = colors.accent3, gui = 'bold' },
           },
           inactive = {
-            a = { fg = colors.gray1, bg = 'NONE' },
-            b = { fg = colors.gray1, bg = 'NONE' },
-            c = { fg = colors.gray1, bg = 'NONE' },
+            a = { fg = colors.fg_dark, bg = colors.bg_alt },
+            b = { fg = colors.fg_dark, bg = colors.bg_alt },
+            c = { fg = colors.fg_dark, bg = colors.bg_alt },
           },
         }
       end
 
-      config.options.theme = custom_theme()
+      config.options.theme = beautiful_theme()
       
       lualine.setup(config)
     end,

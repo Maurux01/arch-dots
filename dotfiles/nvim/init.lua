@@ -6,6 +6,7 @@ require("config.telescope")
 require("config.image-support")
 require("config.autocmds")
 require("config.performance")
+require("config.cursor-highlights")
 
 -- Force dashboard on startup if no files are opened
 vim.api.nvim_create_autocmd("VimEnter", {
