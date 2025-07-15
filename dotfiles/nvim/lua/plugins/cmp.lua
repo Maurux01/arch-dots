@@ -1,5 +1,5 @@
--- lua/plugins/cmp.lua
--- Configuración optimizada de autocompletado con nvim-cmp
+-- Optimized nvim-cmp configuration for autocompletion
+-- Includes deduplication, custom formatting, and best practices
 
 return {
   -- nvim-cmp setup
@@ -31,7 +31,6 @@ return {
       local function deduplicate_entries(entries)
         local seen = {}
         local result = {}
-        
         for _, entry in ipairs(entries) do
           local key = entry.completion_item.label
           if not seen[key] then
@@ -39,7 +38,6 @@ return {
             table.insert(result, entry)
           end
         end
-        
         return result
       end
 
@@ -105,14 +103,12 @@ return {
                 nvim_lua = "[🐺 Lua]",
                 nvim_lsp_signature_help = "[📋 Signature]",
               })[entry.source.name]
-              
               -- Add source-specific icons
               if entry.source.name == "nvim_lsp" then
                 vim_item.kind = "🔧"
               elseif entry.source.name == "luasnip" then
                 vim_item.kind = "📝"
               end
-              
               return vim_item
             end,
           }),
@@ -182,7 +178,7 @@ return {
     end,
   },
 
-  -- LuaSnip configuration with advanced deduplication
+  -- LuaSnip configuration
   {
     "L3MON4D3/LuaSnip",
     opts = {
@@ -191,9 +187,7 @@ return {
       region_check_events = "CursorMoved,CursorHold,InsertEnter",
       enable_autosnippets = false, -- Disable autosnippets to prevent spam
       store_selection_keys = "<Tab>",
-      -- Prevent duplicate snippets
       update_events = { "TextChanged", "TextChangedI" },
-      -- (Eliminada la opción load_ft_func que causaba error)
     },
     keys = {
       {
@@ -217,11 +211,10 @@ return {
     },
   },
 
-  -- Friendly snippets with advanced deduplication
+  -- Friendly snippets
   {
     "rafamadriz/friendly-snippets",
     config = function()
-      -- Load snippets with strict deduplication
       require("luasnip.loaders.from_vscode").lazy_load({
         exclude = { "global", "all" },
         include = {
@@ -243,48 +236,10 @@ return {
           "react",
         },
       })
-      
-      -- Custom snippet configuration to prevent duplicates
       local ls = require("luasnip")
       ls.config.set_config({
         history = true,
-        updateevents = "TextChanged,TextChangedI",
-        enable_autosnippets = false, -- Disable to prevent spam
-        store_selection_keys = "<Tab>",
-        -- Custom snippet deduplication
-        region_check_events = "CursorMoved,CursorHold,InsertEnter",
-        delete_check_events = "TextChanged,InsertLeave",
       })
-      
-      -- Custom snippet loader to prevent duplicates
-      local function load_snippets_with_deduplication()
-        local snippets = require("luasnip.loaders.from_vscode")
-        local loaded_snippets = {}
-        
-        -- Load snippets and track what's already loaded
-        snippets.lazy_load({
-          exclude = { "global", "all" },
-        })
-        
-        -- Custom deduplication logic
-        for ft, ft_snippets in pairs(ls.snippets) do
-          local unique_snippets = {}
-          local seen = {}
-          
-          for name, snippet in pairs(ft_snippets) do
-            local key = snippet.trigger or name
-            if not seen[key] then
-              seen[key] = true
-              unique_snippets[name] = snippet
-            end
-          end
-          
-          ls.snippets[ft] = unique_snippets
-        end
-      end
-      
-      -- Load snippets with deduplication
-      load_snippets_with_deduplication()
     end,
   },
 } 

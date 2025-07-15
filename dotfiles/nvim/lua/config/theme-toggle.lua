@@ -1,4 +1,5 @@
 -- Theme Switcher Module
+-- Provides theme switching with error handling and notifications
 local M = {}
 
 local themes = {
@@ -24,6 +25,7 @@ local themes = {
 local current_theme_index = 1
 local theme_file = vim.fn.stdpath('config') .. '/current_theme.txt'
 
+-- Save the current theme to a file
 local function save_theme(theme_name)
   local f = io.open(theme_file, 'w')
   if f then
@@ -32,6 +34,7 @@ local function save_theme(theme_name)
   end
 end
 
+-- Load the last used theme from file
 local function load_theme()
   local f = io.open(theme_file, 'r')
   if f then
@@ -42,6 +45,7 @@ local function load_theme()
   return nil
 end
 
+-- Try to set a theme by name, fallback if not available
 local function set_theme_by_name(theme_name)
   for i, theme in ipairs(themes) do
     if theme == theme_name then
@@ -66,18 +70,18 @@ local loaded_theme = load_theme()
 if loaded_theme then
   local success = set_theme_by_name(loaded_theme)
   if not success then
-    -- Fallback to first theme
+    vim.notify('Theme not available: ' .. loaded_theme .. ', fallback to: ' .. themes[1], vim.log.levels.WARN)
     vim.cmd('colorscheme ' .. themes[1])
     current_theme_index = 1
     save_theme(themes[1])
   end
 else
-  -- Default theme
   vim.cmd('colorscheme ' .. themes[1])
   current_theme_index = 1
   save_theme(themes[1])
 end
 
+-- Toggle to the next theme
 function M.toggle()
   current_theme_index = current_theme_index % #themes + 1
   local new_theme = themes[current_theme_index]
@@ -98,26 +102,12 @@ function M.toggle()
   end
 end
 
+-- Go to the next theme
 function M.next()
-  current_theme_index = current_theme_index % #themes + 1
-  local new_theme = themes[current_theme_index]
-  local success = pcall(function()
-    vim.cmd('colorscheme ' .. new_theme)
-  end)
-  if success then
-    save_theme(new_theme)
-    vim.notify('Theme: ' .. new_theme, vim.log.levels.INFO, {
-      title = 'Theme Switcher',
-      timeout = 1500,
-    })
-  else
-    vim.notify('Theme not available: ' .. new_theme, vim.log.levels.WARN, {
-      title = 'Theme Switcher',
-      timeout = 1500,
-    })
-  end
+  M.toggle()
 end
 
+-- Go to the previous theme
 function M.prev()
   current_theme_index = current_theme_index - 1
   if current_theme_index < 1 then
@@ -141,6 +131,7 @@ function M.prev()
   end
 end
 
+-- Set a specific theme by name
 function M.set(theme_name)
   for i, theme in ipairs(themes) do
     if theme == theme_name then

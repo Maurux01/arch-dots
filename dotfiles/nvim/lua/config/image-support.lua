@@ -1,9 +1,9 @@
 -- Image and SVG Support Configuration
+-- Provides image and SVG preview and paste support for Neovim
 local M = {}
 
--- Function to setup image support
 function M.setup()
-    -- Configure image.nvim
+    -- Setup image.nvim
     require("image").setup({
         backend = "kitty",
         integrations = {
@@ -33,7 +33,7 @@ function M.setup()
         hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
     })
 
-    -- Configure markdown preview
+    -- Markdown preview plugin configuration
     vim.g.mkdp_filetypes = { "markdown" }
     vim.g.mkdp_theme = "dark"
     vim.g.mkdp_auto_start = false
@@ -61,13 +61,17 @@ function M.setup()
     vim.g.mkdp_markdown_css = ""
     vim.g.mkdp_highlight_css = ""
     vim.g.mkdp_port = ""
-    vim.g.mkdp_page_title = "「${name}」"
+    vim.g.mkdp_page_title = " 1${name} 7"
 
-    -- Configure image paste
+    -- Image paste configuration
     vim.g.image_paste_backend = "kitty"
     vim.g.image_paste_download_images = true
-    vim.g.image_paste_download_dir = "~/.local/share/nvim/images"
-    vim.g.image_paste_image_dir = "~/.local/share/nvim/images"
+    local img_dir = vim.fn.expand("~/.local/share/nvim/images")
+    local img_dir_resized = img_dir .. "/resized"
+    local img_dir_backup = img_dir .. "/backup"
+    local img_dir_backup_resized = img_dir_backup .. "/resized"
+    vim.g.image_paste_download_dir = img_dir
+    vim.g.image_paste_image_dir = img_dir
     vim.g.image_paste_image_name_template = "{timestamp}_{random_string}"
     vim.g.image_paste_image_extension = "png"
     vim.g.image_paste_image_quality = 90
@@ -83,9 +87,9 @@ function M.setup()
     vim.g.image_paste_image_resize_format = "png"
     vim.g.image_paste_image_resize_extension = "png"
     vim.g.image_paste_image_resize_name_template = "{original_name}_resized"
-    vim.g.image_paste_image_resize_dir = "~/.local/share/nvim/images/resized"
+    vim.g.image_paste_image_resize_dir = img_dir_resized
     vim.g.image_paste_image_resize_backup = true
-    vim.g.image_paste_image_resize_backup_dir = "~/.local/share/nvim/images/backup"
+    vim.g.image_paste_image_resize_backup_dir = img_dir_backup
     vim.g.image_paste_image_resize_backup_format = "png"
     vim.g.image_paste_image_resize_backup_extension = "png"
     vim.g.image_paste_image_resize_backup_name_template = "{original_name}_backup"
@@ -105,23 +109,22 @@ function M.setup()
     vim.g.image_paste_image_resize_backup_resize_format = "png"
     vim.g.image_paste_image_resize_backup_resize_extension = "png"
     vim.g.image_paste_image_resize_backup_resize_name_template = "{original_name}_backup_resized"
-    vim.g.image_paste_image_resize_backup_resize_dir = "~/.local/share/nvim/images/backup/resized"
+    vim.g.image_paste_image_resize_backup_resize_dir = img_dir_backup_resized
 
-    -- Create directories for images
-    vim.fn.mkdir(vim.fn.expand("~/.local/share/nvim/images"), "p")
-    vim.fn.mkdir(vim.fn.expand("~/.local/share/nvim/images/resized"), "p")
-    vim.fn.mkdir(vim.fn.expand("~/.local/share/nvim/images/backup"), "p")
-    vim.fn.mkdir(vim.fn.expand("~/.local/share/nvim/images/backup/resized"), "p")
+    -- Ensure directories exist before using them
+    for _, dir in ipairs({img_dir, img_dir_resized, img_dir_backup, img_dir_backup_resized}) do
+      if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, "p")
+      end
+    end
 
-    -- Add filetype detection for images
+    -- Filetype detection for images
     vim.api.nvim_create_autocmd("BufRead", {
         pattern = "*.png,*.jpg,*.jpeg,*.gif,*.webp,*.svg",
         callback = function()
             vim.bo.filetype = "image"
         end,
     })
-
-    -- Add filetype detection for SVG
     vim.api.nvim_create_autocmd("BufRead", {
         pattern = "*.svg",
         callback = function()

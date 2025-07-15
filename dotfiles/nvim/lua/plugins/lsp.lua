@@ -1,5 +1,5 @@
--- lua/plugins/lsp.lua
--- Configuración personalizada de LSP
+-- Custom LSP configuration for Neovim
+-- Provides diagnostics, inlay hints, and server-specific settings
 
 return {
   "neovim/nvim-lspconfig",
@@ -18,6 +18,7 @@ return {
       enabled = true,
     },
     servers = {
+      -- Lua language server
       lua_ls = {
         settings = {
           Lua = {
@@ -27,6 +28,7 @@ return {
           },
         },
       },
+      -- TypeScript/JavaScript language server
       tsserver = {
         settings = {
           typescript = {
@@ -53,6 +55,7 @@ return {
           },
         },
       },
+      -- HTML language server
       html = {
         settings = {
           html = {
@@ -67,6 +70,7 @@ return {
           },
         },
       },
+      -- CSS/LESS/SCSS language server
       cssls = {
         settings = {
           css = {
@@ -89,6 +93,7 @@ return {
           },
         },
       },
+      -- JSON language server
       jsonls = {
         settings = {
           json = {
@@ -99,6 +104,7 @@ return {
           },
         },
       },
+      -- Emmet language server
       emmet_ls = {
         filetypes = { "html", "css", "scss", "sass", "less", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "php", "xml", "xsl", "haml", "jade", "pug", "slim", "erb", "ejs" },
         init_options = {
@@ -109,6 +115,7 @@ return {
           },
         },
       },
+      -- YAML, Markdown, and other servers
       yamlls = {},
       marksman = {},
     },

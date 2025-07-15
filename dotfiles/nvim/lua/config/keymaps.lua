@@ -1,16 +1,14 @@
 -- Keymaps for better user experience
 -- See `:help vim.keymap.set()`
 
--- Set leader key to space
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+-- Leader keys are set in options.lua only
 
 local keymap = vim.keymap.set
 
 -- Clear search with <esc>
 keymap({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
 
--- Better window navigation
+-- Window navigation
 keymap("n", "<C-w>h", "<C-w><C-h>", { desc = "Go to left window", remap = true })
 keymap("n", "<C-w>j", "<C-w><C-j>", { desc = "Go to lower window", remap = true })
 keymap("n", "<C-w>k", "<C-w><C-k>", { desc = "Go to upper window", remap = true })
@@ -26,7 +24,7 @@ keymap("n", "<Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 keymap("n", "<Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 keymap("n", "<Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
--- Move Lines
+-- Move lines
 keymap("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
 keymap("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move up" })
 keymap("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
@@ -37,7 +35,7 @@ keymap("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 -- Save with Ctrl+s
 keymap({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
--- Better indenting
+-- Indenting
 keymap("v", "<", "<gv", { desc = "Better indent" })
 keymap("v", ">", ">gv", { desc = "Better indent" })
 
@@ -50,7 +48,7 @@ keymap("n", "[q", "<cmd>cprev<cr>", { desc = "Previous quickfix" })
 keymap("n", "]l", "<cmd>lnext<cr>", { desc = "Next location" })
 keymap("n", "[l", "<cmd>lprev<cr>", { desc = "Previous location" })
 
--- Buffer navigation (Improved)
+-- Buffer navigation
 keymap("n", "<C-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 keymap("n", "<C-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer" })
 keymap("n", "<leader>bd", "<cmd>BufferLinePickClose<cr>", { desc = "Close buffer" })

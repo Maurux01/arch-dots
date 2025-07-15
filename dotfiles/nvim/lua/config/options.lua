@@ -1,14 +1,12 @@
--- lua/config/options.lua
--- Opciones personalizadas para LazyVim
+-- Custom options for LazyVim
 
--- Configuración básica de Neovim
+-- Set leader keys (only here)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Opciones básicas
 local opt = vim.opt
 
--- Interfaz
+-- UI
 opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
@@ -18,20 +16,20 @@ opt.colorcolumn = "80"
 opt.scrolloff = 8
 opt.sidescrolloff = 8
 
--- Búsqueda
+-- Search
 opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = true
 opt.incsearch = true
 
--- Indentación
+-- Indentation
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.autoindent = true
 opt.smartindent = true
 
--- Archivos
+-- Files
 opt.swapfile = false
 opt.backup = false
 opt.undofile = true
@@ -41,10 +39,12 @@ opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 opt.termguicolors = true
 opt.showmode = false
 
--- Fuente
-opt.guifont = "JetBrains Mono:h13"
+-- Font (only for GUI clients)
+if vim.fn.has("gui_running") == 1 or vim.g.neovide or vim.g.goneovim then
+  opt.guifont = "JetBrains Mono:h13"
+end
 
--- Comportamiento
+-- Behavior
 opt.mouse = "a"
 opt.clipboard = "unnamedplus"
 opt.completeopt = "menu,menuone,noselect"
@@ -55,30 +55,13 @@ opt.showbreak = "↪ "
 opt.list = true
 opt.listchars = { tab = "▸ ", trail = "·" }
 
--- Rendimiento
+-- Performance
 opt.synmaxcol = 240
 opt.updatetime = 250
+opt.lazyredraw = true -- Improve macro/script performance
 
--- Configuración específica de archivos
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "text" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-  end,
-})
-
--- Mejorar la experiencia de edición
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 300 })
-  end,
-})
-
--- Configuración de colores
-vim.cmd([[
-  hi CursorLine ctermbg=NONE guibg=NONE
-  hi CursorLineNr ctermfg=Yellow guifg=Yellow
-  hi LineNr ctermfg=Gray guifg=Gray
-  hi SignColumn ctermbg=NONE guibg=NONE
-]])
+-- Color customizations (consider moving to theme module if needed)
+vim.cmd([[hi CursorLine ctermbg=NONE guibg=NONE]])
+vim.cmd([[hi CursorLineNr ctermfg=Yellow guifg=Yellow]])
+vim.cmd([[hi LineNr ctermfg=Gray guifg=Gray]])
+vim.cmd([[hi SignColumn ctermbg=NONE guibg=NONE]])
