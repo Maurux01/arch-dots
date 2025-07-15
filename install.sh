@@ -227,6 +227,10 @@ install_core_packages() {
     print_step "Instalando paquetes de Docker..."
     sudo pacman -S "${docker_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de Docker fallaron"
     
+    # Instalar Polybar explícitamente
+    print_step "Instalando Polybar..."
+    sudo pacman -S polybar --noconfirm --needed || print_warning "Polybar no se pudo instalar"
+    
     print_success "Paquetes core instalados."
 }
 
