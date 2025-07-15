@@ -6,11 +6,16 @@ require("config.telescope")
 require("config.image-support")
 require("config.autocmds")
 
--- Force dashboard on startup if no files are opened (fallback)
+-- Force alpha dashboard on startup if no files are opened
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
-    if vim.fn.argc() == 0 and vim.fn.bufnr() == 1 and vim.fn.bufname() == "" then
-      vim.cmd("Dashboard")
+    -- Only show alpha dashboard if no files were opened
+    if vim.fn.argc() == 0 then
+      -- Small delay to ensure plugins are loaded
+      vim.defer_fn(function()
+        vim.cmd("Alpha")
+      end, 100)
     end
   end,
+  nested = true,
 })
