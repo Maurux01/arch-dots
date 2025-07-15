@@ -332,61 +332,27 @@ return {
     },
     config = function()
       require("avante").setup({
-        -- Provider configuration - Múltiples opciones disponibles:
-        -- "openai", "anthropic", "gemini", "ollama", "local"
-        provider = {
-          name = "gemini", -- Cambia aquí: "openai", "gemini", "anthropic", etc.
-          config = {
-            -- Para Gemini:
-            api_key = os.getenv("GEMINI_API_KEY"), -- Variable de entorno para Gemini
-            model = "gemini-pro", -- Modelo de Gemini
-            temperature = 0.1,
-            max_tokens = 2000,
-            
-            -- Para OpenAI (descomenta si cambias a "openai"):
-            -- api_key = os.getenv("OPENAI_API_KEY"),
-            -- model = "gpt-4",
-            -- temperature = 0.1,
-            -- max_tokens = 2000,
-            
-            -- Para Anthropic Claude (descomenta si cambias a "anthropic"):
-            -- api_key = os.getenv("ANTHROPIC_API_KEY"),
-            -- model = "claude-3-sonnet-20240229",
-            -- temperature = 0.1,
-            -- max_tokens = 2000,
-            
-            -- Para Ollama (descomenta si cambias a "ollama"):
-            -- base_url = "http://localhost:11434",
-            -- model = "llama2",
-            -- temperature = 0.1,
-            -- max_tokens = 2000,
-          },
+        provider = "gemini",
+        provider_config = {
+          api_key = os.getenv("GEMINI_API_KEY"),
+          model = "gemini-pro",
+          temperature = 0.1,
+          max_tokens = 2000,
         },
-        
-        -- Selector configuration
         selector = {
           exclude_auto_select = { "NvimTree", "TelescopePrompt", "Trouble" },
           auto_select = true,
         },
-        
-        -- UI configuration
         ui = {
           border = "rounded",
           width = 0.8,
           height = 0.8,
           relative = "editor",
         },
-        
-        -- Rules configuration
         rules = {
           project_dir = ".avante/rules",
           global_dir = "~/.config/avante/rules",
         },
-        
-        -- Override prompt directory (optional)
-        -- override_prompt_dir = "~/.config/nvim/avante_prompts",
-        
-        -- Integration with existing plugins
         integrations = {
           nvim_tree = {
             enabled = true,
