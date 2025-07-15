@@ -147,6 +147,9 @@ function update
     echo "✅ Sistema actualizado!"
 end
 
+# Alias para actualizar el sistema rápidamente
+alias update="sudo pacman -Syu"
+
 # Pacman wrappers
 function search
     pacman -Ss $argv
