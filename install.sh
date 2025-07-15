@@ -1817,6 +1817,18 @@ show_final_info() {
     fi
 }
 
+copy_icons_to_pictures() {
+    print_section "Copiando iconos a ~/Pictures/icons..."
+    local icons_dir="$HOME/Pictures/icons"
+    mkdir -p "$icons_dir"
+    if [ -d "$DOTFILES_DIR/icons" ]; then
+        cp -r "$DOTFILES_DIR/icons"/* "$icons_dir/"
+        print_success "Iconos copiados a $icons_dir"
+    else
+        print_warning "No se encontró la carpeta de iconos en dotfiles."
+    fi
+}
+
 main() {
     print_header
     check_system
@@ -1830,6 +1842,7 @@ main() {
     install_wayland_components
     install_custom_fonts
     copy_wallpapers
+    copy_icons_to_pictures
     configure_hyprlock
     configure_clipboard
     configure_waypaper
