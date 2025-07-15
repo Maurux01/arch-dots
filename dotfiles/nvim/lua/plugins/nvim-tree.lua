@@ -11,6 +11,7 @@ return {
     { "<leader>ef", "<cmd>NvimTreeFocus<cr>", desc = "Focus NvimTree" },
     { "<leader>ec", "<cmd>NvimTreeCollapse<cr>", desc = "Collapse NvimTree" },
     { "<leader>er", "<cmd>NvimTreeRefresh<cr>", desc = "Refresh NvimTree" },
+    { "<leader>et", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
   },
   config = function()
     require("nvim-tree").setup({
