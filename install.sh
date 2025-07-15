@@ -1746,10 +1746,23 @@ additional_packages=( $(printf "%s\n" "${additional_packages[@]}" | grep -v -E '
 print_step "Instalando utilidades extra (oficiales)..."
 sudo pacman -S "${extra_official_packages[@]}" --noconfirm --needed || print_warning "Algunas utilidades extra fallaron"
 
-# Instalar paquetes de AUR extra si yay está disponible
+# Instalar paquetes de AUR extra según la lista del usuario
 if command -v yay >/dev/null; then
     print_step "Instalando utilidades extra de AUR..."
-    yay -S --noconfirm --needed "${extra_aur_packages[@]}" || print_warning "Algunas utilidades extra de AUR fallaron"
+    yay -S --needed \
+      kubectl \
+      bitwarden \
+      remmina \
+      qownnotes \
+      zeal \
+      foliate \
+      upscayl \
+      mission-center \
+      ferdium-bin \
+      cavalier \
+      cacher \
+      beekeeper-studio \
+     || print_warning "Algunas utilidades extra de AUR fallaron"
 else
     print_warning "yay no está instalado, no se instalarán utilidades extra de AUR"
 fi
