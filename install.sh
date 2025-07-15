@@ -1729,11 +1729,11 @@ install_sddm_and_theme() {
 # =====================
 # Oficiales (pacman)
 extra_official_packages=(
-    xournalpp kubectl remmina bitwarden beekeeper-studio zeal nano figlet toilet fortune-mod cava buzz lm-studio missioncenter ora hanabi parrot-terminal
+    xournalpp kubectl remmina bitwarden beekeeper-studio zeal nano figlet toilet fortune-mod cava jenkins lm-studio missioncenter ora hanabi parrot-terminal
 )
 # AUR (yay)
 extra_aur_packages=(
-    frog foliate ferdium zen cavalier helix cacher betterbird qownnotes zenkit pulsar-bin
+    frog foliate ferdium zen cavalier helix cacher qownnotes zenkit pulsar-bin
 )
 
 # Limpiar duplicados de las listas existentes
