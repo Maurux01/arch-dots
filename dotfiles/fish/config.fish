@@ -49,7 +49,13 @@ alias home='cd ~'
 alias c='cd'
 alias d='rf-rm'
 alias s='sudo'
-alias p='pacman'
+# Eliminar alias p si existe
+# alias p='pacman'
+
+# Definir función p para llamar a pacman con todos los argumentos
+function p
+    pacman $argv
+end
 
 # Terminal management
 alias q='exit'  # Quick exit from terminal
