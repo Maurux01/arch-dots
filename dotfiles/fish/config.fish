@@ -361,3 +361,6 @@ add_path /var/lib/flatpak/exports/bin
 # --- End of config.fish ---
 
 alias r='reset'
+
+# Alias para reiniciar rápidamente
+alias re='reboot'
