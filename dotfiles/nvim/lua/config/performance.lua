@@ -48,7 +48,7 @@ vim.g.loaded_zip = 1
 vim.g.loaded_zipPlugin = 1
 
 -- Custom autocmds for smooth animations
-vim.api.nvim_create_autocmd("TextChanged,TextChangedI", {
+vim.api.nvim_create_autocmd({"TextChanged", "TextChangedI"}, {
   callback = function()
     vim.opt.updatetime = 100
   end,

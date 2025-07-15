@@ -137,6 +137,10 @@ keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" 
 keymap("n", "<leader>d", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
 keymap("n", "<leader>D", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
 
+-- Shade (Window dimming)
+keymap("n", "<leader>st", "<cmd>lua require('shade').toggle()<cr>", { desc = "Toggle Shade" })
+keymap("n", "<leader>ss", "<cmd>lua require('shade').set_overlay_opacity(50)<cr>", { desc = "Set Shade opacity" })
+
 -- Surround
 keymap("n", "ys", "<cmd>lua require('mini.surround').add()<cr>", { desc = "Add surround" })
 keymap("n", "ds", "<cmd>lua require('mini.surround').delete()<cr>", { desc = "Delete surround" })
