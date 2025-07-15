@@ -5,6 +5,7 @@ return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-telescope/telescope-file-browser.nvim",
+    "nvim-telescope/telescope-app.nvim",
   },
   opts = {
     defaults = {
@@ -72,5 +73,6 @@ return {
     local telescope = require("telescope")
     telescope.setup(opts)
     telescope.load_extension("file_browser")
+    telescope.load_extension("app")
   end,
 } 

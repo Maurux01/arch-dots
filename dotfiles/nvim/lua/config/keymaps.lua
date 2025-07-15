@@ -135,6 +135,7 @@ keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" 
 
 -- Dashboard
 keymap("n", "<leader>d", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
+keymap("n", "<leader>D", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
 
 -- Surround
 keymap("n", "ys", "<cmd>lua require('mini.surround').add()<cr>", { desc = "Add surround" })

@@ -16,82 +16,46 @@ return {
           header = git_dashboard,
           center = {
             {
-              icon = '󰈞 ',
-              desc = 'Find Files',
+              icon = '󰑓 ',
+              desc = 'Update [u]',
+              key = 'u',
+              key_hl = 'DashboardShortCut',
+              desc_hl = 'DashboardDesc',
+              action = 'Lazy sync',
+            },
+            {
+              icon = '󰉋 ',
+              desc = 'Files [f]',
               key = 'f',
               key_hl = 'DashboardShortCut',
               desc_hl = 'DashboardDesc',
               action = 'Telescope find_files',
             },
             {
-              icon = '󰉋 ',
-              desc = 'Recent Files',
-              key = 'r',
+              icon = '󰋩 ',
+              desc = 'Apps [a]',
+              key = 'a',
               key_hl = 'DashboardShortCut',
               desc_hl = 'DashboardDesc',
-              action = 'Telescope oldfiles',
+              action = function()
+                require('telescope').extensions.app.default()
+              end,
             },
             {
-              icon = '󰈢 ',
-              desc = 'Live Grep',
-              key = 'g',
+              icon = '󰙯 ',
+              desc = 'dotfiles [d]',
+              key = 'd',
               key_hl = 'DashboardShortCut',
               desc_hl = 'DashboardDesc',
-              action = 'Telescope live_grep',
-            },
-            {
-              icon = '󰊄 ',
-              desc = 'Lazy',
-              key = 'l',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'Lazy',
-            },
-            {
-              icon = '󰒲 ',
-              desc = 'LazyGit',
-              key = 'G',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'LazyGit',
-            },
-            {
-              icon = '󰃢 ',
-              desc = 'Projects',
-              key = 'p',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'Telescope projects',
-            },
-            {
-              icon = '󰍉 ',
-              desc = 'Mason',
-              key = 'm',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'Mason',
-            },
-            {
-              icon = '󰒍 ',
-              desc = 'Check Health',
-              key = 'h',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'checkhealth',
-            },
-            {
-              icon = '󰐦 ',
-              desc = 'Quit',
-              key = 'q',
-              key_hl = 'DashboardShortCut',
-              desc_hl = 'DashboardDesc',
-              action = 'quit',
+              action = function()
+                vim.cmd('cd ~/.config/nvim')
+                require('telescope.builtin').find_files()
+              end,
             },
           },
           footer = function()
             local stats = require('lazy').stats()
-            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-            return { '⚡ Neovim loaded ' .. stats.count .. ' plugins in ' .. ms .. 'ms' }
+            return { '🚀 Sharp tools make good work.' }
           end,
         },
         hide = {
@@ -104,6 +68,25 @@ return {
         change_to_vcs_root = false,
         week_header = {
           enable = false,
+        },
+        project = {
+          enable = true,
+          limit = 8,
+          icon = '󰉋 ',
+          label = 'Recently Projects:',
+          action = 'Telescope find_files cwd=',
+        },
+        mru = {
+          limit = 10,
+          icon = '󰑓 ',
+          label = 'Most Recent Files:',
+          action = 'edit',
+        },
+        mru_file = {
+          limit = 10,
+          icon = '󰈙 ',
+          label = 'Most Recent Files:',
+          action = 'edit',
         },
       }
 
