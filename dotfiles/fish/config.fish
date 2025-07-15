@@ -57,6 +57,7 @@ alias t='tmux-session'  # Quick tmux session
 alias tm='tmux-session main'
 alias tdev='tmux-session dev'
 alias twork='tmux-session work'
+alias e='exit'  # Alias para salir rápido con 'e'
 
 # Git
 alias gs='git status'
@@ -69,6 +70,17 @@ alias gcb='git checkout -b'
 alias gb='git branch'
 alias gd='git diff'
 alias glog='git log --oneline --graph --decorate'
+
+# Alias adicionales para git
+alias gcl='git clone'
+alias gca='git commit --amend'
+alias gsta='git stash'
+alias gstp='git stash pop'
+alias gss='git status -s'
+alias gundo='git reset --soft HEAD~1'
+alias gfix='git commit --fixup'
+alias gpr='git pull --rebase'
+alias glogg='git log --graph --decorate --oneline --all'
 
 # Modern tools replacements
 alias lg='lazygit'
@@ -234,6 +246,29 @@ function install-grub-theme
     else
         echo "❌ Script de instalación no encontrado"
         echo "💡 Ejecuta el instalador principal para obtener el script"
+    end
+end
+
+# Alias para copiar y pegar en terminal (detecta entorno)
+function cpr --description 'Copiar al portapapeles universal'
+    if type -q wl-copy
+        wl-copy
+    else if type -q xclip
+        xclip -selection clipboard
+    else
+        echo 'No se encontró wl-copy ni xclip'
+        return 1
+    end
+end
+
+function ppr --description 'Pegar desde el portapapeles universal'
+    if type -q wl-paste
+        wl-paste
+    else if type -q xclip
+        xclip -selection clipboard -o
+    else
+        echo 'No se encontró wl-paste ni xclip'
+        return 1
     end
 end
 
