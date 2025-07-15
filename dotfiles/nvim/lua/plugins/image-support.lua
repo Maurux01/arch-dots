@@ -41,18 +41,6 @@ return {
     },
   },
 
-  -- SVG support and preview
-  {
-    "mhinz/vim-startify",
-    config = function()
-      -- tu configuración aquí, por ejemplo:
-      vim.g.startify_bookmarks = {
-        { i = "~/.config/nvim/init.lua", desc = "Neovim config" },
-        { i = "~/.config/hypr/hyprland.conf", desc = "Hyprland config" },
-      }
-    end,
-  },
-
   -- Markdown image preview
   {
     "iamcco/markdown-preview.nvim",

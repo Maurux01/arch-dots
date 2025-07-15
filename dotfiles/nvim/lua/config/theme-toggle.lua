@@ -8,7 +8,7 @@ local themes = {
   "gruvbox",
   "dracula",
   "habamax",
-  "monokai-pro",
+      "monokai",
   "github_dark",
   "github_light",
   "github_dimmed",
