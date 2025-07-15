@@ -43,7 +43,7 @@ return {
         day_night = {
           enable = false,
           day_filter = "pro",
-          night_filter = "spectrum",
+          night_filter = "spectrum"
         },
         inc_search = { background = false },
         background_clear = {
@@ -53,48 +53,48 @@ return {
           "notify",
           "nvim-tree",
           "lazy",
-          "mason",
+          "mason"
         },
         plugins = {
           bufferline = {
             underline_selected = false,
             underline_visible = false,
             underline_fill = false,
-            bold = true,
+            bold = true
           },
           indent_blankline = {
             color = "monokai_pro_spectrum",
             context_color = "monokai_pro_spectrum",
-            context_style = "bold",
+            context_style = "bold"
           },
           illuminate = {
-            delay = 120,
+            delay = 120
           },
           neotree = {
             contrast = false,
-            transparency = false,
+            transparency = false
           },
           notify = {
-            background_colour = "#000000",
+            background_colour = "#000000"
           },
           nvim_tree = {
             contrast = false,
-            transparency = false,
+            transparency = false
           },
           telescope = {
             borderless = true,
-            border = false,
+            border = false
           },
           which_key = {
-            border = false,
-          },
+            border = false
+          }
         },
         override = function(colors)
           return {
             -- Custom overrides can go here
           }
-        end,
+        end
       })
-    end,
-  },
+    end
+  }
 } 

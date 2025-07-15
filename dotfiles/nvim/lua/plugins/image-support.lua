@@ -172,7 +172,6 @@ return {
         "rust",
         "go",
         "xml",  -- For SVG support
-        "svg",  -- SVG syntax highlighting
       },
     },
   },

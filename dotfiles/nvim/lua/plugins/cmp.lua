@@ -15,9 +15,7 @@ return {
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
-      "onsails/lspkind.nvim",
-      "Exafunction/codeium.nvim",
-      "zbirenbaum/copilot.lua",
+      "onsails/lspkind.nvim"
     },
     opts = function()
       local cmp = require("cmp")
@@ -85,26 +83,11 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          -- AI completions (highest priority, limited to prevent spam)
-          { name = "copilot", priority = 1000, max_item_count = 2 },
-          { name = "codeium", priority = 900, max_item_count = 2 },
-          
-          -- LSP completions (high priority)
           { name = "nvim_lsp", priority = 800, max_item_count = 8 },
-          
-          -- Snippets (medium priority, very limited to avoid duplicates)
           { name = "luasnip", priority = 750, max_item_count = 3 },
-          
-          -- Buffer completions (lower priority)
           { name = "buffer", priority = 500, max_item_count = 5 },
-          
-          -- Path completions
           { name = "path", priority = 250, max_item_count = 3 },
-          
-          -- Lua completions
           { name = "nvim_lua", priority = 200, max_item_count = 2 },
-          
-          -- Signature help (lowest priority)
           { name = "nvim_lsp_signature_help", priority = 150, max_item_count = 1 },
         },
         formatting = {
@@ -115,8 +98,6 @@ return {
             before = function(entry, vim_item)
               -- Custom menu labels to distinguish sources
               vim_item.menu = ({
-                copilot = "[🤖 Copilot]",
-                codeium = "[💡 Codeium]",
                 nvim_lsp = "[🔧 LSP]",
                 luasnip = "[📝 Snippet]",
                 buffer = "[📄 Buffer]",
@@ -126,10 +107,8 @@ return {
               })[entry.source.name]
               
               -- Add source-specific icons
-              if entry.source.name == "copilot" then
-                vim_item.kind = "🤖"
-              elseif entry.source.name == "codeium" then
-                vim_item.kind = "💡"
+              if entry.source.name == "nvim_lsp" then
+                vim_item.kind = "🔧"
               elseif entry.source.name == "luasnip" then
                 vim_item.kind = "📝"
               end
@@ -309,42 +288,6 @@ return {
       
       -- Load snippets with deduplication
       load_snippets_with_deduplication()
-    end,
-  },
-
-  -- Copilot integration with CMP (optimized for deduplication)
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = {
-      "zbirenbaum/copilot.lua",
-    },
-    opts = {
-      -- Prevent copilot from overwhelming other sources
-      method = "getCompletionsCycling",
-      formatters = {
-        insert_text = require("copilot_cmp.format").remove_existing,
-      },
-      -- Limit copilot suggestions
-      suggestion = {
-        enabled = true,
-        auto_trigger = false,
-        keymap = {
-          accept = "<C-y>",
-          accept_word = false,
-          accept_line = false,
-          next = "<C-n>",
-          prev = "<C-p>",
-          dismiss = "<C-e>",
-        },
-      },
-    },
-    config = function(_, opts)
-      local copilot_cmp = require("copilot_cmp")
-      local ok, copilot_format = pcall(require, 'copilot_cmp.format')
-      if ok then
-        -- Usa copilot_format si es necesario
-      end
-      copilot_cmp.setup(opts)
     end,
   },
 } 
