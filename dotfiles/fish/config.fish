@@ -364,3 +364,4 @@ alias r='reset'
 
 # Alias para reiniciar rápidamente
 alias re='reboot'
+alias sn='shutdown now'
