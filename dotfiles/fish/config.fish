@@ -49,7 +49,7 @@ alias home='cd ~'
 alias c='cd'
 alias d='rf-rm'
 alias s='sudo'
-abbr -a p pacman
+alias p='pacman'
 
 # Terminal management
 alias q='exit'  # Quick exit from terminal
