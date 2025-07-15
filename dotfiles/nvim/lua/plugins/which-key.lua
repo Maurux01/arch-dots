@@ -94,7 +94,7 @@ return {
       -- File explorer
       e = {
         name = "Explorer",
-        e = { "<cmd>lua require('snacks').explorer.open()<cr>", "Open Snacks Explorer" },
+        e = { "<cmd>NvimTreeToggle<cr>", "Toggle NvimTree" },
         f = { "<cmd>NvimTreeFocus<cr>", "Focus file explorer" },
         c = { "<cmd>NvimTreeCollapse<cr>", "Collapse file explorer" },
         r = { "<cmd>NvimTreeRefresh<cr>", "Refresh file explorer" },

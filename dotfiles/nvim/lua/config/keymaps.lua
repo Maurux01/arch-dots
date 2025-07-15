@@ -124,11 +124,11 @@ keymap("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
 keymap("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
 keymap("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
 
--- File explorer (Snacks)
-keymap("n", "<leader>e", "<cmd>lua require('snacks').explorer.open()<cr>", { desc = "Open Snacks Explorer" })
-keymap("n", "<leader>ef", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })
-keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<cr>", { desc = "Collapse file explorer" })
-keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh file explorer" })
+-- File explorer (NvimTree)
+keymap("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree" })
+keymap("n", "<leader>ef", "<cmd>NvimTreeFocus<cr>", { desc = "Focus NvimTree" })
+keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<cr>", { desc = "Collapse NvimTree" })
+keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh NvimTree" })
 
 -- Lazy
 keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" })
