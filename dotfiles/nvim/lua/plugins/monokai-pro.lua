@@ -89,10 +89,9 @@ return {
             border = false
           }
         },
+        -- Valid override function (empty for now)
         override = function(colors)
-          return {
-            -- Custom overrides can go here
-          }
+          return {}
         end
       })
     end

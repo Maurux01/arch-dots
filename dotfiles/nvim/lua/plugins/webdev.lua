@@ -89,35 +89,24 @@ return {
     end,
   },
 
-  -- Web development snippets (custom, sin duplicaciones)
+  -- Web development snippets (custom, no duplicates)
   {
     "rafamadriz/friendly-snippets",
     config = function()
-      -- Cargar solo snippets específicos para web development
+      -- Load only web development snippets
       require("luasnip.loaders.from_vscode").lazy_load({
         include = {
-          "html",
-          "css",
-          "scss",
-          "javascript",
-          "typescript",
-          "javascriptreact",
-          "typescriptreact",
-          "vue",
-          "json",
+          "html", "css", "scss", "javascript", "typescript", "javascriptreact", "typescriptreact", "vue", "json"
         },
         exclude = { "global", "all", "lua", "python", "rust", "go", "java", "c", "cpp", "php" },
       })
 
-      -- Configuración específica para evitar duplicaciones en HTML
+      -- Clean duplicate HTML snippets safely
       local ls = require("luasnip")
-      
-      -- Función para limpiar snippets duplicados específicamente para HTML
       local function clean_html_snippets()
-        if ls.snippets.html then
+        if ls.snippets and ls.snippets.html then
           local seen = {}
           local unique_snippets = {}
-          
           for name, snippet in pairs(ls.snippets.html) do
             local key = snippet.trigger or name
             if not seen[key] then
@@ -125,12 +114,9 @@ return {
               unique_snippets[name] = snippet
             end
           end
-          
           ls.snippets.html = unique_snippets
         end
       end
-      
-      -- Aplicar limpieza después de cargar snippets
       vim.defer_fn(clean_html_snippets, 100)
     end,
   },

@@ -1,5 +1,5 @@
 -- lua/plugins/markdown.lua
--- Configuración completa para Markdown con previsualización
+-- Complete Markdown configuration with preview
 
 return {
   -- Markdown preview with multiple backends
@@ -9,18 +9,18 @@ return {
       vim.fn["mkdp#util#install"]()
     end,
     ft = "markdown",
-    opts = {
-      mkdp_filetypes = { "markdown" },
-      mkdp_theme = "dark",
-      mkdp_auto_start = false,
-      mkdp_auto_close = true,
-      mkdp_refresh_slow = false,
-      mkdp_command_for_global = false,
-      mkdp_open_to_the_world = false,
-      mkdp_open_ip = "",
-      mkdp_echo_preview_url = false,
-      mkdp_browserfunc = "",
-      mkdp_preview_options = {
+    config = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_theme = "dark"
+      vim.g.mkdp_auto_start = false
+      vim.g.mkdp_auto_close = true
+      vim.g.mkdp_refresh_slow = false
+      vim.g.mkdp_command_for_global = false
+      vim.g.mkdp_open_to_the_world = false
+      vim.g.mkdp_open_ip = ""
+      vim.g.mkdp_echo_preview_url = false
+      vim.g.mkdp_browserfunc = ""
+      vim.g.mkdp_preview_options = {
         mkit = {},
         katex = {},
         uml = {},
@@ -33,12 +33,12 @@ return {
         content_editable = false,
         disable_filename = false,
         toc = {},
-      },
-      mkdp_markdown_css = "",
-      mkdp_highlight_css = "",
-      mkdp_port = "",
-      mkdp_page_title = "「${name}」",
-    },
+      }
+      vim.g.mkdp_markdown_css = ""
+      vim.g.mkdp_highlight_css = ""
+      vim.g.mkdp_port = ""
+      vim.g.mkdp_page_title = "「${name}」"
+    end,
     keys = {
       { "<leader>mp", "<cmd>MarkdownPreview<cr>", desc = "Markdown preview" },
       { "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", desc = "Stop preview" },

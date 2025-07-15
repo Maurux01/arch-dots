@@ -41,6 +41,22 @@ return {
         return result
       end
 
+      -- Command line completion setup (moved from cmp-cmdline)
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+        }, {
+          { name = "cmdline" },
+        }),
+      })
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
+      })
+
       return {
         completion = {
           completeopt = "menu,menuone,noinsert,noselect",
@@ -153,28 +169,6 @@ return {
           },
         },
       }
-    end,
-  },
-
-  -- Command line completion
-  {
-    "hrsh7th/cmp-cmdline",
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = "path" },
-        }, {
-          { name = "cmdline" },
-        }),
-      })
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
     end,
   },
 
