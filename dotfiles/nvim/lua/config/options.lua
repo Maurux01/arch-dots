@@ -58,7 +58,7 @@ opt.listchars = { tab = "▸ ", trail = "·" }
 -- Performance
 opt.synmaxcol = 240
 opt.updatetime = 250
-opt.lazyredraw = true -- Improve macro/script performance
+-- opt.lazyredraw = true -- Disabled: causes issues with Noice plugin
 
 -- Color customizations (consider moving to theme module if needed)
 vim.cmd([[hi CursorLine ctermbg=NONE guibg=NONE]])
