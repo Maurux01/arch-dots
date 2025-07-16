@@ -97,7 +97,6 @@ return {
         e = { "<cmd>NvimTreeToggle<cr>", "Toggle NvimTree" },
         f = { "<cmd>NvimTreeFocus<cr>", "Focus file explorer" },
         c = { "<cmd>NvimTreeCollapse<cr>", "Collapse file explorer" },
-        t = { "<cmd>NvimTreeToggle<cr>", "Toggle NvimTree" },
         r = { "<cmd>NvimTreeRefresh<cr>", "Refresh file explorer" },
         [":"] = { "<cmd>Telescope command_history<cr>", "Command History" },
         [";"] = { "<cmd>Telescope commands<cr>", "Commands" },

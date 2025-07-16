@@ -129,7 +129,9 @@ keymap("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree" }
 keymap("n", "<leader>ef", "<cmd>NvimTreeFocus<cr>", { desc = "Focus NvimTree" })
 keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<cr>", { desc = "Collapse NvimTree" })
 keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh NvimTree" })
-keymap("n", "<leader>et", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree" })
+keymap("n", "<leader>et", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree (alternative)" })
+keymap("n", "<leader>es", "<cmd>NvimTreeToggleSafe<cr>", { desc = "Toggle NvimTree (safe)" })
+keymap("n", "<leader>ed", "<cmd>NvimTreeDebug<cr>", { desc = "Debug NvimTree" })
 
 -- Lazy
 keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" })

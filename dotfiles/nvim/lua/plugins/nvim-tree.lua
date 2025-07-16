@@ -11,10 +11,17 @@ return {
     { "<leader>ef", "<cmd>NvimTreeFocus<cr>", desc = "Focus NvimTree" },
     { "<leader>ec", "<cmd>NvimTreeCollapse<cr>", desc = "Collapse NvimTree" },
     { "<leader>er", "<cmd>NvimTreeRefresh<cr>", desc = "Refresh NvimTree" },
-    { "<leader>et", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
+    { "<leader>et", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree (alternative)" },
   },
   config = function()
-    require("nvim-tree").setup({
+    -- Verificar que el plugin se cargue correctamente
+    local status_ok, nvim_tree = pcall(require, "nvim-tree")
+    if not status_ok then
+      vim.notify("nvim-tree not found!", vim.log.levels.ERROR)
+      return
+    end
+    
+    nvim_tree.setup({
       sort_by = "case_sensitive",
       view = {
         width = 30,
@@ -184,5 +191,30 @@ return {
         },
       },
     })
+    
+    -- Comando de debug para NvimTree
+    vim.api.nvim_create_user_command("NvimTreeDebug", function()
+      local status_ok, nvim_tree = pcall(require, "nvim-tree")
+      if status_ok then
+        print("NvimTree está cargado correctamente")
+        print("Comandos disponibles:")
+        print("  :NvimTreeToggle")
+        print("  :NvimTreeFocus")
+        print("  :NvimTreeCollapse")
+        print("  :NvimTreeRefresh")
+      else
+        print("Error: NvimTree no está disponible")
+      end
+    end, {})
+    
+    -- Comando personalizado más robusto para toggle
+    vim.api.nvim_create_user_command("NvimTreeToggleSafe", function()
+      local status_ok, nvim_tree = pcall(require, "nvim-tree")
+      if status_ok then
+        nvim_tree.toggle()
+      else
+        vim.notify("NvimTree no está disponible", vim.log.levels.ERROR)
+      end
+    end, {})
   end,
 } 
