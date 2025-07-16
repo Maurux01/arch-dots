@@ -1,46 +1,26 @@
 -- lua/plugins/dashboard.lua
--- Dashboard-nvim with git-dashboard-nvim heatmap
+-- Custom dashboard configuration
 return {
   {
     'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    dependencies = {
-      { 'juansalvatore/git-dashboard-nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-    },
-    opts = function()
-      local git_dashboard = require('git-dashboard-nvim').setup {}
-
-      -- Custom FRIDAY banner (like in the image)
-      local friday_banner = {
-        '               ███████╗██████╗ ██╗██████╗  █████╗ ██╗   ██╗',
-        '               ██╔════╝██╔══██╗██║██╔══██╗██╔══██╗╚██╗ ██╔╝',
-        '               █████╗  ██████╔╝██║██║  ██║███████║ ╚████╔╝ ',
-        '               ██╔══╝  ██╔══██╗██║██║  ██║██╔══██║  ╚██╔╝  ',
-        '               ██║     ██║  ██║██║██████╔╝██║  ██║   ██║   ',
-        '               ╚═╝     ╚═╝  ╚═╝╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ',
-      }
-
-      -- Combine FRIDAY banner with git dashboard
-      local combined_header = {}
-      for _, line in ipairs(friday_banner) do
-        table.insert(combined_header, line)
-      end
-      table.insert(combined_header, '') -- Empty line for spacing
-      
-      -- Add date and time info like in the image
-      local current_time = os.date("%Y-%m-%d %H:%M:%S")
-      table.insert(combined_header, current_time)
-      table.insert(combined_header, '宜 : 祈福,入学,开市,求医,成服 忌 : 词讼,安门,移徙')
-      table.insert(combined_header, '') -- Empty line for spacing
-      
-      for _, line in ipairs(git_dashboard) do
-        table.insert(combined_header, line)
-      end
-
-      local opts = {
+    lazy = false,
+    priority = 1000, -- Load after other plugins
+    config = function()
+      require('dashboard').setup({
         theme = 'doom',
         config = {
-          header = combined_header,
+          header = {
+            '               ███████╗██████╗ ██╗██████╗  █████╗ ██╗   ██╗',
+            '               ██╔════╝██╔══██╗██║██╔══██╗██╔══██╗╚██╗ ██╔╝',
+            '               █████╗  ██████╔╝██║██║  ██║███████║ ╚████╔╝ ',
+            '               ██╔══╝  ██╔══██╗██║██║  ██║██╔══██║  ╚██╔╝  ',
+            '               ██║     ██║  ██║██║██████╔╝██║  ██║   ██║   ',
+            '               ╚═╝     ╚═╝  ╚═╝╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ',
+            '',
+            os.date("%Y-%m-%d %H:%M:%S"),
+            '宜 : 祈福,入学,开市,求医,成服 忌 : 词讼,安门,移徙',
+            '',
+          },
           center = {
             {
               icon = '󰑓 ',
@@ -113,9 +93,7 @@ return {
           label = 'Most Recent Files:',
           action = 'edit',
         },
-      }
-
-      return opts
+      })
     end,
   },
 } 

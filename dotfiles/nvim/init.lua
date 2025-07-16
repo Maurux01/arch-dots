@@ -8,16 +8,19 @@ require("config.autocmds")
 require("config.performance")
 require("config.cursor-highlights")
 
--- Force dashboard on startup if no files are opened
+-- Force our custom dashboard on startup
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     -- Only show dashboard if no files were opened
     if vim.fn.argc() == 0 then
-      -- Small delay to ensure plugins are loaded
+      -- Force our dashboard
       vim.defer_fn(function()
         vim.cmd("Dashboard")
-      end, 100)
+      end, 1000)
     end
   end,
   nested = true,
 })
+
+-- Disable LazyVim's default dashboard
+vim.g.lazyvim_dashboard = false
