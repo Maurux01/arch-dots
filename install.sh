@@ -489,12 +489,12 @@ configure_hyprlock() {
     print_step "Configurando Hyprlock..."
     mkdir -p "$HOME/.config/hyprlock"
 
-    if [ -f "$DOTFILES_DIR/hyprlock/hyprlock.conf" ]; then
+    if [ -f "$DOTFILES_DIR/hypr/hyprlock.conf" ]; then
         print_step "Copiando configuración de hyprlock desde dotfiles..."
-        cp "$DOTFILES_DIR/hyprlock/hyprlock.conf" "$HOME/.config/hyprlock/"
+        cp "$DOTFILES_DIR/hypr/hyprlock.conf" "$HOME/.config/hyprlock/"
 
-        if [ -d "$DOTFILES_DIR/hyprlock/assets" ]; then
-            cp -r "$DOTFILES_DIR/hyprlock/assets" "$HOME/.config/hyprlock/"
+        if [ -d "$DOTFILES_DIR/hypr/hyprlock" ]; then
+            cp -r "$DOTFILES_DIR/hypr/hyprlock" "$HOME/.config/"
         fi
 
         print_success "Configuración de hyprlock copiada"
