@@ -173,14 +173,14 @@ install_core_packages() {
     local dev_packages=("nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk" "gcc" "cmake" "ninja" "meson" "valgrind" "gdb")
     local docker_packages=("docker" "docker-compose" "podman" "buildah" "skopeo")
     local image_packages=("imagemagick" "ffmpeg" "v4l-utils" "pulseaudio-alsa" "libpng" "libjpeg-turbo" "libwebp" "librsvg" "giflib")
-    local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip")
+    local capture_packages=("flameshot" "grim" "slurp" "spectacle" "maim" "xclip" "wl-screenshot" "wl-copy" "hyprpicker" "wf-recorder")
     local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac" "polybar" "qalculate-gtk" "gnome-clocks" "w3m" "w3m-img")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "spotify" "discord" "telegram-desktop" "mpd" "mpc")
     local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
     local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
     local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
     local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
-    local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper")
+    local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper" "libnotify" "bc")
     local security_packages=("ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn" "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp" "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop" "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs")
 
     # Instalar paquetes críticos primero
