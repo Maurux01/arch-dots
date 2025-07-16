@@ -586,7 +586,7 @@ configure_waypaper() {
         "output": "all"
     },
     "image": {
-        "path": "~/Pictures/wallpapers",
+        "path": "$HOME/Pictures/wallpapers",
         "sort": "name"
     },
     "hyprland": {
@@ -1918,19 +1918,6 @@ setup_hyprland_bars() {
     fi
 }
 
-copy_waybar() {
-    print_section "Copiando configuración de Waybar..."
-    local waybar_src="$DOTFILES_DIR/waybar"
-    local waybar_dest="$HOME/.config/waybar"
-    mkdir -p "$waybar_dest"
-    if [ -d "$waybar_src" ]; then
-        cp -r "$waybar_src"/* "$waybar_dest/"
-        print_success "Configuración de Waybar copiada a $waybar_dest"
-    else
-        print_warning "No se encontró la carpeta de waybar en dotfiles."
-    fi
-}
-
 main() {
     print_header
     check_system
@@ -1963,7 +1950,6 @@ main() {
     verify_browser_and_notes
     show_final_info
     setup_hyprland_bars
-    copy_waybar
 }
 
 # Ejecutar función principal
