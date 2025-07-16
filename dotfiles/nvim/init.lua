@@ -8,14 +8,15 @@ require("config.autocmds")
 require("config.performance")
 require("config.cursor-highlights")
 
--- Force our custom dashboard on startup
+-- Simple welcome message on startup
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
-    -- Only show dashboard if no files were opened
+    -- Only show welcome if no files were opened
     if vim.fn.argc() == 0 then
-      -- Force our dashboard
+      -- Show a simple welcome message
       vim.defer_fn(function()
-        vim.cmd("Dashboard")
+        print("🚀 Welcome to Neovim!")
+        print("Use <leader>d to find files or <leader>D for recent files")
       end, 1000)
     end
   end,

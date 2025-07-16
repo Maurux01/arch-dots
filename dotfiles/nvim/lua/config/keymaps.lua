@@ -136,9 +136,9 @@ keymap("n", "<leader>ed", "<cmd>NvimTreeDebug<cr>", { desc = "Debug NvimTree" })
 -- Lazy
 keymap("n", "<leader>E", "<cmd>Lazy<cr>", { desc = "Open Lazy (Plugin Manager)" })
 
--- Dashboard
-keymap("n", "<leader>d", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
-keymap("n", "<leader>D", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
+-- Quick actions (replacing dashboard)
+keymap("n", "<leader>d", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
+keymap("n", "<leader>D", "<cmd>Telescope oldfiles<cr>", { desc = "Recent Files" })
 
 -- Shade (Window dimming)
 keymap("n", "<leader>st", "<cmd>lua require('shade').toggle()<cr>", { desc = "Toggle Shade" })
