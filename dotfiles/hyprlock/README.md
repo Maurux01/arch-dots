@@ -68,3 +68,5 @@
 <p align="center">
 	<a href="https://github.com/catppuccin/catppuccin/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8"/></a>
 </p>
+
+# NOTA: Waypaper detecta automáticamente la carpeta ~/Pictures/wallpapers para los fondos de pantalla. Si quieres que use otra carpeta, edita ~/.config/waypaper/waypaper.json y cambia la ruta en "image.path".
