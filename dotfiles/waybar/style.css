@@ -6,6 +6,7 @@
   font-size: 14px;
   min-height: 0;
   box-shadow: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 window#waybar {
@@ -24,7 +25,6 @@ window#waybar {
   padding: 0 10px;
   margin: 2px 4px;
   border: 2px solid transparent;
-  transition: background 0.2s, color 0.2s, border 0.2s;
 }
 
 #workspaces button:hover {
@@ -45,16 +45,21 @@ window#waybar {
   border: 2px solid #f38ba8;
 }
 
-/* Módulos generales */
-.modules-left, .modules-center, .modules-right, .module {
-  border-radius: 12px;
-  background: rgba(49, 50, 68, 0.85);
-  margin: 2px 6px;
-  padding: 2px 10px;
-}
-
-/* Módulos específicos */
-#clock, #battery, #pulseaudio, #network, #tray, #cpu, #memory, #temperature, #backlight, #custom-launcher {
+/* All modules (left, center, right) */
+.modules-left,
+.modules-center,
+.modules-right,
+.module,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#tray,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#custom-launcher {
   border-radius: 12px;
   background: rgba(49, 50, 68, 0.85);
   color: #cdd6f4;
@@ -62,7 +67,7 @@ window#waybar {
   padding: 2px 10px;
 }
 
-/* Estados de batería */
+/* Battery states */
 #battery.charging {
   color: #a6e3a1;
 }
@@ -75,12 +80,12 @@ window#waybar {
   color: #f38ba8;
 }
 
-/* Estados de pulseaudio */
+/* Audio states */
 #pulseaudio.muted {
   color: #6c7086;
 }
 
-/* Estados de tray */
+/* Tray states */
 #tray > .passive {
   opacity: 0.5;
 }
@@ -90,32 +95,28 @@ window#waybar {
   color: #1e1e2e;
 }
 
-/* Custom launcher */
+/* Custom launcher specific tweaks */
 #custom-launcher {
-  background: #89b4fa;
-  color: #1e1e2e;
   font-weight: bold;
-  border-radius: 12px;
-  margin: 2px 6px;
   padding: 2px 14px;
 }
 
-/* Reglas específicas para el módulo de volumen */
+/* Volume (pulseaudio) bar styling */
 #pulseaudio progress,
 #pulseaudio slider {
   border-radius: 12px;
   background-color: #313244;
-  height: 12px;
+  min-height: 12px;
 }
 
-#pulseaudio progress, 
-#pulseaudio slider::-webkit-progress-bar, 
-#pulseaudio slider::-webkit-slider-thumb {
-  border-radius: 12px;
-}
-
-/* Hover effects para módulos */
-#clock:hover, #battery:hover, #pulseaudio:hover, #network:hover, #cpu:hover, #memory:hover, #temperature:hover, #backlight:hover {
+/* Hover effects */
+#clock:hover,
+#battery:hover,
+#pulseaudio:hover,
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#backlight:hover {
   background: rgba(49, 50, 68, 0.95);
-  transition: background 0.2s;
-} 
+}
