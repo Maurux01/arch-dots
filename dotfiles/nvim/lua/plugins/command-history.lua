@@ -2,13 +2,28 @@
 -- Advanced command line completion and history
 
 return {
+  -- Command palette with telescope (primary method)
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands" },
+    },
+  },
+
+  -- Wilder.nvim as fallback (simplified configuration)
   {
     "gelguy/wilder.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
     },
     config = function()
-      local wilder = require("wilder")
+      local status_ok, wilder = pcall(require, "wilder")
+      if not status_ok then
+        vim.notify("wilder.nvim not found!", vim.log.levels.WARN)
+        return
+      end
+
       wilder.setup({
         modes = { ":", "/", "?" },
         next_key = "<Tab>",
@@ -17,49 +32,27 @@ return {
         reject_key = "<Up>",
       })
 
-      -- Enable fuzzy matching
+      -- Simple configuration without external dependencies
       wilder.set_option("use_python_remote_plugin", false)
+      
+      -- Basic pipeline without fzy-lua-native
       wilder.set_option("pipeline", {
         wilder.branch(
           wilder.cmdline_pipeline({
             fuzzy = 1,
-            fuzzy_filter = wilder.lua_fzy_filter(),
           }),
           wilder.vim_search_pipeline()
         ),
       })
 
-      -- Enable fuzzy matching for search
-      wilder.set_option("pipeline", {
-        wilder.branch(
-          wilder.cmdline_pipeline({
-            fuzzy = 1,
-            fuzzy_filter = wilder.lua_fzy_filter(),
-          }),
-          wilder.vim_search_pipeline()
-        ),
-      })
-
-      -- Set up the renderer
+      -- Simple renderer
       wilder.set_option("renderer", wilder.renderer_mux({
         [":"] = wilder.popupmenu_renderer({
-          highlighter = wilder.lua_fzy_highlighter(),
           left = { " ", wilder.popupmenu_devicons() },
           right = { " ", wilder.popupmenu_scrollbar() },
         }),
-        ["/"] = wilder.wildmenu_renderer({
-          highlighter = wilder.lua_fzy_highlighter(),
-        }),
+        ["/"] = wilder.wildmenu_renderer({}),
       }))
     end,
-  },
-
-  -- Command palette with telescope
-  {
-    "nvim-telescope/telescope.nvim",
-    keys = {
-      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader>;", "<cmd>Telescope commands<cr>", desc = "Commands" },
-    },
   },
 } 
