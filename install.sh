@@ -1876,6 +1876,44 @@ copy_icons_to_pictures() {
     fi
 }
 
+# =============================================================================
+#                           🖥️  CONFIGURAR BARRAS EN HYPHLAND
+# =============================================================================
+setup_hyprland_bars() {
+    print_section "Configurando inicio automático de Waybar y Polybar en Hyprland..."
+    local HYDE_CONFIG="$HOME/.config/hypr/hyde.conf"
+    local POLYBAR_SCRIPT="$HOME/github/archriced-1/dotfiles/polybar/launch.sh"
+
+    if [ ! -f "$HYDE_CONFIG" ]; then
+        print_warning "No se encontró $HYDE_CONFIG. Saltando configuración de barras."
+        return
+    fi
+
+    # Habilitar Waybar
+    if grep -q "# \$start.BAR=waybar" "$HYDE_CONFIG"; then
+        sed -i 's/# \$start.BAR=waybar/\$start.BAR=waybar/' "$HYDE_CONFIG"
+        print_success "Waybar habilitado para inicio automático."
+    else
+        print_info "Waybar ya está habilitado."
+    fi
+
+    # Agregar Polybar si no está presente
+    if ! grep -q "\$start.POLYBAR" "$HYDE_CONFIG"; then
+        sed -i '/\$start.BAR=waybar/a \$start.POLYBAR=$HOME/github/archriced-1/dotfiles/polybar/launch.sh' "$HYDE_CONFIG"
+        print_success "Polybar agregado para inicio automático."
+    else
+        print_info "Polybar ya está configurado."
+    fi
+
+    # Dar permisos de ejecución al script de Polybar
+    if [ -f "$POLYBAR_SCRIPT" ]; then
+        chmod +x "$POLYBAR_SCRIPT"
+        print_success "Permisos de ejecución configurados para Polybar."
+    else
+        print_warning "No se encontró el script de Polybar en $POLYBAR_SCRIPT."
+    fi
+}
+
 main() {
     print_header
     check_system
@@ -1907,6 +1945,7 @@ main() {
     verify_kitty_installation
     verify_browser_and_notes
     show_final_info
+    setup_hyprland_bars
 }
 
 # Ejecutar función principal

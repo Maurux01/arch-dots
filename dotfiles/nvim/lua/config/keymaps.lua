@@ -142,6 +142,10 @@ keymap("n", "<leader>D", "<cmd>Dashboard<cr>", { desc = "Open Dashboard" })
 keymap("n", "<leader>st", "<cmd>lua require('shade').toggle()<cr>", { desc = "Toggle Shade" })
 keymap("n", "<leader>ss", "<cmd>lua require('shade').set_overlay_opacity(50)<cr>", { desc = "Set Shade opacity" })
 
+-- Command line completion
+keymap("n", "<leader>:", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
+keymap("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
+
 -- Surround
 keymap("n", "ys", "<cmd>lua require('mini.surround').add()<cr>", { desc = "Add surround" })
 keymap("n", "ds", "<cmd>lua require('mini.surround').delete()<cr>", { desc = "Delete surround" })

@@ -99,6 +99,8 @@ return {
         c = { "<cmd>NvimTreeCollapse<cr>", "Collapse file explorer" },
         t = { "<cmd>NvimTreeToggle<cr>", "Toggle NvimTree" },
         r = { "<cmd>NvimTreeRefresh<cr>", "Refresh file explorer" },
+        [":"] = { "<cmd>Telescope command_history<cr>", "Command History" },
+        [";"] = { "<cmd>Telescope commands<cr>", "Commands" },
       },
       
       -- LSP and diagnostics
