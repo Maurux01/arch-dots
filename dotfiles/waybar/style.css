@@ -103,7 +103,7 @@ window#waybar {
 /* Reglas específicas para el módulo de volumen */
 #pulseaudio progress,
 #pulseaudio slider {
-  border-radius: 12px !important;
+  border-radius: 12px;
   background-color: #313244;
   height: 12px;
 }
@@ -111,7 +111,7 @@ window#waybar {
 #pulseaudio progress, 
 #pulseaudio slider::-webkit-progress-bar, 
 #pulseaudio slider::-webkit-slider-thumb {
-  border-radius: 12px !important;
+  border-radius: 12px;
 }
 
 /* Hover effects para módulos */
