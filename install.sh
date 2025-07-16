@@ -1861,6 +1861,13 @@ show_final_info() {
     echo "• Herramientas de monitoreo de red"
     echo ""
 
+    echo "🔒 Hyprlock (Pantalla de bloqueo):"
+    echo "• SUPER+L - Bloquear pantalla"
+    echo "• ~/.config/scripts/test-lock.sh - Diagnosticar problemas de hyprlock"
+    echo "• Logs de hyprlock: ~/.cache/hyprlock-test.log"
+    echo "• Configuración: ~/.config/hyprlock/hyprlock.conf"
+    echo ""
+
     if [ -n "$BACKUP_DIR" ]; then
         echo "Si tenías una configuración anterior, se respaldó en:"
         echo "$BACKUP_DIR"
