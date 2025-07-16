@@ -74,37 +74,37 @@ print_info() {
 
 check_system() {
     print_section "Verificando sistema..."
-    
+
     if [ ! -f "/etc/arch-release" ]; then
         print_error "Este script está diseñado solo para Arch Linux."
         exit 1
     fi
-    
+
     if [ "$EUID" -eq 0 ]; then
         print_error "No ejecutes este script como root."
         exit 1
     fi
-    
+
     print_success "Sistema verificado."
 }
 
 check_dependencies() {
     print_section "Verificando dependencias básicas..."
-    
+
     local missing_deps=()
-    
+
     for dep in "git" "sudo" "pacman"; do
         if ! command -v "$dep" >/dev/null 2>&1; then
             missing_deps+=("$dep")
         fi
     done
-    
+
     if [ ${#missing_deps[@]} -gt 0 ]; then
         print_error "Dependencias faltantes: ${missing_deps[*]}"
         print_info "Instala las dependencias básicas antes de continuar."
         exit 1
     fi
-    
+
     print_success "Dependencias básicas verificadas."
 }
 
@@ -120,12 +120,12 @@ update_system() {
 
 install_aur_helper() {
     print_section "Instalando AUR helper..."
-    
+
     if command -v yay >/dev/null 2>&1; then
         print_success "yay ya está instalado."
         return
     fi
-    
+
     print_step "Instalando yay..."
     cd /tmp
     git clone --depth 1 https://aur.archlinux.org/yay.git
@@ -133,13 +133,13 @@ install_aur_helper() {
     makepkg -si --noconfirm --skippgpcheck
     cd "$SCRIPT_DIR"
     rm -rf /tmp/yay
-    
+
     print_success "AUR helper instalado."
 }
 
 install_compiler() {
     print_section "Instalando compilador C..."
-    
+
     print_step "Verificando compilador existente..."
     if command -v gcc >/dev/null 2>&1; then
         print_success "gcc ya está instalado: $(gcc --version | head -1)"
@@ -148,10 +148,10 @@ install_compiler() {
         print_success "clang ya está instalado: $(clang --version | head -1)"
         return
     fi
-    
+
     print_step "Instalando base-devel (incluye gcc)..."
     sudo pacman -S base-devel --noconfirm --needed
-    
+
     print_step "Verificando instalación..."
     if command -v gcc >/dev/null 2>&1; then
         print_success "Compilador C instalado: $(gcc --version | head -1)"
@@ -162,12 +162,12 @@ install_compiler() {
 
 install_core_packages() {
     print_section "Instalando paquetes core..."
-    
+
     print_step "Instalando paquetes oficiales..."
-    
+
     # Instalar paquetes en grupos para evitar conflictos
     local terminal_packages=("kitty" "fish" "starship" "zoxide" "tmux")
-    local editor_packages=("neovim")
+    local editor_packages=("neovim" "zed")
     local system_packages=("bat" "fd" "ripgrep" "fzf" "btop" "exa" "htop" "ncdu" "iotop" "nvtop")
     local media_packages=("pavucontrol" "blueman" "networkmanager" "network-manager-applet" "speedtest-cli" "nmtui" "playerctl" "pamixer" "brightnessctl")
     local dev_packages=("nodejs" "npm" "python" "python-pip" "rust" "go" "jdk-openjdk" "gcc" "cmake" "ninja" "meson" "valgrind" "gdb")
@@ -182,77 +182,81 @@ install_core_packages() {
     local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
     local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper")
     local security_packages=("ufw" "wireguard-tools" "openvpn" "networkmanager-openvpn" "networkmanager-vpnc" "networkmanager-pptp" "networkmanager-l2tp" "nmap" "wireshark-qt" "tcpdump" "netcat" "nethogs" "iftop" "fail2ban" "rkhunter" "clamav" "clamav-unofficial-sigs")
-    
+
     # Instalar paquetes críticos primero
     print_step "Instalando paquetes críticos..."
     sudo pacman -S "${terminal_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de terminal fallaron"
-    
+
     # Instalar paquetes del sistema
     print_step "Instalando paquetes del sistema..."
     sudo pacman -S "${system_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes del sistema fallaron"
-    
+
     # Instalar paquetes de desarrollo
     print_step "Instalando paquetes de desarrollo..."
     sudo pacman -S "${dev_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de desarrollo fallaron"
-    
+
     # Instalar paquetes multimedia
     print_step "Instalando paquetes multimedia..."
     sudo pacman -S "${media_packages[@]}" "${image_packages[@]}" "${media_player_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes multimedia fallaron"
-    
+
     # Instalar paquetes de utilidades
     print_step "Instalando paquetes de utilidades..."
     sudo pacman -S "${utility_packages[@]}" "${capture_packages[@]}" "${additional_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de utilidades fallaron"
-    
+
     # Instalar paquetes de creación
     print_step "Instalando paquetes de creación..."
     sudo pacman -S "${creation_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de creación fallaron"
-    
+
     # Instalar paquetes de portapapeles
     print_step "Instalando paquetes de portapapeles..."
     sudo pacman -S "${clipboard_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de portapapeles fallaron"
-    
+
     # Instalar paquetes de fuentes
     print_step "Instalando paquetes de fuentes..."
     sudo pacman -S "${font_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de fuentes fallaron"
-    
+
     # Instalar paquetes de gaming
     print_step "Instalando paquetes de gaming..."
     sudo pacman -S "${gaming_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de gaming fallaron"
-    
+
     # Instalar paquetes de seguridad
     print_step "Instalando paquetes de seguridad..."
     sudo pacman -S "${security_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de seguridad fallaron"
-    
+
     # Instalar paquetes de Docker por separado
     print_step "Instalando paquetes de Docker..."
     sudo pacman -S "${docker_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes de Docker fallaron"
-    
+
     # Instalar Polybar explícitamente
     print_step "Instalando Polybar..."
     sudo pacman -S polybar --noconfirm --needed || print_warning "Polybar no se pudo instalar"
-    
+
+    # Instalar Zed desde AUR
+    print_step "Instalando Zed editor..."
+    yay -S zed-bin --noconfirm --needed || print_warning "Zed no se pudo instalar"
+
     print_success "Paquetes core instalados."
 }
 
 install_custom_icons_cursors() {
     print_section "Instalando iconos y cursores personalizados..."
-    
+
     # Directorios de destino
     local icons_dir="$HOME/.local/share/icons"
     local cursors_dir="$HOME/.local/share/icons"
     local system_icons_dir="/usr/share/icons"
     local system_cursors_dir="/usr/share/icons"
-    
+
     print_step "Creando directorios de destino..."
     mkdir -p "$icons_dir"
     mkdir -p "$cursors_dir"
-    
+
     # Instalar iconos personalizados
     if [ -d "$DOTFILES_DIR/icons" ]; then
         print_step "Instalando iconos personalizados..."
-        
+
         cd "$DOTFILES_DIR/icons"
-        
+
         # Instalar Gradient-Dark-Icons
         if [ -f "Gradient-Dark-Icons.tar.gz" ]; then
             print_step "Instalando Gradient-Dark-Icons..."
@@ -260,7 +264,7 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer Gradient-Dark-Icons"
             }
         fi
-        
+
         # Instalar Tela-circle icons
         if [ -f "01-Tela-circle.tar.xz" ]; then
             print_step "Instalando Tela-circle icons..."
@@ -268,7 +272,7 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer Tela-circle icons"
             }
         fi
-        
+
         # Instalar candy-icons
         if [ -f "candy-icons.tar.xz" ]; then
             print_step "Instalando candy-icons..."
@@ -276,7 +280,7 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer candy-icons"
             }
         fi
-        
+
         # Instalar Ketsa-icons
         if [ -f "Ketsa-icons.tar.xz" ]; then
             print_step "Instalando Ketsa-icons..."
@@ -284,18 +288,18 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer Ketsa-icons"
             }
         fi
-        
+
         print_success "Iconos personalizados instalados"
     else
         print_warning "Directorio de iconos no encontrado en dotfiles"
     fi
-    
+
     # Instalar cursores personalizados
     if [ -d "$DOTFILES_DIR/cursor" ]; then
         print_step "Instalando cursores personalizados..."
-        
+
         cd "$DOTFILES_DIR/cursor"
-        
+
         # Instalar Bibata-Rainbow-Modern
         if [ -f "Bibata-Rainbow-Modern.tar.gz" ]; then
             print_step "Instalando Bibata-Rainbow-Modern cursor..."
@@ -303,7 +307,7 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer Bibata-Rainbow-Modern cursor"
             }
         fi
-        
+
         # Instalar Night Diamond cursors
         if [ -f "Night Diamond (Red).tar" ]; then
             print_step "Instalando Night Diamond (Red) cursor..."
@@ -311,33 +315,33 @@ install_custom_icons_cursors() {
                 print_warning "No se pudo extraer Night Diamond (Red) cursor"
             }
         fi
-        
+
         if [ -f "Night Diamond (Blue).tar" ]; then
             print_step "Instalando Night Diamond (Blue) cursor..."
             tar -xf "Night Diamond (Blue).tar" -C "$cursors_dir" 2>/dev/null || {
                 print_warning "No se pudo extraer Night Diamond (Blue) cursor"
             }
         fi
-        
+
         print_success "Cursores personalizados instalados"
     else
         print_warning "Directorio de cursores no encontrado en dotfiles"
     fi
-    
+
     # Actualizar caché de iconos
     print_step "Actualizando caché de iconos..."
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
         gtk-update-icon-cache -f -t "$icons_dir" 2>/dev/null || true
     fi
-    
+
     if command -v update-icon-caches >/dev/null 2>&1; then
         update-icon-caches "$icons_dir" 2>/dev/null || true
     fi
-    
+
     # Configurar iconos por defecto
     print_step "Configurando iconos por defecto..."
     mkdir -p "$HOME/.config/gtk-3.0"
-    
+
     cat > "$HOME/.config/gtk-3.0/settings.ini" << 'EOF'
 [Settings]
 gtk-icon-theme-name = Gradient-Dark-Icons
@@ -360,7 +364,7 @@ gtk-menu-popdown-delay = 0
 gtk-enable-accels = 1
 gtk-modules = gail:atk-bridge
 EOF
-    
+
     # Configurar para GTK4
     mkdir -p "$HOME/.config/gtk-4.0"
     cat > "$HOME/.config/gtk-4.0/settings.ini" << 'EOF'
@@ -383,28 +387,28 @@ gtk-menu-popup-delay = 0
 gtk-menu-popdown-delay = 0
 gtk-enable-accels = 1
 EOF
-    
+
     # Configurar para aplicaciones Qt
     mkdir -p "$HOME/.config/qt5ct"
     cat > "$HOME/.config/qt5ct/qt5ct.conf" << 'EOF'
 [Appearance]
 icon_theme = Gradient-Dark-Icons
-color_scheme_path = 
+color_scheme_path =
 custom_palette = false
 standard_dialogs = false
 style = GTK2
 EOF
-    
+
     mkdir -p "$HOME/.config/qt6ct"
     cat > "$HOME/.config/qt6ct/qt6ct.conf" << 'EOF'
 [Appearance]
 icon_theme = Gradient-Dark-Icons
-color_scheme_path = 
+color_scheme_path =
 custom_palette = false
 standard_dialogs = false
 style = GTK2
 EOF
-    
+
     # Configurar variables de entorno
     print_step "Configurando variables de entorno..."
     cat >> "$HOME/.bashrc" << 'EOF'
@@ -414,7 +418,7 @@ export GTK_ICON_THEME=Gradient-Dark-Icons
 export XCURSOR_THEME=Bibata-Rainbow-Modern
 export QT_ICON_THEME=Gradient-Dark-Icons
 EOF
-    
+
     if [ -f "$HOME/.zshrc" ]; then
         cat >> "$HOME/.zshrc" << 'EOF'
 
@@ -424,7 +428,7 @@ export XCURSOR_THEME=Bibata-Rainbow-Modern
 export QT_ICON_THEME=Gradient-Dark-Icons
 EOF
     fi
-    
+
     if [ -f "$HOME/.config/fish/config.fish" ]; then
         cat >> "$HOME/.config/fish/config.fish" << 'EOF'
 
@@ -434,38 +438,38 @@ set -gx XCURSOR_THEME Bibata-Rainbow-Modern
 set -gx QT_ICON_THEME Gradient-Dark-Icons
 EOF
     fi
-    
+
     print_success "Iconos y cursores personalizados instalados y configurados"
 }
 
 install_aur_packages() {
     print_section "Instalando paquetes AUR..."
-    
+
     local aur_packages=(
         "hyperlock" "oss" "nerd-fonts-complete" "heroic-games-launcher"
         "pixelorama" "upscayl" "appflowy" "figma-linux" "zeal" "trello" "betterdiscord" "opentabletdriver" "rmpc" "spotify-cli" "gemini-cli" "ytui-music"
     )
-    
+
     for pkg in "${aur_packages[@]}"; do
         print_step "Instalando $pkg..."
         yay -S "$pkg" --noconfirm --needed
     done
-    
+
     print_success "Paquetes AUR instalados."
 }
 
 install_wayland_components() {
     print_section "Instalando componentes de Wayland..."
-    
+
     local wayland_packages=(
         "hyprland" "waybar" "eww" "swww" "wofi" "mako" "swaylock"
         "swayidle" "grim" "slurp" "wl-clipboard" "xdg-desktop-portal-hyprland"
         "xdg-desktop-portal-gtk"
     )
-    
+
     print_step "Instalando componentes de Wayland..."
     sudo pacman -S "${wayland_packages[@]}" --noconfirm --needed || print_warning "Algunos componentes de Wayland fallaron"
-    
+
     print_success "Componentes de Wayland instalados."
 }
 
@@ -475,24 +479,24 @@ install_wayland_components() {
 
 configure_hyprlock() {
     print_section "Configurando Hyprlock..."
-    
+
     print_step "Verificando instalación de hyprlock..."
     if ! command -v hyprlock >/dev/null 2>&1; then
         print_step "Instalando hyprlock..."
         yay -S "hyprlock" --noconfirm --needed
     fi
-    
+
     print_step "Configurando Hyprlock..."
     mkdir -p "$HOME/.config/hyprlock"
-    
+
     if [ -f "$DOTFILES_DIR/hyprlock/hyprlock.conf" ]; then
         print_step "Copiando configuración de hyprlock desde dotfiles..."
         cp "$DOTFILES_DIR/hyprlock/hyprlock.conf" "$HOME/.config/hyprlock/"
-        
+
         if [ -d "$DOTFILES_DIR/hyprlock/assets" ]; then
             cp -r "$DOTFILES_DIR/hyprlock/assets" "$HOME/.config/hyprlock/"
         fi
-        
+
         print_success "Configuración de hyprlock copiada"
     else
         print_warning "No se encontró configuración de hyprlock en dotfiles"
@@ -501,10 +505,10 @@ configure_hyprlock() {
 
 configure_clipboard() {
     print_section "Configurando portapapeles e historial..."
-    
+
     print_step "Configurando cliphist..."
     mkdir -p "$HOME/.config/cliphist"
-    
+
     cat > "$HOME/.config/cliphist/config" << 'EOF'
 # Configuración de cliphist
 max-entries = 1000
@@ -516,10 +520,10 @@ filter-duplicates = true
 save-images = true
 save-files = true
 EOF
-    
+
     print_step "Configurando copyq..."
     mkdir -p "$HOME/.config/copyq"
-    
+
     cat > "$HOME/.config/copyq/copyq.conf" << 'EOF'
 [General]
 autostart=true
@@ -554,22 +558,22 @@ notificationShadowBlurRadius=10
 notificationShadowOffsetX=0
 notificationShadowOffsetY=2
 EOF
-    
+
     print_success "Portapapeles e historial configurado"
 }
 
 configure_waypaper() {
     print_section "Configurando Waypaper..."
-    
+
     print_step "Verificando instalación de waypaper..."
     if ! command -v waypaper >/dev/null 2>&1; then
         print_step "Instalando waypaper..."
         yay -S waypaper --noconfirm --needed
     fi
-    
+
     print_step "Creando directorio de configuración..."
     mkdir -p "$HOME/.config/waypaper"
-    
+
     print_step "Creando configuración de waypaper..."
     cat > "$HOME/.config/waypaper/waypaper.json" << 'EOF'
 {
@@ -591,13 +595,13 @@ configure_waypaper() {
     }
 }
 EOF
-    
+
     print_step "Configurando directorio de wallpapers..."
     mkdir -p "$HOME/Pictures/wallpapers"
-    
+
     print_step "Configurando inicio automático..."
     mkdir -p "$HOME/.config/autostart"
-    
+
     cat > "$HOME/.config/autostart/waypaper.desktop" << 'EOF'
 [Desktop Entry]
 Type=Application
@@ -607,21 +611,21 @@ Exec=waypaper --daemon
 Terminal=false
 X-GNOME-Autostart-enabled=true
 EOF
-    
+
     chmod +x "$HOME/.config/autostart/waypaper.desktop"
-    
+
     print_success "Waypaper configurado"
 }
 
 install_grub_theme() {
     print_section "Instalando tema GRUB personalizado..."
-    
+
     local grub_themes_dir="$DOTFILES_DIR/grub-themes"
     local grub_system_dir="/boot/grub/themes"
-    
+
     if [ -d "$grub_themes_dir" ]; then
         print_step "Verificando temas GRUB disponibles..."
-        
+
         # Buscar temas disponibles
         local themes_found=()
         for theme_dir in "$grub_themes_dir"/*; do
@@ -630,36 +634,36 @@ install_grub_theme() {
                 themes_found+=("$theme_name")
             fi
         done
-        
+
         if [ ${#themes_found[@]} -gt 0 ]; then
             print_step "Temas encontrados: ${themes_found[*]}"
-            
+
             # Instalar el primer tema encontrado (puedes modificar para seleccionar uno específico)
             local selected_theme="${themes_found[0]}"
             local theme_path="$grub_themes_dir/$selected_theme"
-            
+
             print_step "Instalando tema: $selected_theme"
-            
+
             # Crear directorio de temas GRUB si no existe
             sudo mkdir -p "$grub_system_dir"
-            
+
             # Hacer backup del tema anterior si existe
             if [ -d "$grub_system_dir/$selected_theme" ]; then
                 print_step "Haciendo backup del tema anterior..."
                 sudo mv "$grub_system_dir/$selected_theme" "$grub_system_dir/${selected_theme}.backup.$(date +%Y%m%d_%H%M%S)"
             fi
-            
+
             # Copiar el tema
             print_step "Copiando tema a $grub_system_dir/$selected_theme..."
             sudo cp -r "$theme_path" "$grub_system_dir/$selected_theme"
-            
+
             # Hacer backup de la configuración GRUB
             print_step "Haciendo backup de la configuración GRUB..."
             sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d_%H%M%S)
-            
+
             # Configurar el tema en GRUB
             print_step "Configurando tema en GRUB..."
-            
+
             # Verificar si ya existe una configuración de tema
             if grep -q "GRUB_THEME=" /etc/default/grub; then
                 # Actualizar tema existente
@@ -668,33 +672,33 @@ install_grub_theme() {
                 # Agregar configuración de tema
                 echo "GRUB_THEME=\"$grub_system_dir/$selected_theme/theme.txt\"" | sudo tee -a /etc/default/grub
             fi
-            
+
             # Configurar resolución si no está configurada
             if ! grep -q "GRUB_GFXMODE=" /etc/default/grub; then
                 print_step "Configurando resolución GRUB..."
                 echo "GRUB_GFXMODE=1920x1080,1600x900,1366x768,1024x768" | sudo tee -a /etc/default/grub
             fi
-            
+
             # Configurar timeout si no está configurado
             if ! grep -q "GRUB_TIMEOUT=" /etc/default/grub; then
                 print_step "Configurando timeout GRUB..."
                 echo "GRUB_TIMEOUT=5" | sudo tee -a /etc/default/grub
             fi
-            
+
             # Actualizar configuración GRUB
             print_step "Actualizando configuración GRUB..."
             sudo grub-mkconfig -o /boot/grub/grub.cfg
-            
+
             print_success "Tema GRUB '$selected_theme' instalado correctamente"
             print_info "Tema ubicado en: $grub_system_dir/$selected_theme"
             print_warning "Reinicia el sistema para ver el nuevo tema GRUB"
-            
+
             # Mostrar información adicional
             if [ -f "$theme_path/README.md" ]; then
                 print_info "Información del tema:"
                 cat "$theme_path/README.md" | head -10
             fi
-            
+
         else
             print_warning "No se encontraron temas GRUB válidos en $grub_themes_dir"
             print_error "No se instalará ningún tema GRUB. Agrega un tema válido a dotfiles/grub-themes."
@@ -711,26 +715,26 @@ install_grub_theme() {
 
 install_custom_fonts() {
     print_section "Instalando fuentes personalizadas..."
-    
+
     local fonts_dir="$DOTFILES_DIR/fonts"
     local user_fonts="$HOME/.local/share/fonts"
     local system_fonts="/usr/share/fonts"
-    
+
     mkdir -p "$user_fonts"
-    
+
     if [ -d "$fonts_dir" ]; then
         print_step "Copiando fuentes personalizadas..."
-        
+
         local font_files=($(find "$fonts_dir" -type f \( -iname "*.ttf" -o -iname "*.otf" -o -iname "*.woff" -o -iname "*.woff2" \) 2>/dev/null))
-        
+
         if [ ${#font_files[@]} -gt 0 ]; then
             cp "${font_files[@]}" "$user_fonts/"
             print_success "Fuentes copiadas a $user_fonts"
-            
+
             print_step "Actualizando caché de fuentes..."
             fc-cache -fv
             print_success "Caché de fuentes actualizado"
-            
+
             if sudo -n true 2>/dev/null; then
                 print_step "Instalando fuentes en sistema..."
                 sudo mkdir -p "$system_fonts/custom"
@@ -750,19 +754,19 @@ install_custom_fonts() {
 
 copy_wallpapers() {
     print_section "Copiando wallpapers..."
-    
+
     local user_pictures="$HOME/Pictures"
     [ -d "$user_pictures" ] || user_pictures="$HOME/Imágenes"
     mkdir -p "$user_pictures"
-    
+
     local wallpapers_dir="$user_pictures/wallpapers"
     mkdir -p "$wallpapers_dir"
-    
+
     if [ -d "$DOTFILES_DIR/wallpapers" ]; then
         print_step "Copiando wallpapers a $wallpapers_dir..."
         cp -r "$DOTFILES_DIR/wallpapers"/* "$wallpapers_dir/"
         print_success "Wallpapers copiados a $wallpapers_dir"
-        
+
         if [ ! -L "$HOME/.local/share/wallpapers" ]; then
             ln -sf "$wallpapers_dir" "$HOME/.local/share/wallpapers"
             print_success "Enlace simbólico creado en ~/.local/share/wallpapers"
@@ -774,14 +778,14 @@ copy_wallpapers() {
 
 copy_dotfiles() {
     print_section "Copiando dotfiles..."
-    
+
     print_step "Creando directorios..."
     mkdir -p "$HOME/.config"
     mkdir -p "$HOME/.local/share"
     mkdir -p "$HOME/.local/bin"
-    
+
     print_step "Copiando configuraciones..."
-    
+
     declare -A config_paths=(
         ["hypr"]="$HOME/.config/hypr"
         ["kitty"]="$HOME/.config/kitty"
@@ -796,16 +800,16 @@ copy_dotfiles() {
         ["sddm"]="/etc/sddm.conf.d"
         ["grub-themes"]="/usr/share/grub/themes"
     )
-    
+
     for item in "$DOTFILES_DIR"/*; do
         if [ -d "$item" ]; then
             local dirname=$(basename "$item")
             local target_path="${config_paths[$dirname]}"
-            
+
             if [ -n "$target_path" ]; then
                 print_step "Copiando $dirname a $target_path..."
                 mkdir -p "$(dirname "$target_path")"
-                
+
                 case "$dirname" in
                     "nvim")
                         print_step "Clonando NVimX desde GitHub..."
@@ -813,18 +817,18 @@ copy_dotfiles() {
                             print_step "Haciendo backup de la configuración actual de nvim..."
                             mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)"
                         fi
-                        
+
                         print_step "Configurando Neovim con dashboard..."
-                        
+
                         # Crear directorios
                         mkdir -p "$HOME/.config/nvim/lua/plugins"
                         mkdir -p "$HOME/.config/nvim/lua/config"
-                        
+
                         # Copiar archivos de configuración
                         if [ -d "$item" ]; then
                             cp -r "$item"/* "$HOME/.config/nvim/"
                             print_success "Configuración de Neovim copiada"
-                            
+
                             # Instalar plugins
                             print_step "Instalando plugins de Neovim..."
                             nvim --headless -c "Lazy! sync" -c "quit" 2>/dev/null || true
@@ -843,11 +847,11 @@ copy_dotfiles() {
                         ;;
                     "tmux")
                         print_step "Configurando Tmux con TPM y keybindings..."
-                            
+
                         # Crear directorio de configuración tmux
                             mkdir -p "$HOME/.tmux"
                         mkdir -p "$HOME/.tmux/plugins"
-                        
+
                         # Instalar TPM si no existe
                         if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
                             print_step "Instalando TPM (Tmux Plugin Manager)..."
@@ -856,7 +860,7 @@ copy_dotfiles() {
                         else
                             print_success "TPM ya está instalado"
                         fi
-                        
+
                         # Copiar configuración tmux
                         if [ -f "$item/.tmux.conf" ]; then
                             cp "$item/.tmux.conf" "$HOME/.tmux.conf"
@@ -1106,7 +1110,7 @@ bind , command-prompt -I "#W" "rename-window '%%'"
 run '~/.tmux/plugins/tpm/tpm'
 EOF
                         fi
-                        
+
                         print_step "Instalando plugins de Tmux..."
                         # Crear script para instalar plugins después de la primera sesión
                         cat > "$HOME/.tmux/install-plugins.sh" << 'EOF'
@@ -1117,7 +1121,7 @@ tmux source-file ~/.tmux.conf
 echo "Plugins instalados. Reinicia tmux para aplicar cambios."
 EOF
                         chmod +x "$HOME/.tmux/install-plugins.sh"
-                        
+
                         print_success "Tmux configurado con TPM y keybindings"
                         print_info "Para instalar plugins: tmux new-session, luego Ctrl+a + I"
                         ;;
@@ -1137,10 +1141,10 @@ EOF
             fi
         fi
     done
-    
+
     print_step "Haciendo scripts ejecutables..."
     find "$HOME/.config" -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null || true
-    
+
     if [ -d "$DOTFILES_DIR/scripts" ]; then
         print_step "Copiando scripts..."
         mkdir -p "$HOME/.config/scripts"
@@ -1148,7 +1152,7 @@ EOF
         chmod +x "$HOME/.config/scripts"/*.sh
         print_success "Scripts copiados a ~/.config/scripts/"
     fi
-    
+
     print_success "Todos los dotfiles copiados exitosamente."
 }
 
@@ -1158,18 +1162,18 @@ EOF
 
 configure_fish_shell() {
     print_section "Configurando Fish shell..."
-    
+
     print_step "Configurando Fish como shell por defecto..."
     if ! grep -q "/usr/bin/fish" /etc/shells; then
         echo "/usr/bin/fish" | sudo tee -a /etc/shells
     fi
-    
+
     sudo chsh -s /usr/bin/fish "$USER"
     print_success "Fish shell configurado como por defecto"
-    
+
     print_step "Configurando entorno Fish..."
     mkdir -p "$HOME/.config/fish"
-    
+
     if [ -f "$HOME/.config/fish/config.fish" ]; then
         print_success "Configuración Fish encontrada"
     else
@@ -1192,18 +1196,18 @@ if command -q zoxide
 end
 EOF
     fi
-    
+
     print_success "Fish shell configurado"
 }
 
 configure_system() {
     print_section "Configurando sistema..."
-    
+
     print_step "Configurando permisos y servicios..."
     sudo usermod -aG wheel "$USER" &
     sudo systemctl enable NetworkManager bluetooth gdm &
     wait
-    
+
     print_step "Configurando GDM para Hyprland..."
     sudo mkdir -p /usr/share/wayland-sessions
     sudo tee /usr/share/wayland-sessions/hyprland.desktop > /dev/null << 'EOF'
@@ -1213,7 +1217,7 @@ Comment=An intelligent dynamic tiling Wayland compositor
 Exec=Hyprland
 Type=Application
 EOF
-    
+
     print_success "Sistema configurado."
 }
 
@@ -1223,63 +1227,63 @@ EOF
 
 configure_firewall() {
     print_section "Configurando firewall (UFW)..."
-    
+
     print_step "Verificando instalación de UFW..."
     if ! command -v ufw >/dev/null 2>&1; then
         print_step "Instalando UFW..."
         sudo pacman -S ufw --noconfirm --needed
     fi
-    
+
     print_step "Configurando reglas básicas de UFW..."
-    
+
     # Habilitar UFW
     sudo ufw --force enable
-    
+
     # Configurar políticas por defecto
     sudo ufw default deny incoming
     sudo ufw default allow outgoing
-    
+
     # Permitir SSH (si está instalado)
     if systemctl is-active --quiet sshd; then
         sudo ufw allow ssh
         print_step "Regla SSH agregada"
     fi
-    
+
     # Permitir conexiones locales
     sudo ufw allow from 127.0.0.1
     sudo ufw allow from ::1
-    
+
     # Permitir DNS
     sudo ufw allow out 53/tcp
     sudo ufw allow out 53/udp
-    
+
     # Permitir HTTP/HTTPS
     sudo ufw allow out 80/tcp
     sudo ufw allow out 443/tcp
-    
+
     # Permitir NTP
     sudo ufw allow out 123/udp
-    
+
     print_step "Configurando UFW para inicio automático..."
     sudo systemctl enable ufw
     sudo systemctl start ufw
-    
+
     print_success "Firewall UFW configurado y habilitado"
     print_info "Estado del firewall: $(sudo ufw status | head -1)"
 }
 
 configure_vpn() {
     print_section "Configurando herramientas VPN..."
-    
+
     print_step "Verificando instalación de WireGuard..."
     if ! command -v wg >/dev/null 2>&1; then
         print_step "Instalando WireGuard..."
         sudo pacman -S wireguard-tools --noconfirm --needed
     fi
-    
+
     print_step "Creando directorio de configuración WireGuard..."
     sudo mkdir -p /etc/wireguard
-    
+
     print_step "Generando claves WireGuard..."
     if [ ! -f /etc/wireguard/private.key ]; then
         sudo wg genkey | sudo tee /etc/wireguard/private.key > /dev/null
@@ -1290,7 +1294,7 @@ configure_vpn() {
     else
         print_info "Claves WireGuard ya existen"
     fi
-    
+
     print_step "Creando configuración de ejemplo WireGuard..."
     sudo tee /etc/wireguard/wg0.conf.example > /dev/null << 'EOF'
 [Interface]
@@ -1304,16 +1308,16 @@ AllowedIPs = 0.0.0.0/0
 Endpoint = <servidor_vpn>:51820
 PersistentKeepalive = 25
 EOF
-    
+
     print_step "Configurando NetworkManager para VPN..."
     if command -v nmcli >/dev/null 2>&1; then
         # Habilitar plugins de VPN en NetworkManager
         sudo systemctl enable NetworkManager
         sudo systemctl start NetworkManager
-        
+
         print_success "NetworkManager configurado para VPN"
     fi
-    
+
     print_success "Herramientas VPN configuradas"
     print_info "Clave pública WireGuard: $(sudo cat /etc/wireguard/public.key)"
     print_info "Configuración de ejemplo en: /etc/wireguard/wg0.conf.example"
@@ -1321,12 +1325,12 @@ EOF
 
 configure_security_tools() {
     print_section "Configurando herramientas de seguridad..."
-    
+
     print_step "Configurando Fail2ban..."
     if command -v fail2ban-client >/dev/null 2>&1; then
         sudo systemctl enable fail2ban
         sudo systemctl start fail2ban
-        
+
         # Crear configuración básica
         sudo tee /etc/fail2ban/jail.local > /dev/null << 'EOF'
 [DEFAULT]
@@ -1339,46 +1343,46 @@ enabled = true
 port = ssh
 logpath = /var/log/auth.log
 EOF
-        
+
         print_success "Fail2ban configurado"
     fi
-    
+
     print_step "Configurando ClamAV..."
     if command -v freshclam >/dev/null 2>&1; then
         sudo freshclam
         sudo systemctl enable clamav-daemon
         sudo systemctl start clamav-daemon
-        
+
         print_success "ClamAV configurado"
     fi
-    
+
     print_step "Configurando RKHunter..."
     if command -v rkhunter >/dev/null 2>&1; then
         sudo rkhunter --update
         sudo rkhunter --propupd
-        
+
         # Crear tarea cron para escaneos diarios
         echo "0 2 * * * root /usr/bin/rkhunter --cronjob --update --quiet" | sudo tee -a /etc/crontab
-        
+
         print_success "RKHunter configurado"
     fi
-    
+
     print_success "Herramientas de seguridad configuradas"
 }
 
 configure_network_monitoring() {
     print_section "Configurando monitoreo de red..."
-    
+
     print_step "Creando directorio de logs de red..."
     sudo mkdir -p /var/log/network
     sudo chmod 755 /var/log/network
-    
+
     print_step "Configurando tcpdump para captura de paquetes..."
     sudo groupadd -f pcap
     sudo usermod -a -G pcap "$USER"
-    
+
     print_step "Configurando herramientas de monitoreo..."
-    
+
     # Crear script de monitoreo de red
     sudo tee /usr/local/bin/network-monitor.sh > /dev/null << 'EOF'
 #!/bin/bash
@@ -1407,26 +1411,26 @@ echo ""
 echo "=== RUTAS ==="
 ip route show
 EOF
-    
+
     sudo chmod +x /usr/local/bin/network-monitor.sh
-    
+
     print_success "Monitoreo de red configurado"
     print_info "Usa: sudo /usr/local/bin/network-monitor.sh"
 }
 
 configure_tmux() {
     print_section "Configurando Tmux..."
-    
+
     print_step "Verificando instalación de tmux..."
     if ! command -v tmux >/dev/null 2>&1; then
         print_step "Instalando tmux..."
         sudo pacman -S tmux --noconfirm --needed
     fi
-    
+
     print_step "Creando directorios de configuración tmux..."
     mkdir -p "$HOME/.tmux"
     mkdir -p "$HOME/.tmux/plugins"
-    
+
     print_step "Instalando TPM (Tmux Plugin Manager)..."
     if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
         git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
@@ -1434,7 +1438,7 @@ configure_tmux() {
     else
         print_success "TPM ya está instalado"
     fi
-    
+
     print_step "Creando script de diagnóstico tmux..."
     cat > "$HOME/.tmux/tmux-diagnostic.sh" << 'EOF'
 #!/bin/bash
@@ -1537,7 +1541,7 @@ echo ""
 echo -e "\n✅ Diagnostic complete!"
 EOF
     chmod +x "$HOME/.tmux/tmux-diagnostic.sh"
-    
+
     print_step "Creando script de instalación de plugins..."
     cat > "$HOME/.tmux/install-plugins.sh" << 'EOF'
 #!/bin/bash
@@ -1547,7 +1551,7 @@ tmux source-file ~/.tmux.conf
 echo "Plugins instalados. Reinicia tmux para aplicar cambios."
 EOF
     chmod +x "$HOME/.tmux/install-plugins.sh"
-    
+
     print_success "Tmux configurado con TPM y herramientas de diagnóstico"
     print_info "Para diagnosticar problemas: ~/.tmux/tmux-diagnostic.sh"
     print_info "Para instalar plugins: tmux new-session, luego Ctrl+a + I"
@@ -1559,9 +1563,9 @@ EOF
 
 verify_installation() {
     print_section "Verificando instalación..."
-    
+
     local errors=0
-    
+
     local essential_dirs=(
         "$HOME/.config/hypr"
         "$HOME/.config/kitty"
@@ -1572,7 +1576,7 @@ verify_installation() {
         "$HOME/.config/mako"
         "$HOME/.config/swww"
     )
-    
+
     for dir in "${essential_dirs[@]}"; do
         if [ -d "$dir" ]; then
             print_success "✓ $dir existe"
@@ -1581,13 +1585,13 @@ verify_installation() {
             ((errors++))
         fi
     done
-    
+
     local essential_files=(
         "$HOME/.config/hypr/hyprland.conf"
         "$HOME/.config/fish/config.fish"
         "$HOME/.config/kitty/kitty.conf"
     )
-    
+
     for file in "${essential_files[@]}"; do
         if [ -f "$file" ]; then
             print_success "✓ $file existe"
@@ -1596,13 +1600,13 @@ verify_installation() {
             ((errors++))
         fi
     done
-    
+
     if [ "$SHELL" = "/usr/bin/fish" ]; then
         print_success "✓ Fish es shell por defecto"
     else
         print_warning "⚠ Fish no es shell por defecto (actual: $SHELL)"
     fi
-    
+
     if [ $errors -eq 0 ]; then
         print_success "Todos los componentes esenciales verificados exitosamente"
     else
@@ -1612,7 +1616,7 @@ verify_installation() {
 
 verify_kitty_installation() {
     print_section "Verificando instalación de Kitty..."
-    
+
     print_step "Verificando si Kitty está instalado..."
     if command -v kitty >/dev/null 2>&1; then
         print_success "Kitty está instalado: $(kitty --version)"
@@ -1625,14 +1629,14 @@ verify_kitty_installation() {
             print_error "Falló al instalar Kitty"
         fi
     fi
-    
+
     print_step "Verificando configuración de Kitty..."
     if [ -f "$HOME/.config/kitty/kitty.conf" ]; then
         print_success "Configuración de Kitty encontrada"
     else
         print_warning "Configuración de Kitty no encontrada"
     fi
-    
+
     print_step "Verificando dependencias de Kitty..."
     local kitty_deps=("fontconfig" "libxkbcommon" "libxkbcommon-x11" "libxkbcommon-x11" "libxkbcommon-x11")
     for dep in "${kitty_deps[@]}"; do
@@ -1646,7 +1650,7 @@ verify_kitty_installation() {
 
 verify_browser_and_notes() {
     print_section "Verificando navegador y aplicación de notas..."
-    
+
     print_step "Verificando Brave..."
     if command -v brave >/dev/null 2>&1; then
         print_success "Brave está instalado: $(brave --version | head -1)"
@@ -1659,7 +1663,7 @@ verify_browser_and_notes() {
             print_error "Falló al instalar Brave"
         fi
     fi
-    
+
     print_step "Verificando AppFlowy..."
     if command -v appflowy >/dev/null 2>&1; then
         print_success "AppFlowy está instalado"
@@ -1672,7 +1676,7 @@ verify_browser_and_notes() {
             print_error "Falló al instalar AppFlowy"
         fi
     fi
-    
+
     print_step "Verificando configuración de navegador por defecto..."
     if [ -f "$HOME/.config/mimeapps.list" ]; then
         if grep -q "x-scheme-handler/http=brave.desktop" "$HOME/.config/mimeapps.list"; then
@@ -1776,12 +1780,12 @@ show_final_info() {
     echo -e "${GREEN}║                    INSTALACIÓN COMPLETADA                                   ║${NC}"
     echo -e "${GREEN}══════════════════════════════════════════════════════════════════════════════${NC}"
     echo ""
-    
+
     echo "Próximos pasos:"
     echo "1. Reinicia tu sistema"
     echo "2. Inicia sesión con Hyprland"
     echo ""
-    
+
     echo "Comandos básicos:"
     echo "• SUPER+N - Neovim (Editor por defecto)"
     echo "• SUPER+B - Navegador (Brave)"
@@ -1791,7 +1795,7 @@ show_final_info() {
     echo "• SUPER+Q - Cerrar ventana"
     echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
-    
+
     echo "📋 Comandos Tmux:"
     echo "• tmux new-session - Iniciar nueva sesión"
     echo "• Ctrl+a + v - División vertical"
@@ -1805,7 +1809,7 @@ show_final_info() {
     echo "• Ctrl+a + I - Instalar plugins"
     echo "• ~/.tmux/tmux-diagnostic.sh - Diagnosticar problemas"
     echo ""
-    
+
     echo "🛡️ Comandos de seguridad:"
     echo "• sudo ufw status - Estado del firewall"
     echo "• sudo ufw allow [puerto] - Permitir puerto"
@@ -1816,18 +1820,18 @@ show_final_info() {
     echo "• sudo freshclam - Actualizar ClamAV"
     echo "• sudo rkhunter --check - Escanear con RKHunter"
     echo ""
-    
+
     echo "Gestión de fuentes:"
     echo "• Coloca fuentes personalizadas en dotfiles/fonts/"
     echo "• Ejecuta ~/.config/scripts/change-font.sh para cambiar fuentes"
     echo "• Usa ~/.config/scripts/change-font.sh --list para ver opciones"
     echo ""
-    
+
     echo "Para instalar más aplicaciones:"
     echo "• sudo pacman -S [paquete]"
     echo "• yay -S [paquete-aur]"
     echo ""
-    
+
     echo "Aplicaciones principales instaladas:"
     echo "• Brave - Navegador web privado y rápido"
     echo "• AppFlowy - Aplicación de notas y productividad"
@@ -1835,19 +1839,19 @@ show_final_info() {
     echo "• Kitty - Terminal GPU-accelerated"
     echo "• Hyprland - Compositor de ventanas moderno"
     echo ""
-    
+
     echo "Herramientas multimedia instaladas:"
     echo "• LMMS - Linux MultiMedia Studio (producción musical)"
     echo "• Pixelorama - Editor de pixel art"
     echo "• Upscayl - Upscaler de imágenes con IA"
     echo ""
-    
+
     echo "Soporte de imágenes instalado:"
     echo "• Visualización de imágenes en Neovim"
     echo "• Soporte para SVG"
     echo "• Vista previa de Markdown"
     echo ""
-    
+
     echo "🛡️ Herramientas de seguridad instaladas:"
     echo "• UFW - Firewall simple y efectivo"
     echo "• WireGuard - VPN moderna y rápida"
@@ -1856,7 +1860,7 @@ show_final_info() {
     echo "• RKHunter - Detección de rootkits"
     echo "• Herramientas de monitoreo de red"
     echo ""
-    
+
     if [ -n "$BACKUP_DIR" ]; then
         echo "Si tenías una configuración anterior, se respaldó en:"
         echo "$BACKUP_DIR"
@@ -1949,4 +1953,4 @@ main() {
 }
 
 # Ejecutar función principal
-main "$@" 
+main "$@"

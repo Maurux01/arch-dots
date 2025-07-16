@@ -37,27 +37,41 @@ return {
   -- Prettier for code formatting
   {
     "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        html = { "prettier" },
-        css = { "prettier" },
-        scss = { "prettier" },
-        sass = { "prettier" },
-        less = { "prettier" },
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
-        vue = { "prettier" },
-        json = { "prettier" },
-        yaml = { "prettier" },
-        markdown = { "prettier" },
-      },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
-    },
+    config = function()
+      local status_ok, conform = pcall(require, "conform")
+      if not status_ok then
+        vim.notify("conform.nvim not found!", vim.log.levels.WARN)
+        return
+      end
+
+      conform.setup({
+        formatters_by_ft = {
+          html = { "prettier" },
+          css = { "prettier" },
+          scss = { "prettier" },
+          sass = { "prettier" },
+          less = { "prettier" },
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescriptreact = { "prettier" },
+          vue = { "prettier" },
+          json = { "prettier" },
+          yaml = { "prettier" },
+          markdown = { "prettier" },
+        },
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+        -- Add error handling for external tools
+        formatters = {
+          prettier = {
+            prepend_args = { "--no-error-on-unmatched-pattern" },
+          },
+        },
+      })
+    end,
   },
 
   -- HTML preview

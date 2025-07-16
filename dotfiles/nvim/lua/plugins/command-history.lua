@@ -51,7 +51,6 @@ return {
           left = { " ", wilder.popupmenu_devicons() },
           right = { " ", wilder.popupmenu_scrollbar() },
         }),
-        ["/"] = wilder.wildmenu_renderer({}),
       }))
     end,
   },
