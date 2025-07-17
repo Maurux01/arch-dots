@@ -1,122 +1,40 @@
-/* Catppuccin-inspired Waybar style with rounded borders */
+/* Compact Waybar style */
 
 * {
-  border-radius: 8px;
-  font-family: "AdwaitaMono Nerd Font", "JetBrainsMono Nerd Font", monospace;
   font-size: 11px;
   min-height: 0;
+  padding: 0 6px;
+  margin: 0;
+  border-radius: 4px;
   box-shadow: none;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 window#waybar {
-  background: rgba(30, 30, 46, 0.95);
-  color: #cdd6f4;
-  border-radius: 8px;
-  border: 1px solid #89b4fa;
-  box-shadow: 0 2px 12px 0 rgba(30, 30, 46, 0.15);
+  background: rgba(30, 30, 46, 0.85);
+  border-radius: 6px;
+  min-height: 0;
+  padding: 2px 0;
+  margin: 2px 4px;
+  box-shadow: none;
 }
 
-/* Workspaces */
 #workspaces button {
-  background: transparent;
-  color: #a6adc8;
-  border-radius: 6px;
   padding: 0 6px;
-  margin: 1px 2px;
-  border: 1px solid transparent;
+  margin: 0 2px;
+  border-radius: 4px;
+  min-width: 0;
+  min-height: 0;
 }
 
-#workspaces button:hover {
-  background: rgba(137, 180, 250, 0.3);
-  color: #cdd6f4;
-  border: 1px solid #89b4fa;
+#clock, #battery, #pulseaudio, #network, #tray, #backlight, #custom-launcher, #custom-power, #custom-weather {
+  padding: 0 6px;
+  margin: 0 2px;
+  border-radius: 4px;
+  min-width: 0;
+  min-height: 0;
 }
 
-#workspaces button.active {
-  background: #89b4fa;
-  color: #1e1e2e;
-  border: 1px solid #b4befe;
-}
-
-#workspaces button.urgent {
-  background: #f38ba8;
-  color: #1e1e2e;
-  border: 1px solid #f38ba8;
-}
-
-/* All modules (left, center, right) */
-.modules-left,
-.modules-center,
-.modules-right,
-.module,
-#clock,
-#battery,
-#pulseaudio,
-#network,
-#tray,
-#cpu,
-#memory,
-#temperature,
-#backlight,
-#custom-launcher {
-  border-radius: 6px;
-  background: rgba(49, 50, 68, 0.85);
-  color: #cdd6f4;
-  margin: 1px 2px;
-  padding: 1px 6px;
-}
-
-/* Battery states */
-#battery.charging {
-  color: #a6e3a1;
-}
-
-#battery.warning {
-  color: #f9e2af;
-}
-
-#battery.critical {
-  color: #f38ba8;
-}
-
-/* Audio states */
-#pulseaudio.muted {
-  color: #6c7086;
-}
-
-/* Tray states */
-#tray > .passive {
-  opacity: 0.5;
-}
-
-#tray > .needs-attention {
-  background: #f38ba8;
-  color: #1e1e2e;
-}
-
-/* Custom launcher specific tweaks */
-#custom-launcher {
-  font-weight: bold;
-  padding: 1px 8px;
-}
-
-/* Volume (pulseaudio) bar styling */
-#pulseaudio progress,
-#pulseaudio slider {
-  border-radius: 6px;
-  background-color: #313244;
-  min-height: 8px;
-}
-
-/* Hover effects */
-#clock:hover,
-#battery:hover,
-#pulseaudio:hover,
-#network:hover,
-#cpu:hover,
-#memory:hover,
-#temperature:hover,
-#backlight:hover {
-  background: rgba(49, 50, 68, 0.95);
+#tray {
+  padding: 0 2px;
+  margin: 0 2px;
 }

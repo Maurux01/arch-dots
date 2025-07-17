@@ -26,6 +26,7 @@ send_notification() {
 }
 
 # Herramienta de captura
+echo "[DEBUG] Buscando herramienta de captura..." >&2
 get_screenshot_tool() {
     if command -v wl-screenshot &> /dev/null; then
         echo "wl-screenshot"
@@ -37,6 +38,7 @@ get_screenshot_tool() {
 }
 
 # Herramienta de portapapeles
+echo "[DEBUG] Buscando herramienta de portapapeles..." >&2
 get_clipboard_tool() {
     if command -v wl-copy &> /dev/null; then
         echo "wl-copy"
@@ -126,19 +128,23 @@ TOOL=$(get_screenshot_tool)
 CLIPBOARD_TOOL=$(get_clipboard_tool)
 
 if [ -z "$TOOL" ]; then
-    echo "Error: No se encontró herramienta de captura (wl-screenshot o grim)"
+    echo "Error: No se encontró herramienta de captura (wl-screenshot o grim)" >&2
+    send_notification "critical" "Screenshot" "No se encontró wl-screenshot ni grim. Instala uno de ellos." "camera"
     exit 1
 fi
 
 case "$MODE" in
     s|select)
         if [ "$TOOL" = "wl-screenshot" ]; then
+            echo "[DEBUG] Usando wl-screenshot para selección de área" >&2
             wl-screenshot -g -f "$FILEPATH"
         elif [ "$TOOL" = "grim" ]; then
             if command -v slurp &> /dev/null; then
+                echo "[DEBUG] Usando grim + slurp para selección de área" >&2
                 grim -g "$(slurp)" "$FILEPATH"
             else
-                echo "Error: grim requiere slurp para selección de área."
+                echo "Error: grim requiere slurp para selección de área." >&2
+                send_notification "critical" "Screenshot" "grim requiere slurp para selección de área." "camera"
                 exit 1
             fi
         fi
