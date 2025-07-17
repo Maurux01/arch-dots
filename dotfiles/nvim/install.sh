@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # NVimX-1 Installation Script
-# This script installs the Neovim configuration to ~/.config/nvim/
+# This script installs Neovim and the configuration to ~/.config/nvim/
 
 set -e  # Exit on any error
 
@@ -35,14 +35,36 @@ NVIM_CONFIG_DIR="$HOME/.config/nvim"
 
 print_status "Starting NVimX-1 installation..."
 
-# Check if Neovim is installed
+# Install Neovim if not present
 if ! command -v nvim &> /dev/null; then
-    print_error "Neovim is not installed. Please install Neovim first."
-    print_status "You can install it with: sudo pacman -S neovim"
-    exit 1
+    print_warning "Neovim is not installed. Installing Neovim..."
+    
+    if command -v pacman &> /dev/null; then
+        print_status "Installing Neovim via pacman..."
+        sudo pacman -S neovim --noconfirm
+    elif command -v apt &> /dev/null; then
+        print_status "Installing Neovim via apt..."
+        sudo apt update
+        sudo apt install neovim -y
+    elif command -v yum &> /dev/null; then
+        print_status "Installing Neovim via yum..."
+        sudo yum install neovim -y
+    elif command -v dnf &> /dev/null; then
+        print_status "Installing Neovim via dnf..."
+        sudo dnf install neovim -y
+    elif command -v zypper &> /dev/null; then
+        print_status "Installing Neovim via zypper..."
+        sudo zypper install neovim -y
+    else
+        print_error "Could not install Neovim automatically. Please install it manually."
+        print_status "You can install it with: sudo pacman -S neovim"
+        exit 1
+    fi
+    
+    print_success "Neovim installed successfully"
+else
+    print_success "Neovim is already installed"
 fi
-
-print_success "Neovim is installed"
 
 # Create backup of existing config if it exists
 if [ -d "$NVIM_CONFIG_DIR" ]; then
@@ -61,7 +83,7 @@ mkdir -p "$NVIM_CONFIG_DIR"
 print_status "Copying configuration files..."
 cp -r "$SCRIPT_DIR"/* "$NVIM_CONFIG_DIR/"
 
-# Remove the install script from the destination
+# Remove the install script from the destination to avoid confusion
 rm -f "$NVIM_CONFIG_DIR/install.sh"
 
 # Set proper permissions
@@ -70,8 +92,8 @@ chmod -R 755 "$NVIM_CONFIG_DIR"
 
 print_success "Configuration files copied successfully!"
 
-# Install dependencies
-print_status "Checking for dependencies..."
+# Install additional Neovim dependencies
+print_status "Installing Neovim dependencies..."
 
 # Check for ripgrep
 if ! command -v rg &> /dev/null; then
