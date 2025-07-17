@@ -1432,7 +1432,7 @@ EOF
 }
 
 configure_tmux() {
-    print_section "Configurando Tmux..."
+    print_section "Configurando Tmux moderno..."
 
     print_step "Verificando instalación de tmux..."
     if ! command -v tmux >/dev/null 2>&1; then
@@ -1440,9 +1440,10 @@ configure_tmux() {
         sudo pacman -S tmux --noconfirm --needed
     fi
 
-    print_step "Creando directorios de configuración tmux..."
+    print_step "Creando estructura de directorios tmux..."
     mkdir -p "$HOME/.tmux"
     mkdir -p "$HOME/.tmux/plugins"
+    mkdir -p "$HOME/.tmux/scripts"
 
     print_step "Instalando TPM (Tmux Plugin Manager)..."
     if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
@@ -1450,6 +1451,54 @@ configure_tmux() {
         print_success "TPM instalado"
     else
         print_success "TPM ya está instalado"
+    fi
+
+    print_step "Copiando configuración moderna de Tmux..."
+    if [ -d "$DOTFILES_DIR/tmux" ]; then
+        # Copiar configuración principal
+        if [ -f "$DOTFILES_DIR/tmux/tmux.conf" ]; then
+            cp "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+            print_success "Configuración principal copiada"
+        fi
+
+        # Copiar plugins
+        if [ -d "$DOTFILES_DIR/tmux/plugins" ]; then
+            cp -r "$DOTFILES_DIR/tmux/plugins"/* "$HOME/.tmux/plugins/"
+            print_success "Configuraciones de plugins copiadas"
+        fi
+
+        # Copiar scripts
+        if [ -d "$DOTFILES_DIR/tmux/scripts" ]; then
+            cp -r "$DOTFILES_DIR/tmux/scripts"/* "$HOME/.tmux/scripts/"
+            chmod +x "$HOME/.tmux/scripts/"*.sh
+            print_success "Scripts copiados y permisos configurados"
+        fi
+    else
+        print_warning "No se encontró la carpeta de configuración tmux en dotfiles"
+        print_step "Creando configuración básica..."
+        # Crear configuración básica si no existe
+        cat > "$HOME/.tmux.conf" << 'EOF'
+# =============================================================================
+#                           🎭 TMUX CONFIGURATION
+# =============================================================================
+# Modern Tmux configuration with TPM plugin management
+# =============================================================================
+
+# Plugin manager
+set -g @plugintmux-plugins/tpmset -g @plugin tmux-plugins/tmux-sensible'
+
+# Status bar plugins
+set -g @plugin tmux-plugins/tmux-batteryset -g @plugin tmux-plugins/tmux-cpuset -g @plugin tmux-plugins/tmux-online-status'
+
+# Navigation plugins
+set -g @plugin tmux-plugins/tmux-yankset -g @plugin tmux-plugins/tmux-pain-control'
+
+# Theme
+set -g @plugin tmux-plugins/tmux-resurrectset -g @plugin tmux-plugins/tmux-continuum'
+
+# Initialize TPM
+run ~/.tmux/plugins/tpm/tpm'
+EOF
     fi
 
     print_step "Creando script de diagnóstico tmux..."
@@ -1565,9 +1614,10 @@ echo "Plugins instalados. Reinicia tmux para aplicar cambios."
 EOF
     chmod +x "$HOME/.tmux/install-plugins.sh"
 
-    print_success "Tmux configurado con TPM y herramientas de diagnóstico"
+    print_success "Tmux moderno configurado con TPM y herramientas de diagnóstico"
     print_info "Para diagnosticar problemas: ~/.tmux/tmux-diagnostic.sh"
     print_info "Para instalar plugins: tmux new-session, luego Ctrl+a + I"
+    print_info "Para aplicar configuración: tmux source-file ~/.tmux.conf"
 }
 
 # =============================================================================
@@ -1809,7 +1859,7 @@ show_final_info() {
     echo "• SUPER+SHIFT+W - Wallpaper aleatorio"
     echo ""
 
-    echo "📋 Comandos Tmux:"
+    echo "🎭 Tmux Moderno:"
     echo "• tmux new-session - Iniciar nueva sesión"
     echo "• Ctrl+a + v - División vertical"
     echo "• Ctrl+a + s - División horizontal"
@@ -1819,8 +1869,16 @@ show_final_info() {
     echo "• Ctrl+a + q - Cerrar panel"
     echo "• Ctrl+a + Q - Cerrar ventana"
     echo "• Ctrl+a + z - Alternar zoom"
-    echo "• Ctrl+a + I - Instalar plugins"
+    echo "• Ctrl+a + I - Instalar plugins (TPM)"
+    echo "• Ctrl+a + y - Copiar al portapapeles (yank)"
+    echo "• Ctrl+a + Y - Copiar línea al portapapeles"
+    echo "• Ctrl+a + r - Recargar configuración"
+    echo "• Ctrl+a + f - Buscar en modo copia (fzf opcional)"
     echo "• ~/.tmux/tmux-diagnostic.sh - Diagnosticar problemas"
+    echo "• tmux source-file ~/.tmux.conf - Recargar configuración"
+    echo "• Configuración: ~/.tmux.conf"
+    echo "• Scripts: ~/.tmux/scripts/"
+    echo "• Plugins: ~/.tmux/plugins/"
     echo ""
 
     echo "🛡️ Comandos de seguridad:"
