@@ -94,10 +94,10 @@ end
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     -- Enhanced cursor line
-    vim.cmd([[hi CursorLine ctermbg=NONE guibg=NONE]])
+vim.cmd([[hi CursorLine ctermbg=NONE guibg=NONE]])
     vim.cmd([[hi CursorLineNr ctermfg=Yellow guifg=Yellow gui=bold]])
-    vim.cmd([[hi LineNr ctermfg=Gray guifg=Gray]])
-    vim.cmd([[hi SignColumn ctermbg=NONE guibg=NONE]])
+vim.cmd([[hi LineNr ctermfg=Gray guifg=Gray]])
+vim.cmd([[hi SignColumn ctermbg=NONE guibg=NONE]])
     
     -- Enhanced search highlighting
     vim.cmd([[hi Search ctermbg=Yellow ctermfg=Black guibg=Yellow guifg=Black]])
