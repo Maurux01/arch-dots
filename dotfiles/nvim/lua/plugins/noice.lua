@@ -74,12 +74,12 @@ return {
             col = "50%",
           },
           size = {
-            width = 50,
+            width = 40, -- más pequeño
             height = "auto",
           },
           border = {
             style = "rounded",
-            padding = { 0, 1 },
+            padding = { 0, 0 }, -- sin padding
           },
         },
         popupmenu = {
@@ -89,12 +89,12 @@ return {
             col = "50%",
           },
           size = {
-            width = 24,
-            height = 8,
+            width = 20, -- más pequeño
+            height = 6, -- más pequeño
           },
           border = {
             style = "rounded",
-            padding = { 0, 1 },
+            padding = { 0, 0 },
           },
           win_options = {
             winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
@@ -103,12 +103,12 @@ return {
         notify = {
           backend = "notify",
           size = {
-            width = 40,
+            width = 30, -- más pequeño
             height = "auto",
           },
           border = {
             style = "rounded",
-            padding = { 0, 1 },
+            padding = { 0, 0 }, -- sin padding
           },
           win_options = {
             winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
@@ -116,7 +116,7 @@ return {
         },
         mini = {
           win_options = {
-            winblend = 20,
+            winblend = 30,
             winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
           },
         },
@@ -126,9 +126,9 @@ return {
         notification = {
           style = {
             font = "AdwaitaMono Nerd Font",
-            size = 10,
-            padding = 1,
-            border_radius = 4,
+            size = 8, -- aún más pequeño
+            padding = 0, -- sin padding
+            border_radius = 2, -- más compacto
           },
         },
       },
@@ -194,12 +194,12 @@ return {
   {
     "rcarriga/nvim-notify",
     opts = {
-      timeout = 2500,
+      timeout = 2000,
       max_height = function()
-        return math.floor(vim.o.lines * 0.4)
+        return math.floor(vim.o.lines * 0.2) -- más bajo
       end,
       max_width = function()
-        return math.floor(vim.o.columns * 0.3)
+        return math.floor(vim.o.columns * 0.18) -- más angosto
       end,
       render = "compact",
       stages = "fade_in_slide_out",
@@ -217,7 +217,7 @@ return {
         vim.api.nvim_win_set_option(win, "relativenumber", false)
         vim.api.nvim_win_set_option(win, "signcolumn", "no")
         -- Reducir tamaño de fuente y padding
-        vim.api.nvim_win_set_option(win, "winblend", 20)
+        vim.api.nvim_win_set_option(win, "winblend", 30)
       end,
     },
     keys = {
