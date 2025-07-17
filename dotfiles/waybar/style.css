@@ -1,9 +1,9 @@
 /* Catppuccin-inspired Waybar style with rounded borders */
 
 * {
-  border-radius: 16px;
+  border-radius: 8px;
   font-family: "AdwaitaMono Nerd Font", "JetBrainsMono Nerd Font", monospace;
-  font-size: 14px;
+  font-size: 11px;
   min-height: 0;
   box-shadow: none;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
@@ -12,37 +12,37 @@
 window#waybar {
   background: rgba(30, 30, 46, 0.95);
   color: #cdd6f4;
-  border-radius: 16px;
-  border: 2px solid #89b4fa;
-  box-shadow: 0 4px 24px 0 rgba(30, 30, 46, 0.2);
+  border-radius: 8px;
+  border: 1px solid #89b4fa;
+  box-shadow: 0 2px 12px 0 rgba(30, 30, 46, 0.15);
 }
 
 /* Workspaces */
 #workspaces button {
   background: transparent;
   color: #a6adc8;
-  border-radius: 12px;
-  padding: 0 10px;
-  margin: 2px 4px;
-  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0 6px;
+  margin: 1px 2px;
+  border: 1px solid transparent;
 }
 
 #workspaces button:hover {
   background: rgba(137, 180, 250, 0.3);
   color: #cdd6f4;
-  border: 2px solid #89b4fa;
+  border: 1px solid #89b4fa;
 }
 
 #workspaces button.active {
   background: #89b4fa;
   color: #1e1e2e;
-  border: 2px solid #b4befe;
+  border: 1px solid #b4befe;
 }
 
 #workspaces button.urgent {
   background: #f38ba8;
   color: #1e1e2e;
-  border: 2px solid #f38ba8;
+  border: 1px solid #f38ba8;
 }
 
 /* All modules (left, center, right) */
@@ -60,11 +60,11 @@ window#waybar {
 #temperature,
 #backlight,
 #custom-launcher {
-  border-radius: 12px;
+  border-radius: 6px;
   background: rgba(49, 50, 68, 0.85);
   color: #cdd6f4;
-  margin: 2px 6px;
-  padding: 2px 10px;
+  margin: 1px 2px;
+  padding: 1px 6px;
 }
 
 /* Battery states */
@@ -98,15 +98,15 @@ window#waybar {
 /* Custom launcher specific tweaks */
 #custom-launcher {
   font-weight: bold;
-  padding: 2px 14px;
+  padding: 1px 8px;
 }
 
 /* Volume (pulseaudio) bar styling */
 #pulseaudio progress,
 #pulseaudio slider {
-  border-radius: 12px;
+  border-radius: 6px;
   background-color: #313244;
-  min-height: 12px;
+  min-height: 8px;
 }
 
 /* Hover effects */

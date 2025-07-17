@@ -1,222 +1,127 @@
 -- lua/plugins/webdev.lua
--- Configuración específica para desarrollo web con prevención de duplicaciones
+-- Plugins y configuración para desarrollo web moderno (frontend y backend)
 
 return {
-  -- HTML/CSS/JS development tools
-  {
-    "mattn/emmet-vim",
-    ft = { "html", "css", "scss", "sass", "less", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "php", "xml", "xsl", "haml", "jade", "pug", "slim", "erb", "ejs" },
-    config = function()
-      -- Configuración de Emmet para evitar conflictos con snippets
-      vim.g.user_emmet_mode = 'a'
-      vim.g.user_emmet_leader_key = '<C-e>'
-      vim.g.user_emmet_settings = {
-        html = {
-          default_attributes = {
-            option = { value = vim.null },
-            textarea = { id = vim.null, name = vim.null, cols = 10, rows = 10 },
-          },
-          snippets = {
-            ['!'] = '<!DOCTYPE html>\n<html lang="${lang}">\n<head>\n\t<meta charset="${charset}">\n\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n\t<title>${title}</title>\n</head>\n<body>\n\t${child}|\n</body>\n</html>',
-          },
-        },
-        css = {
-          default_attributes = {
-            a = { href = '' },
-          },
-        },
-        javascript = {
-          default_attributes = {
-            b = { class = 'btn' },
-          },
-        },
-      }
-    end,
-  },
-
-  -- Prettier for code formatting
-  {
-    "stevearc/conform.nvim",
-    config = function()
-      local status_ok, conform = pcall(require, "conform")
-      if not status_ok then
-        vim.notify("conform.nvim not found!", vim.log.levels.WARN)
-        return
-      end
-
-      conform.setup({
-        formatters_by_ft = {
-          html = { "prettier" },
-          css = { "prettier" },
-          scss = { "prettier" },
-          sass = { "prettier" },
-          less = { "prettier" },
-          javascript = { "prettier" },
-          typescript = { "prettier" },
-          javascriptreact = { "prettier" },
-          typescriptreact = { "prettier" },
-          vue = { "prettier" },
-          json = { "prettier" },
-          yaml = { "prettier" },
-          markdown = { "prettier" },
-        },
-        format_on_save = {
-          timeout_ms = 500,
-          lsp_fallback = true,
-        },
-        -- Add error handling for external tools
-        formatters = {
-          prettier = {
-            prepend_args = { "--no-error-on-unmatched-pattern" },
-          },
-        },
-      })
-    end,
-  },
-
-  -- HTML preview
-  {
-    "ellisonleao/glow.nvim",
-    config = function()
-      require("glow").setup({
-        style = "dark",
-        width = 120,
-      })
-    end,
-  },
-
-  -- Live server for web development
+  -- Live Server (recarga en caliente)
   {
     "barrett-ruth/live-server.nvim",
     build = "npm install -g live-server",
-    config = function()
-      require("live-server").setup({
-        port = 3000,
-        browser = "google-chrome",
-        open = true,
-        file = "index.html",
-        wait = 1000,
-        mount = {},
-        logLevel = 2,
-        middleware = {},
-      })
-    end,
-  },
-
-  -- Web development snippets (custom, no duplicates)
-  {
-    "rafamadriz/friendly-snippets",
-    config = function()
-      -- Load only web development snippets
-      require("luasnip.loaders.from_vscode").lazy_load({
-        include = {
-          "html", "css", "scss", "javascript", "typescript", "javascriptreact", "typescriptreact", "vue", "json"
-        },
-        exclude = { "global", "all", "lua", "python", "rust", "go", "java", "c", "cpp", "php" },
-      })
-
-      -- Clean duplicate HTML snippets safely
-      local ls = require("luasnip")
-      local function clean_html_snippets()
-        if ls.snippets and ls.snippets.html then
-          local seen = {}
-          local unique_snippets = {}
-          for name, snippet in pairs(ls.snippets.html) do
-            local key = snippet.trigger or name
-            if not seen[key] then
-              seen[key] = true
-              unique_snippets[name] = snippet
-            end
-          end
-          ls.snippets.html = unique_snippets
-        end
-      end
-      vim.defer_fn(clean_html_snippets, 100)
-    end,
-  },
-
-  -- CSS color preview
-  {
-    "brenoprata10/nvim-highlight-colors",
-    config = function()
-      require("nvim-highlight-colors").setup({
-        render = "background",
-        enable_named_colors = true,
-        enable_tailwind = true,
-      })
-    end,
-  },
-
-  -- Tailwind CSS support
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        -- Configuración específica para CSS/HTML
-        cssls = {
-          settings = {
-            css = {
-              validate = true,
-              lint = {
-                unknownAtRules = "ignore",
-              },
-            },
-            less = {
-              validate = true,
-              lint = {
-                unknownAtRules = "ignore",
-              },
-            },
-            scss = {
-              validate = true,
-              lint = {
-                unknownAtRules = "ignore",
-              },
-            },
-          },
-        },
-        html = {
-          settings = {
-            html = {
-              format = {
-                templating = true,
-                wrapLineLength = 120,
-                wrapAttributes = "auto",
-              },
-              suggest = {
-                html5 = true,
-              },
-            },
-          },
-        },
-        emmet_ls = {
-          filetypes = { 
-            "html", "css", "scss", "sass", "less", 
-            "javascript", "javascriptreact", "typescript", "typescriptreact", 
-            "vue", "php", "xml", "xsl", "haml", "jade", "pug", "slim", "erb", "ejs" 
-          },
-          init_options = {
-            html = {
-              options = {
-                ["bem.enabled"] = true,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-
-  -- Keymaps específicos para desarrollo web
-  {
-    "nvim-telescope/telescope.nvim",
+    cmd = { "LiveServerStart", "LiveServerStop" },
+    config = true,
     keys = {
-      -- Web development specific keymaps
-      { "<leader>wh", "<cmd>Telescope live_grep search_dirs={\"src\",\"public\",\"components\"}<cr>", desc = "Search web files" },
-      { "<leader>wf", "<cmd>Telescope find_files search_dirs={\"src\",\"public\",\"components\"}<cr>", desc = "Find web files" },
-      { "<leader>ws", "<cmd>LiveServerStart<cr>", desc = "Start live server" },
-      { "<leader>wt", "<cmd>LiveServerStop<cr>", desc = "Stop live server" },
-      { "<leader>wr", "<cmd>LiveServerRestart<cr>", desc = "Restart live server" },
+      { "<leader>ls", ":LiveServerStart<CR>", desc = "Iniciar Live Server" },
+      { "<leader>le", ":LiveServerStop<CR>", desc = "Detener Live Server" },
     },
+  },
+
+  -- Peticiones HTTP tipo Postman
+  {
+    "rest-nvim/rest.nvim",
+    ft = { "http" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("rest-nvim").setup({
+        result_split_horizontal = false,
+        result_split_in_place = true,
+        skip_ssl_verification = false,
+        encode_url = true,
+        highlight = {
+          enabled = true,
+          timeout = 150,
+        },
+        result = {
+          show_url = true,
+          show_http_info = true,
+          show_headers = true,
+        },
+      })
+    end,
+    keys = {
+      { "<leader>rr", "<Plug>RestNvim", desc = "Ejecutar petición HTTP" },
+      { "<leader>rp", "<Plug>RestNvimPreview", desc = "Previsualizar petición HTTP" },
+      { "<leader>rl", "<Plug>RestNvimLast", desc = "Repetir última petición HTTP" },
+    },
+  },
+
+  -- Autocompletado y snippets para frameworks modernos
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "javascript", "javascriptreact", "typescriptreact", "vue", "svelte" },
+    config = true,
+  },
+  {
+    "mlaursen/vim-react-snippets",
+    ft = { "javascriptreact", "typescriptreact", "javascript", "typescript" },
+  },
+  {
+    "xabikos/vscode-react-javascript-snippets",
+    ft = { "javascriptreact", "typescriptreact" },
+  },
+  {
+    "dsznajder/vscode-es7-javascript-react-snippets",
+    build = "npm install --legacy-peer-deps && npm run build --if-present",
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  },
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "typescript", "typescriptreact" },
+    config = function()
+      require("typescript").setup({
+        server = {
+          on_attach = function(client, bufnr)
+            -- Opcional: formateo automático al guardar
+            if client.server_capabilities.documentFormattingProvider then
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                callback = function()
+                  vim.lsp.buf.format({ async = false })
+                end,
+              })
+            end
+          end,
+        },
+      })
+    end,
+  },
+
+  -- Prettier y ESLint (formateo y linting)
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
+        vue = { "prettier" },
+        svelte = { "prettier" },
+        css = { "prettier" },
+        scss = { "prettier" },
+        html = { "prettier" },
+        json = { "prettier" },
+        yaml = { "prettier" },
+        markdown = { "prettier" },
+      },
+      format_on_save = true,
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("lint").linters_by_ft = {
+        javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        vue = { "eslint_d" },
+        svelte = { "eslint_d" },
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end,
   },
 } 

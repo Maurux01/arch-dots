@@ -1,45 +1,55 @@
 -- Modern IDE Neovim Configuration
 -- Carga modular y sin errores
 
+local function safe_require(mod)
+  local ok, result = pcall(require, mod)
+  if not ok then
+    vim.schedule(function()
+      vim.notify('Error cargando módulo: '..mod..'\n'..result, vim.log.levels.ERROR)
+    end)
+  end
+  return result
+end
+
 -- Opciones y variables globales
-pcall(require, "config.options")
+safe_require("config.options")
 
 -- Bootstrap Lazy.nvim y plugins
-pcall(require, "config.lazy")
+safe_require("config.lazy")
 
 -- Configuración modular (cargar después de Lazy)
 vim.api.nvim_create_autocmd("User", {
     pattern = "LazyDone",
     callback = function()
         -- Cargar configuraciones después de que los plugins estén listos
-        pcall(require, "config.theme-toggle")
-        pcall(require, "config.capture-utils")
+        safe_require("config.theme-toggle")
+        safe_require("config.capture-utils")
         
         -- Cargar telescope con setup
-        local telescope_ok, telescope = pcall(require, "config.telescope")
-        if telescope_ok then
+        local telescope = safe_require("config.telescope")
+        if telescope and telescope.setup then
             telescope.setup()
         end
         
         -- Cargar image-support con setup
-        local image_ok, image = pcall(require, "config.image-support")
-        if image_ok then
+        local image = safe_require("config.image-support")
+        if image and image.setup then
             image.setup()
         end
         
-        pcall(require, "config.autocmds")
-        pcall(require, "config.performance")
-        pcall(require, "config.cursor-highlights")
+        safe_require("config.autocmds")
+        safe_require("config.performance")
+        safe_require("config.cursor-highlights")
         
         -- (Opcional) Colores personalizados para indentación rainbow
-        pcall(require, "config.indent-colors")
+        safe_require("config.indent-colors")
     end,
     once = true,
 })
 
 -- Cargar configuraciones básicas inmediatamente (que no dependen de plugins)
-pcall(require, "config.autocmds")
-pcall(require, "config.performance")
+safe_require("config.autocmds")
+safe_require("config.performance")
 
 -- Mensaje de bienvenida moderno
 vim.api.nvim_create_autocmd("VimEnter", {

@@ -208,7 +208,6 @@ function mkcd --argument-names dir
     end
     mkdir -p "$dir" && cd "$dir"
 end
-
 # Create a timestamped backup of a file
 function backup --argument-names file
     if not test -f "$file"
@@ -374,3 +373,24 @@ alias r='reset'
 # Alias para reiniciar rápidamente
 alias re='reboot'
 alias sn='shutdown now'
+
+# Alias útiles añadidos por solicitud (solo si no existen ya)
+if not alias | grep -q "alias cp="
+    alias cp='cp -i'
+end
+if not alias | grep -q "alias mv="
+    alias mv='mv -i'
+end
+if not alias | grep -q "alias mkd="
+    alias mkd='mkdir -p'
+end
+if not alias | grep -q "alias mkf="
+    alias mkf='touch'
+end
+if not alias | grep -q "alias copy="
+    alias copy='wl-copy'
+end
+if not alias | grep -q "alias paste="
+    alias paste='wl-paste'
+end
+

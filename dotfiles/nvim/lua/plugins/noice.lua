@@ -74,7 +74,7 @@ return {
             col = "50%",
           },
           size = {
-            width = 60,
+            width = 50,
             height = "auto",
           },
           border = {
@@ -89,8 +89,8 @@ return {
             col = "50%",
           },
           size = {
-            width = 30,
-            height = 10,
+            width = 24,
+            height = 8,
           },
           border = {
             style = "rounded",
@@ -98,6 +98,37 @@ return {
           },
           win_options = {
             winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+          },
+        },
+        notify = {
+          backend = "notify",
+          size = {
+            width = 40,
+            height = "auto",
+          },
+          border = {
+            style = "rounded",
+            padding = { 0, 1 },
+          },
+          win_options = {
+            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+          },
+        },
+        mini = {
+          win_options = {
+            winblend = 20,
+            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+          },
+        },
+      },
+      -- Ajuste global de estilo para notificaciones
+      format = {
+        notification = {
+          style = {
+            font = "AdwaitaMono Nerd Font",
+            size = 10,
+            padding = 1,
+            border_radius = 4,
           },
         },
       },
@@ -163,13 +194,18 @@ return {
   {
     "rcarriga/nvim-notify",
     opts = {
-      timeout = 3000,
+      timeout = 2500,
       max_height = function()
-        return math.floor(vim.o.lines * 0.75)
+        return math.floor(vim.o.lines * 0.4)
       end,
       max_width = function()
-        return math.floor(vim.o.columns * 0.75)
+        return math.floor(vim.o.columns * 0.3)
       end,
+      render = "compact",
+      stages = "fade_in_slide_out",
+      background_colour = "#1e1e2e",
+      fps = 60,
+      icons = false,
       on_open = function(win)
         vim.api.nvim_win_set_option(win, "conceallevel", 3)
         vim.api.nvim_win_set_option(win, "spell", false)
@@ -180,6 +216,8 @@ return {
         vim.api.nvim_win_set_option(win, "number", false)
         vim.api.nvim_win_set_option(win, "relativenumber", false)
         vim.api.nvim_win_set_option(win, "signcolumn", "no")
+        -- Reducir tamaño de fuente y padding
+        vim.api.nvim_win_set_option(win, "winblend", 20)
       end,
     },
     keys = {
