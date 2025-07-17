@@ -489,7 +489,20 @@ configure_hyprlock() {
     print_step "Configurando Hyprlock..."
     mkdir -p "$HOME/.config/hyprlock"
 
-    if [ -f "$DOTFILES_DIR/hypr/hyprlock.conf" ]; then
+    # Use the hyprlock configuration with assets
+    if [ -f "$DOTFILES_DIR/hyprlock/hyprlock.conf" ]; then
+        print_step "Copiando configuración de hyprlock con assets desde dotfiles..."
+        cp "$DOTFILES_DIR/hyprlock/hyprlock.conf" "$HOME/.config/hyprlock/"
+
+        # Copy assets folder
+        if [ -d "$DOTFILES_DIR/hyprlock/assets" ]; then
+            print_step "Copiando assets de hyprlock..."
+            cp -r "$DOTFILES_DIR/hyprlock/assets" "$HOME/.config/hyprlock/"
+            print_success "Assets de hyprlock copiados"
+        fi
+
+        print_success "Configuración de hyprlock con assets copiada"
+    elif [ -f "$DOTFILES_DIR/hypr/hyprlock.conf" ]; then
         print_step "Copiando configuración de hyprlock desde dotfiles..."
         cp "$DOTFILES_DIR/hypr/hyprlock.conf" "$HOME/.config/hyprlock/"
 
@@ -1863,9 +1876,13 @@ show_final_info() {
 
     echo "🔒 Hyprlock (Pantalla de bloqueo):"
     echo "• SUPER+L - Bloquear pantalla"
+    echo "• SUPER+ALT+L - Cambiar fondo de hyprlock"
+    echo "• SUPER+SHIFT+ALT+L - Fondo aleatorio de hyprlock"
     echo "• ~/.config/scripts/test-lock.sh - Diagnosticar problemas de hyprlock"
+    echo "• ~/.config/scripts/hyprlock-background.sh --list - Ver fondos disponibles"
     echo "• Logs de hyprlock: ~/.cache/hyprlock-test.log"
     echo "• Configuración: ~/.config/hyprlock/hyprlock.conf"
+    echo "• Fondos disponibles: ~/.config/hyprlock/assets/"
     echo ""
 
     if [ -n "$BACKUP_DIR" ]; then

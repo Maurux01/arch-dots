@@ -4,9 +4,20 @@ This document provides information about the hyprlock configuration and how to t
 
 ## Configuration Files
 
-### Main Configuration
+### Main Configuration with Assets
+- **File**: `~/.config/hyprlock/hyprlock.conf`
+- **Purpose**: Main hyprlock configuration with background images from assets
+- **Features**:
+  - Background images from assets folder
+  - Catppuccin Mocha theme colors
+  - Centered password input field
+  - Time and date display
+  - User avatar support
+  - Layout indicator
+
+### Alternative Configuration
 - **File**: `~/.config/hypr/hyprlock.conf`
-- **Purpose**: Main hyprlock configuration with dark background and visible input field
+- **Purpose**: Alternative hyprlock configuration with solid background
 - **Features**:
   - Solid dark background (rgba(26, 27, 38, 0.95))
   - Centered password input field
@@ -19,12 +30,28 @@ This document provides information about the hyprlock configuration and how to t
 - **Purpose**: Alternative theme configuration
 - **Usage**: Can be used as a backup or alternative theme
 
-## Keybind
+## Keybinds
 
 The lock screen is bound to:
 - **Key**: `Super + L`
 - **Command**: `hyprlock`
 - **Location**: `dotfiles/hypr/keybindings.conf` (line 32)
+
+### Background Management
+- **Key**: `Super + Alt + L`
+- **Command**: `hyprlock-background.sh --set`
+- **Purpose**: Interactive background selection
+
+- **Key**: `Super + Shift + Alt + L`
+- **Command**: `hyprlock-background.sh --random`
+- **Purpose**: Set random background
+
+### Available Backgrounds
+The following backgrounds are available in the assets folder:
+- **mocha.webp** - Catppuccin Mocha (dark)
+- **latte.webp** - Catppuccin Latte (light)
+- **macchiato.webp** - Catppuccin Macchiato (medium)
+- **frappe.webp** - Catppuccin Frappe (medium-dark)
 
 ## Testing Hyprlock
 
