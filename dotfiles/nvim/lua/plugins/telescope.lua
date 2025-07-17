@@ -8,8 +8,14 @@ return {
   },
   opts = {
     defaults = {
-      prompt_prefix = " ",
-      selection_caret = " ",
+      prompt_prefix = "   ",
+      selection_caret = " ",
+      entry_prefix = "  ",
+      border = true,
+      borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      winblend = 10,
+      results_title = false,
+      preview_title = false,
       layout_strategy = "horizontal",
       layout_config = {
         horizontal = {
@@ -34,26 +40,45 @@ return {
       find_files = {
         find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
         hidden = true,
-      },
-      file_browser = {
-        hidden = true,
-        respect_gitignore = true,
-        grouped = true,
-        initial_mode = "normal",
+        theme = "dropdown",
+        previewer = false,
         layout_config = {
-          width = 0.9,
-          height = 0.8,
+          width = 0.5,
+          height = 0.5,
         },
       },
       buffers = {
         sort_lastused = true,
         sort_mru = true,
         ignore_current_buffer = true,
+        theme = "dropdown",
+        previewer = false,
+        layout_config = {
+          width = 0.5,
+          height = 0.5,
+        },
       },
       live_grep = {
         additional_args = function()
           return { "--hidden" }
         end,
+        theme = "dropdown",
+        previewer = false,
+        layout_config = {
+          width = 0.6,
+          height = 0.5,
+        },
+      },
+      file_browser = {
+        hidden = true,
+        respect_gitignore = true,
+        grouped = true,
+        initial_mode = "normal",
+        theme = "dropdown",
+        layout_config = {
+          width = 0.9,
+          height = 0.8,
+        },
       },
     },
     extensions = {
