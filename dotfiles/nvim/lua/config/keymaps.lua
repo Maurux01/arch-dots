@@ -75,7 +75,6 @@ keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" }
 keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
 keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old files" })
-keymap("n", "<leader>fc", "<cmd>Telescope colorscheme<cr>", { desc = "Colorscheme" })
 keymap("n", "<leader>fr", "<cmd>Telescope resume<cr>", { desc = "Resume last search" })
 
 -- LSP

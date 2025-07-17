@@ -14,8 +14,8 @@ return {
       },
     },
     icons = {
-      breadcrumb = "»",
-      separator = "➜",
+      breadcrumb = ">>",
+      separator = "→",
       group = "+",
     },
     win = {
@@ -41,17 +41,15 @@ return {
   config = function(_, opts)
     local wk = require("which-key")
     wk.setup(opts)
-    
-    -- Registrar todas las funciones organizadas por categorías
+    -- Registrar funciones organizadas, sin <leader>fc ni duplicados
     wk.register({
-      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
-      { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
-      { "<leader>fc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
-      { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
-      { "<leader>fp", "<cmd>Prettier<cr>", desc = "Format with Prettier" },
+      ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find files" },
+      ["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", "Live grep" },
+      ["<leader>fb"] = { "<cmd>Telescope buffers<cr>", "Buffers" },
+      ["<leader>fh"] = { "<cmd>Telescope help_tags<cr>", "Help tags" },
+      ["<leader>fo"] = { "<cmd>Telescope oldfiles<cr>", "Old files" },
+      ["<leader>fr"] = { "<cmd>Telescope resume<cr>", "Resume last search" },
+      ["<leader>fp"] = { "<cmd>Prettier<cr>", "Format with Prettier" },
       
       -- Buffer management
       b = {

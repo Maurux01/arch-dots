@@ -14,13 +14,11 @@ return {
     { "<leader>et", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree (alternative)" },
   },
   config = function()
-    -- Verificar que el plugin se cargue correctamente
     local status_ok, nvim_tree = pcall(require, "nvim-tree")
     if not status_ok then
       vim.notify("nvim-tree not found!", vim.log.levels.ERROR)
       return
     end
-    
     nvim_tree.setup({
       sort_by = "case_sensitive",
       view = {
@@ -38,28 +36,28 @@ return {
             modified = true,
           },
           glyphs = {
-            default = "󰈚",
-            symlink = "󰉒",
-            bookmark = "󰆤",
+            default = "",
+            symlink = "",
+            bookmark = "",
             modified = "●",
             folder = {
-              arrow_closed = "󰉋",
-              arrow_open = "󰉋",
-              default = "󰉋",
-              open = "󰉋",
-              empty = "󰉋",
-              empty_open = "󰉋",
-              symlink = "󰉒",
-              symlink_open = "󰉒",
+              arrow_closed = "",
+              arrow_open = "",
+              default = "",
+              open = "",
+              empty = "",
+              empty_open = "",
+              symlink = "",
+              symlink_open = "",
             },
             git = {
-              unstaged = "󰄱",
-              staged = "󰱒",
-              unmerged = "󰘬",
-              renamed = "󰁕",
-              untracked = "󰈔",
-              deleted = "󰩺",
-              ignored = "󰈝",
+              unstaged = "✗",
+              staged = "✓",
+              unmerged = "",
+              renamed = "➜",
+              untracked = "★",
+              deleted = "",
+              ignored = "◌",
             },
           },
         },
@@ -76,19 +74,6 @@ return {
         },
         special_files = {
           "Cargo.toml", "Makefile", "README.md", "readme.md",
-          "package.json", "package-lock.json", "yarn.lock",
-          "composer.json", "composer.lock",
-          "requirements.txt", "Pipfile", "poetry.lock",
-          "Dockerfile", "docker-compose.yml", "docker-compose.yaml",
-          ".env", ".env.example", ".env.local",
-          "tsconfig.json", "jsconfig.json",
-          "tailwind.config.js", "tailwind.config.ts",
-          "next.config.js", "next.config.ts",
-          "vite.config.js", "vite.config.ts",
-          "webpack.config.js", "rollup.config.js",
-          "jest.config.js", "jest.config.ts",
-          "eslint.config.js", "eslint.config.ts",
-          "prettier.config.js", "prettier.config.ts",
         },
       },
       filters = {
@@ -109,8 +94,6 @@ return {
         show_on_dirs = true,
         show_on_files = true,
         timeout = 400,
-        show_on_dirs = true,
-        show_on_files = true,
       },
       actions = {
         use_system_clipboard = true,
@@ -147,7 +130,6 @@ return {
           close_window = true,
         },
       },
-      -- Use custom colors from nvim-web-devicons
       highlight_opened_files = "all",
       highlight_modified = "all",
       highlight_bookmarks = "all",
@@ -191,30 +173,5 @@ return {
         },
       },
     })
-    
-    -- Comando de debug para NvimTree
-    vim.api.nvim_create_user_command("NvimTreeDebug", function()
-      local status_ok, nvim_tree = pcall(require, "nvim-tree")
-      if status_ok then
-        print("NvimTree está cargado correctamente")
-        print("Comandos disponibles:")
-        print("  :NvimTreeToggle")
-        print("  :NvimTreeFocus")
-        print("  :NvimTreeCollapse")
-        print("  :NvimTreeRefresh")
-      else
-        print("Error: NvimTree no está disponible")
-      end
-    end, {})
-    
-    -- Comando personalizado más robusto para toggle
-    vim.api.nvim_create_user_command("NvimTreeToggleSafe", function()
-      local status_ok, nvim_tree = pcall(require, "nvim-tree")
-      if status_ok then
-        nvim_tree.toggle()
-      else
-        vim.notify("NvimTree no está disponible", vim.log.levels.ERROR)
-      end
-    end, {})
   end,
 } 

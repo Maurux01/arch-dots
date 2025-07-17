@@ -9,7 +9,7 @@ return {
   opts = {
     defaults = {
       prompt_prefix = "   ",
-      selection_caret = " ",
+      selection_caret = " ",
       entry_prefix = "  ",
       border = true,
       borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -40,7 +40,6 @@ return {
       find_files = {
         find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
         hidden = true,
-        theme = "dropdown",
         previewer = false,
         layout_config = {
           width = 0.5,
@@ -51,7 +50,6 @@ return {
         sort_lastused = true,
         sort_mru = true,
         ignore_current_buffer = true,
-        theme = "dropdown",
         previewer = false,
         layout_config = {
           width = 0.5,
@@ -62,7 +60,6 @@ return {
         additional_args = function()
           return { "--hidden" }
         end,
-        theme = "dropdown",
         previewer = false,
         layout_config = {
           width = 0.6,
@@ -74,7 +71,6 @@ return {
         respect_gitignore = true,
         grouped = true,
         initial_mode = "normal",
-        theme = "dropdown",
         layout_config = {
           width = 0.9,
           height = 0.8,
@@ -83,7 +79,6 @@ return {
     },
     extensions = {
       file_browser = {
-        theme = "dropdown",
         hijack_netrw = true,
         initial_mode = "normal",
         layout_config = {
