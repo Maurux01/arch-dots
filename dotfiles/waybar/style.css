@@ -1,40 +1,64 @@
-/* Compact Waybar style */
+/* Ultra-compact Waybar style */
 
 * {
-  font-size: 11px;
+  font-size: 9px;
   min-height: 0;
-  padding: 0 6px;
+  padding: 0 3px;
   margin: 0;
-  border-radius: 4px;
+  border-radius: 3px;
   box-shadow: none;
 }
 
 window#waybar {
-  background: rgba(30, 30, 46, 0.85);
-  border-radius: 6px;
+  background: rgba(30, 30, 46, 0.80);
+  border-radius: 4px;
   min-height: 0;
-  padding: 2px 0;
-  margin: 2px 4px;
+  padding: 1px 0;
+  margin: 1px 2px;
   box-shadow: none;
 }
 
 #workspaces button {
-  padding: 0 6px;
-  margin: 0 2px;
-  border-radius: 4px;
+  padding: 0 3px;
+  margin: 0 1px;
+  border-radius: 3px;
   min-width: 0;
   min-height: 0;
 }
 
 #clock, #battery, #pulseaudio, #network, #tray, #backlight, #custom-launcher, #custom-power, #custom-weather {
-  padding: 0 6px;
-  margin: 0 2px;
-  border-radius: 4px;
+  padding: 0 3px;
+  margin: 0 1px;
+  border-radius: 3px;
   min-width: 0;
   min-height: 0;
 }
 
 #tray {
-  padding: 0 2px;
-  margin: 0 2px;
+  padding: 0 1px;
+  margin: 0 1px;
+}
+
+/* Iconos SVG y FontAwesome */
+#workspaces button > *,
+#clock > *,
+#battery > *,
+#pulseaudio > *,
+#network > *,
+#tray > *,
+#backlight > *,
+#custom-launcher > *,
+#custom-power > *,
+#custom-weather > * {
+  font-size: 11px !important;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 1px;
+}
+
+svg, .fa, .fas, .far, .fab {
+  width: 13px !important;
+  height: 13px !important;
+  font-size: 11px !important;
+  vertical-align: middle;
 }
