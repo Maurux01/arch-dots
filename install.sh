@@ -1185,19 +1185,36 @@ main() {
     install_aur_packages
     
     # Crear carpetas de imágenes e íconos si no existen
-    mkdir -p "$HOME/Pictures/icons"
+    echo "✔️ Creando carpeta wallpapers..."
     mkdir -p "$HOME/Pictures/wallpapers"
+    echo "✔️ Creando carpeta icons..."
+    mkdir -p "$HOME/Pictures/icons"
 
-    # Copiar íconos por defecto si existen
-    echo "[+] Copiando íconos por defecto si existen..."
-    if [ -d "dotfiles/neofetch/Icons" ]; then
-      cp -n dotfiles/neofetch/Icons/* "$HOME/Pictures/icons/"
+    # Copiar íconos desde dotfiles/icons a ~/Pictures/icons (sobrescribe todo)
+    if [ -d "$DOTFILES_DIR/icons" ]; then
+        echo "📁 Copiando íconos..."
+        cp -rf "$DOTFILES_DIR/icons/"* "$HOME/Pictures/icons/"
+        print_success "✅ Archivos de íconos reemplazados correctamente en $HOME/Pictures/icons"
+    else
+        print_warning "No se encontró la carpeta de íconos en $DOTFILES_DIR/icons."
     fi
 
-    # Copiar wallpapers por defecto si existen
-    echo "[+] Copiando wallpapers por defecto si existen..."
-    if [ -d "dotfiles/wallpapers" ]; then
-      cp -n dotfiles/wallpapers/* "$HOME/Pictures/wallpapers/"
+    # Copiar íconos desde dotfiles/neofetch/Icons a ~/Pictures/icons (sobrescribe todo)
+    if [ -d "$DOTFILES_DIR/neofetch/Icons" ]; then
+        echo "📁 Copiando íconos de Neofetch..."
+        cp -rf "$DOTFILES_DIR/neofetch/Icons/"* "$HOME/Pictures/icons/"
+        print_success "✅ Archivos de íconos de Neofetch reemplazados correctamente en $HOME/Pictures/icons"
+    else
+        print_warning "No se encontró la carpeta de íconos de Neofetch en $DOTFILES_DIR/neofetch/Icons."
+    fi
+
+    # Copiar wallpapers desde dotfiles/wallpapers a ~/Pictures/wallpapers (sobrescribe todo)
+    if [ -d "$DOTFILES_DIR/wallpapers" ]; then
+        echo "📁 Copiando wallpapers..."
+        cp -rf "$DOTFILES_DIR/wallpapers/"* "$HOME/Pictures/wallpapers/"
+        print_success "✅ Archivos de wallpapers reemplazados correctamente en $HOME/Pictures/wallpapers"
+    else
+        print_warning "No se encontró la carpeta de wallpapers en $DOTFILES_DIR/wallpapers."
     fi
 
     # Dar permisos de ejecución al script de fetch con icono

@@ -210,10 +210,10 @@ case "$MODE" in
         fi
         ;;
     *)
-        show_help
+            show_help
         exit 1
-        ;;
-esac
+            ;;
+    esac
 
 # Convertir a JPEG si se pidió
 if [ "$TO_JPEG" = "1" ] && [ -f "$FILEPATH" ]; then
