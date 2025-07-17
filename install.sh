@@ -828,20 +828,28 @@ install_core_packages() {
 
     print_step "Instalando paquetes del sistema..."
     sudo pacman -S "${terminal_packages[@]}" "${system_packages[@]}" "${media_packages[@]}" "${dev_packages[@]}" "${utility_packages[@]}" "${additional_packages[@]}" "${security_packages[@]}" "${docker_packages[@]}" "${image_packages[@]}" "${media_player_packages[@]}" "${creation_packages[@]}" "${clipboard_packages[@]}" "${font_packages[@]}" "${gaming_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes fallaron"
-    print_step Instalando paquetes oficiales adicionales..."
-    local extra_official_packages=("xournalpp" kubectl" remmina"bitwarden" beekeeper-studio" zeal"nanofiglet"toilet fortune-modcava enkins" "lm-studio"missioncenter" "ora parrot-terminal)
-    sudo pacman -S${extra_official_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes oficiales adicionales fallaron"
-    
-    print_step Instalando paquetes AUR adicionales...   local extra_aur_packages=(frog" foliate" ferdiumzen" cavalierhelix" "cacher qownnotes enkit"pulsar-bin")
-    if command -v yay >/dev/null 2&1; then
-        yay -S "${extra_aur_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes AUR adicionales fallaronelse
+    print_step "Instalando paquetes oficiales adicionales..."
+    local extra_official_packages=(
+        "xournalpp" "kubectl" "remmina" "bitwarden" "beekeeper-studio" "zeal" "nano" "figlet" "toilet" "fortune-mod" "cava" "enkins" "lm-studio" "missioncenter" "ora" "parrot-terminal"
+    )
+    sudo pacman -S "${extra_official_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes oficiales adicionales fallaron"
+
+    print_step "Instalando paquetes AUR adicionales..."
+    local extra_aur_packages=(
+        "frog" "foliate" "ferdium" "zen" "cavalier" "helix" "cacher" "qownnotes" "enkit" "pulsar-bin"
+    )
+    if command -v yay >/dev/null 2>&1; then
+        yay -S "${extra_aur_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes AUR adicionales fallaron"
+    else
         print_warning "yay no está instalado, no se instalarán paquetes AUR adicionales"
     fi
-    
+
     # Paquetes adicionales solicitados por el usuario
-    print_step Instalando paquetes extra del usuario..."
-    local user_extra_packages=(hyprlandwaybar eww swww" mako" swaylock grim slurpxdg-desktop-portal-hyprlandxdg-desktop-portal-gtk)
-    sudo pacman -S${user_extra_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes extra del usuario fallaron"
+    print_step "Instalando paquetes extra del usuario..."
+    local user_extra_packages=(
+        "hyprland" "waybar" "eww" "swww" "mako" "swaylock" "grim" "slurp" "xdg-desktop-portal-hyprland" "xdg-desktop-portal-gtk"
+    )
+    sudo pacman -S "${user_extra_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes extra del usuario fallaron"
 
     print_success "Paquetes core instalados."
 }
