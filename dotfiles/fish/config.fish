@@ -394,3 +394,12 @@ if not alias | grep -q "alias paste="
     alias paste='wl-paste'
 end
 
+# Greeting personalizado: ícono + fetch
+function fish_greeting --description 'Show random icon and fetch info'
+    if type -q neofetch
+        ~/dotfiles/scripts/fetch_with_icon.sh neofetch
+    else if type -q fastfetch
+        ~/dotfiles/scripts/fetch_with_icon.sh fastfetch
+    end
+end
+

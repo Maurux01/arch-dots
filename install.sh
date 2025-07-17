@@ -1183,6 +1183,25 @@ main() {
     install_core_packages
     install_aur_packages
     
+    # Crear carpetas de imágenes e íconos si no existen
+    mkdir -p "$HOME/Pictures/icons"
+    mkdir -p "$HOME/Pictures/wallpapers"
+
+    # Copiar íconos por defecto si existen
+    echo "[+] Copiando íconos por defecto si existen..."
+    if [ -d "dotfiles/neofetch/Icons" ]; then
+      cp -n dotfiles/neofetch/Icons/* "$HOME/Pictures/icons/"
+    fi
+
+    # Copiar wallpapers por defecto si existen
+    echo "[+] Copiando wallpapers por defecto si existen..."
+    if [ -d "dotfiles/wallpapers" ]; then
+      cp -n dotfiles/wallpapers/* "$HOME/Pictures/wallpapers/"
+    fi
+
+    # Dar permisos de ejecución al script de fetch con icono
+    chmod +x dotfiles/scripts/fetch_with_icon.sh
+
     # Instalación de componentes específicos
     if $INSTALL_KITTY || $INSTALL_ALL; then
         install_kitty
