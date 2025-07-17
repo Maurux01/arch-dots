@@ -397,7 +397,7 @@ install_hyprland() {
 # =============================================================================
 
 install_hyprlock() {
-    print_section "Instalando y configurando Hyprlock..."
+    print_section "Instalando y configurando Hyprlock Enhanced..."
 
     # Verificar si hyprlock ya está instalado
     if ! command -v hyprlock >/dev/null 2>&1; then
@@ -407,21 +407,46 @@ install_hyprlock() {
         print_success "Hyprlock ya está instalado."
     fi
 
-    # Crear directorios de configuración
-    print_step "Creando directorios de configuración..."
-    mkdir -p "$CONFIG_DIR/hyprlock"
-    mkdir -p "$CONFIG_DIR/hyprlock/assets"
-
-    # Copiar configuración de Hyprlock
-    if [ -d "$DOTFILES_DIR/hyprlock" ]; then
-        print_step "Copiando configuración de Hyprlock..."
-        cp -r "$DOTFILES_DIR/hyprlock"/* "$CONFIG_DIR/hyprlock/"
-        print_success "Configuración de Hyprlock copiada."
+    # Usar el script de instalación mejorado
+    if [ -f "$DOTFILES_DIR/scripts/install-hyprlock-enhanced.sh" ]; then
+        print_step "Ejecutando instalación mejorada de Hyprlock..."
+        "$DOTFILES_DIR/scripts/install-hyprlock-enhanced.sh"
+        print_success "Hyprlock Enhanced instalado exitosamente."
     else
-        print_warning "No se encontró la carpeta hyprlock en dotfiles."
-    fi
+        print_warning "Script de instalación mejorada no encontrado, usando instalación básica..."
+        
+        # Crear directorios de configuración
+        print_step "Creando directorios de configuración..."
+        mkdir -p "$CONFIG_DIR/hyprlock"
+        mkdir -p "$CONFIG_DIR/hyprlock/assets"
+        mkdir -p "$CONFIG_DIR/hyprlock/wallpapers"
 
-    print_success "Hyprlock configurado exitosamente."
+        # Copiar configuración de Hyprlock
+        if [ -d "$DOTFILES_DIR/hyprlock" ]; then
+            print_step "Copiando configuración de Hyprlock..."
+            cp -r "$DOTFILES_DIR/hyprlock"/* "$CONFIG_DIR/hyprlock/"
+            print_success "Configuración de Hyprlock copiada."
+        else
+            print_warning "No se encontró la carpeta hyprlock en dotfiles."
+        fi
+
+        # Copiar scripts de cambio de fondo
+        if [ -f "$DOTFILES_DIR/scripts/hyprlock-background.sh" ]; then
+            print_step "Instalando script de cambio de fondo..."
+            cp "$DOTFILES_DIR/scripts/hyprlock-background.sh" "$CONFIG_DIR/hyprlock/"
+            chmod +x "$CONFIG_DIR/hyprlock/hyprlock-background.sh"
+            print_success "Script de cambio de fondo instalado."
+        fi
+
+        if [ -f "$DOTFILES_DIR/scripts/hyprlock-wallpaper-sync.sh" ]; then
+            print_step "Instalando script de sincronización de wallpaper..."
+            cp "$DOTFILES_DIR/scripts/hyprlock-wallpaper-sync.sh" "$CONFIG_DIR/hyprlock/"
+            chmod +x "$CONFIG_DIR/hyprlock/hyprlock-wallpaper-sync.sh"
+            print_success "Script de sincronización instalado."
+        fi
+
+        print_success "Hyprlock configurado exitosamente."
+    fi
 }
 
 # =============================================================================
@@ -1055,15 +1080,26 @@ show_final_info() {
     echo "• Herramientas de monitoreo de red"
     echo ""
 
-    echo "🔒 Hyprlock (Pantalla de bloqueo):"
+    echo "🔒 Hyprlock Enhanced (Pantalla de bloqueo):"
     echo "• SUPER+L - Bloquear pantalla"
-    echo "• SUPER+ALT+L - Cambiar fondo de hyprlock"
-    echo "• SUPER+SHIFT+ALT+L - Fondo aleatorio de hyprlock"
-    echo "• ~/.config/scripts/test-lock.sh - Diagnosticar problemas de hyprlock"
-    echo "• ~/.config/scripts/hyprlock-background.sh --list - Ver fondos disponibles"
-    echo "• Logs de hyprlock: ~/.cache/hyprlock-test.log"
+    echo "• SUPER+SHIFT+B - Selector de imágenes interactivo"
+    echo "• SUPER+SHIFT+W - Usar wallpaper del sistema"
+    echo "• SUPER+SHIFT+A - Habilitar auto-sync"
+    echo "• SUPER+SHIFT+P - Selector de imágenes interactivo"
+    echo "• SUPER+SHIFT+R - Imagen aleatoria desde Pictures"
+    echo "• SUPER+SHIFT+T - Tema predefinido aleatorio"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --picker - Selector interactivo"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --random - Imagen aleatoria"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --search term - Buscar imágenes"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --theme mocha - Usar tema específico"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --wallpaper - Usar wallpaper del sistema"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --auto-sync - Habilitar auto-sync"
+    echo "• ~/.config/hyprlock/hyprlock-image-manager.sh --list - Listar todas las imágenes"
     echo "• Configuración: ~/.config/hyprlock/hyprlock.conf"
     echo "• Fondos disponibles: ~/.config/hyprlock/assets/"
+    echo "• Wallpapers personalizados: ~/.config/hyprlock/wallpapers/"
+    echo "• Script de prueba: ~/.config/hyprlock/test-hyprlock-enhanced.sh"
+    echo "• Demo del gestor: ./dotfiles/scripts/demo-image-manager.sh"
     echo ""
 
     if [ -n "$BACKUP_DIR" ]; then
