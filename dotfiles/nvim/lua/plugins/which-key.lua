@@ -122,10 +122,22 @@ return {
       -- Theme and UI
       u = {
         name = "UI/Theme",
-        t = { "<cmd>lua require('config.theme-toggle').toggle()<cr>", "Toggle Theme" },
-        N = { "<cmd>lua require('config.theme-toggle').next()<cr>", "Next Theme" },
-        p = { "<cmd>lua require('config.theme-toggle').prev()<cr>", "Previous Theme" },
-        n = { "<cmd>lua require('noice').cmd('dismiss')<cr>", "Dismiss All Notifications" },
+        t = { "<cmd>ThemePick<cr>", "Elegir tema" },
+        n = { "<cmd>ThemeNext<cr>", "Siguiente tema" },
+        p = { "<cmd>ThemePrev<cr>", "Tema anterior" },
+        l = { "<cmd>ThemeLoad<cr>", "Cargar último tema" },
+        d = { "<cmd>lua require('noice').cmd('dismiss')<cr>", "Descartar notificaciones" },
+        -- Temas específicos
+        ["1"] = { "<cmd>lua require('config.theme-toggle').set('tokyonight')<cr>", "Tokyo Night" },
+        ["2"] = { "<cmd>lua require('config.theme-toggle').set('catppuccin')<cr>", "Catppuccin" },
+        ["3"] = { "<cmd>lua require('config.theme-toggle').set('gruvbox')<cr>", "Gruvbox" },
+        ["4"] = { "<cmd>lua require('config.theme-toggle').set('dracula')<cr>", "Dracula" },
+        ["5"] = { "<cmd>lua require('config.theme-toggle').set('onedark')<cr>", "OneDark" },
+        ["6"] = { "<cmd>lua require('config.theme-toggle').set('kanagawa')<cr>", "Kanagawa" },
+        ["7"] = { "<cmd>lua require('config.theme-toggle').set('nord')<cr>", "Nord" },
+        ["8"] = { "<cmd>lua require('config.theme-toggle').set('nightfox')<cr>", "Nightfox" },
+        ["9"] = { "<cmd>lua require('config.theme-toggle').set('material')<cr>", "Material" },
+        ["0"] = { "<cmd>lua require('config.theme-toggle').set('monokai-pro')<cr>", "Monokai Pro" },
       },
       
       -- Sessions

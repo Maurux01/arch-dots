@@ -1,166 +1,82 @@
--- Theme Switcher Module
--- Provides theme switching with error handling and notifications
-local M = {}
+-- lua/config/theme-toggle.lua
+-- Sistema de cambio de temas oscuros
 
 local themes = {
   "tokyonight",
-  "catppuccin", 
+  "catppuccin",
   "gruvbox",
   "dracula",
-  "habamax",
-      "monokai",
+  "onedark",
+  "kanagawa",
+  "nord",
+  "nightfox",
+  "material",
+  "oceanic-next",
+  "palenight",
+  "monokai-pro",
   "github_dark",
-  "github_light",
-  "github_dimmed",
-  "github_dark_default",
-  "github_dark_colorblind",
-  "github_dark_high_contrast",
-  "github_dark_tritanopia",
-  "github_light_default",
-  "github_light_colorblind",
-  "github_light_high_contrast",
-  "github_light_tritanopia",
 }
 
-local current_theme_index = 1
-local theme_file = vim.fn.stdpath('config') .. '/current_theme.txt'
-
--- Save the current theme to a file
-local function save_theme(theme_name)
-  local f = io.open(theme_file, 'w')
-  if f then
-    f:write(theme_name)
-    f:close()
-  end
+local current = 1
+local function set_theme(idx)
+  current = idx
+  vim.cmd.colorscheme(themes[current])
+  -- Guardar el tema actual en un archivo
+  vim.fn.writefile({themes[current]}, vim.fn.stdpath("config") .. "/current_theme.txt")
 end
 
--- Load the last used theme from file
-local function load_theme()
-  local f = io.open(theme_file, 'r')
-  if f then
-    local theme = f:read('*l')
-    f:close()
-    return theme
-  end
-  return nil
+local function next_theme()
+  set_theme((current % #themes) + 1)
 end
 
--- Try to set a theme by name, fallback if not available
-local function set_theme_by_name(theme_name)
-  for i, theme in ipairs(themes) do
-    if theme == theme_name then
-      current_theme_index = i
-      local success = pcall(function()
-        vim.cmd('colorscheme ' .. theme_name)
-      end)
-      if not success then
-        -- Fallback to first available theme
-        vim.cmd('colorscheme ' .. themes[1])
-        current_theme_index = 1
-        save_theme(themes[1])
+local function prev_theme()
+  set_theme((current - 2% #themes + 1)
+end
+
+local function pick_theme()
+  vim.ui.select(themes, { prompt = "Seleccionar tema oscuro:" }, function(choice)
+    if choice then
+      for i, v in ipairs(themes) do
+        if v == choice then 
+          set_theme(i) 
+          break 
+        end
       end
-      return success
+    end
+  end)
+end
+
+-- Cargar el último tema usado
+local function load_last_theme()
+  local theme_file = vim.fn.stdpath("config") .. "/current_theme.txt"
+  if vim.fn.filereadable(theme_file) == 1 then
+    local theme = vim.fn.readfile(theme_file)[1]
+    for i, v in ipairs(themes) do
+      if v == theme then
+        current = i
+        break
+      end
     end
   end
-  return false
+  set_theme(current)
 end
 
--- Load theme on startup with error handling
-local loaded_theme = load_theme()
-if loaded_theme then
-  local success = set_theme_by_name(loaded_theme)
-  if not success then
-    vim.notify('Theme not available: ' .. loaded_theme .. ', fallback to: ' .. themes[1], vim.log.levels.WARN)
-    vim.cmd('colorscheme ' .. themes[1])
-    current_theme_index = 1
-    save_theme(themes[1])
-  end
-else
-  vim.cmd('colorscheme ' .. themes[1])
-  current_theme_index = 1
-  save_theme(themes[1])
-end
+-- Comandos de usuario
+vim.api.nvim_create_user_command("ThemeNext", next_theme, {})
+vim.api.nvim_create_user_command("ThemePrev", prev_theme, {})
+vim.api.nvim_create_user_command("ThemePick", pick_theme, {})
+vim.api.nvim_create_user_command("ThemeLoad", load_last_theme, {})
 
--- Toggle to the next theme
-function M.toggle()
-  current_theme_index = current_theme_index % #themes + 1
-  local new_theme = themes[current_theme_index]
-  local success = pcall(function()
-    vim.cmd('colorscheme ' .. new_theme)
-  end)
-  if success then
-    save_theme(new_theme)
-    vim.notify('Theme changed to: ' .. new_theme, vim.log.levels.INFO, {
-      title = 'Theme Switcher',
-      timeout = 2000,
-    })
-  else
-    vim.notify('Theme not available: ' .. new_theme, vim.log.levels.WARN, {
-      title = 'Theme Switcher',
-      timeout = 2000,
-    })
-  end
-end
+-- Cargar tema al inicio
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = load_last_theme,
+  once = true,
+})
 
--- Go to the next theme
-function M.next()
-  M.toggle()
-end
-
--- Go to the previous theme
-function M.prev()
-  current_theme_index = current_theme_index - 1
-  if current_theme_index < 1 then
-    current_theme_index = #themes
-  end
-  local new_theme = themes[current_theme_index]
-  local success = pcall(function()
-    vim.cmd('colorscheme ' .. new_theme)
-  end)
-  if success then
-    save_theme(new_theme)
-    vim.notify('Theme: ' .. new_theme, vim.log.levels.INFO, {
-      title = 'Theme Switcher',
-      timeout = 1500,
-    })
-  else
-    vim.notify('Theme not available: ' .. new_theme, vim.log.levels.WARN, {
-      title = 'Theme Switcher',
-      timeout = 1500,
-    })
-  end
-end
-
--- Set a specific theme by name
-function M.set(theme_name)
-  for i, theme in ipairs(themes) do
-    if theme == theme_name then
-      current_theme_index = i
-      local success = pcall(function()
-        vim.cmd('colorscheme ' .. theme_name)
-      end)
-      if success then
-        save_theme(theme_name)
-        vim.notify('Theme set to: ' .. theme_name, vim.log.levels.INFO, {
-          title = 'Theme Switcher',
-          timeout = 1500,
-        })
-      else
-        vim.notify('Theme not available: ' .. theme_name, vim.log.levels.WARN, {
-          title = 'Theme Switcher',
-          timeout = 2000,
-        })
-      end
-      return
-    end
-  end
-  vim.notify('Theme not found: ' .. theme_name, vim.log.levels.WARN, {
-    title = 'Theme Switcher',
-    timeout = 2000,
-  })
-end
-
--- Make the module available globally
-_G["theme-switcher"] = M
-
-return M 
+return {
+  next = next_theme,
+  prev = prev_theme,
+  pick = pick_theme,
+  load = load_last_theme,
+  themes = themes,
+} 
