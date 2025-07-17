@@ -3,35 +3,63 @@
 local M = {}
 
 function M.setup()
-    -- Setup image.nvim
-    require("image").setup({
-        backend = "kitty",
-        integrations = {
-            markdown = {
-                enabled = true,
-                clear_in_insert_mode = false,
-                download_remote_images = true,
-                only_render_image_at_cursor = false,
-                filetypes = { "markdown", "vimwiki" },
+    -- Detect available backends
+    local backends = {}
+    
+    -- Check for ueberzug
+    if vim.fn.executable("ueberzug") == 1 then
+        table.insert(backends, "ueberzug")
+    end
+    
+    -- Check for kitty
+    if vim.fn.executable("kitten") == 1 then
+        table.insert(backends, "kitty")
+    end
+    
+    -- Check for wezterm
+    if vim.fn.executable("wezterm") == 1 then
+        table.insert(backends, "wezterm")
+    end
+    
+    -- Use the first available backend, or disable if none available
+    local backend = backends[1] or "none"
+    
+    -- Setup image.nvim only if a backend is available
+    if backend ~= "none" then
+        require("image").setup({
+            backend = backend,
+            integrations = {
+                markdown = {
+                    enabled = true,
+                    clear_in_insert_mode = false,
+                    download_remote_images = true,
+                    only_render_image_at_cursor = false,
+                    filetypes = { "markdown", "vimwiki" },
+                },
+                neorg = {
+                    enabled = true,
+                    clear_in_insert_mode = false,
+                    download_remote_images = true,
+                    only_render_image_at_cursor = false,
+                    filetypes = { "norg" },
+                },
             },
-            neorg = {
-                enabled = true,
-                clear_in_insert_mode = false,
-                download_remote_images = true,
-                only_render_image_at_cursor = false,
-                filetypes = { "norg" },
-            },
-        },
-        max_width = nil,
-        max_height = nil,
-        max_width_window_percentage = nil,
-        max_height_window_percentage = 50,
-        window_overlap_clear_enabled = false,
-        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-        editor_only_render_when_focused = false,
-        tmux_show_only_in_active_window = true,
-        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
-    })
+            max_width = nil,
+            max_height = nil,
+            max_width_window_percentage = nil,
+            max_height_window_percentage = 50,
+            window_overlap_clear_enabled = false,
+            window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+            editor_only_render_when_focused = false,
+            tmux_show_only_in_active_window = true,
+            hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
+        })
+        
+        print("Image support configured with backend: " .. backend)
+    else
+        print("No image backend available. Image support disabled.")
+        print("Install ueberzug, kitty, or wezterm for image support.")
+    end
 
     -- Markdown preview plugin configuration
     vim.g.mkdp_filetypes = { "markdown" }
@@ -64,7 +92,7 @@ function M.setup()
     vim.g.mkdp_page_title = " 1${name} 7"
 
     -- Image paste configuration
-    vim.g.image_paste_backend = "kitty"
+    vim.g.image_paste_backend = backend
     vim.g.image_paste_download_images = true
     local img_dir = vim.fn.expand("~/.local/share/nvim/images")
     local img_dir_resized = img_dir .. "/resized"

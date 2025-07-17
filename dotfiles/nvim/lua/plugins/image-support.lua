@@ -6,34 +6,56 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
     },
-    opts = {
-      backend = "kitty",
-      integrations = {
-        markdown = {
-          enabled = true,
-          clear_in_insert_mode = false,
-          download_remote_images = true,
-          only_render_image_at_cursor = false,
-          filetypes = { "markdown", "vimwiki" },
+    opts = function()
+      -- Detect available backends
+      local backends = {}
+      -- Check for ueberzug
+      if vim.fn.executable("ueberzug") == 1 then
+        table.insert(backends, "ueberzug")
+      end
+      
+      -- Check for kitty
+      if vim.fn.executable("kitten") == 1 then
+        table.insert(backends, "kitty")
+      end
+      
+      -- Check for wezterm
+      if vim.fn.executable("wezterm") == 1 then
+        table.insert(backends, "wezterm")
+      end
+      
+      -- Use the first available backend, or disable if none available
+      local backend = backends[1] or "none"
+      
+      return {
+        backend = backend,
+        integrations = {
+          markdown = {
+            enabled = true,
+            clear_in_insert_mode = false,
+            download_remote_images = true,
+            only_render_image_at_cursor = false,
+            filetypes = { "markdown", "vimwiki" },
+          },
+          neorg = {
+            enabled = true,
+            clear_in_insert_mode = false,
+            download_remote_images = true,
+            only_render_image_at_cursor = false,
+            filetypes = { "norg" },
+          },
         },
-        neorg = {
-          enabled = true,
-          clear_in_insert_mode = false,
-          download_remote_images = true,
-          only_render_image_at_cursor = false,
-          filetypes = { "norg" },
-        },
-      },
-      max_width = nil,
-      max_height = nil,
-      max_width_window_percentage = nil,
-      max_height_window_percentage = 50,
-      window_overlap_clear_enabled = false,
-      window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-      editor_only_render_when_focused = false,
-      tmux_show_only_in_active_window = true,
-      hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" },
-    },
+        max_width = nil,
+        max_height = nil,
+        max_width_window_percentage = nil,
+        max_height_window_percentage = 50,
+        window_overlap_clear_enabled = false,
+        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+        editor_only_render_when_focused = false,
+        tmux_show_only_in_active_window = true,
+        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" },
+      }
+    end,
     keys = {
       { "<leader>ii", "<cmd>ImageInfo<cr>", desc = "Show image info" },
       { "<leader>ir", "<cmd>ImageReload<cr>", desc = "Reload image" },
@@ -89,52 +111,71 @@ return {
   -- Image paste support
   {
     "evanpurkhiser/image-paste.nvim",
-    opts = {
-      default_options = {
-        backend = "kitty",
-        download_images = true,
-        download_dir = "~/.local/share/nvim/images",
-        image_dir = "~/.local/share/nvim/images",
-        image_name_template = "{timestamp}_{random_string}",
-        image_extension = "png",
-        image_quality = 90,
-        image_format = "png",
-        image_max_width = 1920,
-        image_max_height = 1080,
-        image_resize = true,
-        image_resize_algorithm = "lanczos",
-        image_resize_filter = "lanczos",
-        image_resize_sampling = 1,
-        image_resize_interpolation = "lanczos",
-        image_resize_quality = 90,
-        image_resize_format = "png",
-        image_resize_extension = "png",
-        image_resize_name_template = "{original_name}_resized",
-        image_resize_dir = "~/.local/share/nvim/images/resized",
-        image_resize_backup = true,
-        image_resize_backup_dir = "~/.local/share/nvim/images/backup",
-        image_resize_backup_format = "png",
-        image_resize_backup_extension = "png",
-        image_resize_backup_name_template = "{original_name}_backup",
-        image_resize_backup_quality = 90,
-        image_resize_backup_interpolation = "lanczos",
-        image_resize_backup_sampling = 1,
-        image_resize_backup_filter = "lanczos",
-        image_resize_backup_algorithm = "lanczos",
-        image_resize_backup_max_width = 1920,
-        image_resize_backup_max_height = 1080,
-        image_resize_backup_resize = true,
-        image_resize_backup_resize_algorithm = "lanczos",
-        image_resize_backup_resize_filter = "lanczos",
-        image_resize_backup_resize_sampling = 1,
-        image_resize_backup_resize_interpolation = "lanczos",
-        image_resize_backup_resize_quality = 90,
-        image_resize_backup_resize_format = "png",
-        image_resize_backup_resize_extension = "png",
-        image_resize_backup_resize_name_template = "{original_name}_backup_resized",
-        image_resize_backup_resize_dir = "~/.local/share/nvim/images/backup/resized",
-      },
-    },
+    opts = function()
+      -- Detect available backends for image paste
+      local backends = {}
+      
+      if vim.fn.executable("ueberzug") == 1 then
+        table.insert(backends, "ueberzug")
+      end
+      
+      if vim.fn.executable("kitten") == 1 then
+        table.insert(backends, "kitty")
+      end
+      
+      if vim.fn.executable("wezterm") == 1 then
+        table.insert(backends, "wezterm")
+      end
+      
+      local backend = backends[1] or "none"
+      
+      return {
+        default_options = {
+          backend = backend,
+          download_images = true,
+          download_dir = "~/.local/share/nvim/images",
+          image_dir = "~/.local/share/nvim/images",
+          image_name_template = "{timestamp}_{random_string}",
+          image_extension = "png",
+          image_quality = 90,
+          image_format = "png",
+          image_max_width = 1920,
+          image_max_height = 1080,
+          image_resize = true,
+          image_resize_algorithm = "lanczos",
+          image_resize_filter = "lanczos",
+          image_resize_sampling = 1,
+          image_resize_interpolation = "lanczos",
+          image_resize_quality = 90,
+          image_resize_format = "png",
+          image_resize_extension = "png",
+          image_resize_name_template = "{original_name}_resized",
+          image_resize_dir = "~/.local/share/nvim/images/resized",
+          image_resize_backup = true,
+          image_resize_backup_dir = "~/.local/share/nvim/images/backup",
+          image_resize_backup_format = "png",
+          image_resize_backup_extension = "png",
+          image_resize_backup_name_template = "{original_name}_backup",
+          image_resize_backup_quality = 90,
+          image_resize_backup_interpolation = "lanczos",
+          image_resize_backup_sampling = 1,
+          image_resize_backup_filter = "lanczos",
+          image_resize_backup_algorithm = "lanczos",
+          image_resize_backup_max_width = 1920,
+          image_resize_backup_max_height = 1080,
+          image_resize_backup_resize = true,
+          image_resize_backup_resize_algorithm = "lanczos",
+          image_resize_backup_resize_filter = "lanczos",
+          image_resize_backup_resize_sampling = 1,
+          image_resize_backup_resize_interpolation = "lanczos",
+          image_resize_backup_resize_quality = 90,
+          image_resize_backup_resize_format = "png",
+          image_resize_backup_resize_extension = "png",
+          image_resize_backup_resize_name_template = "{original_name}_backup_resized",
+          image_resize_backup_resize_dir = "~/.local/share/nvim/images/backup/resized",
+        },
+      }
+    end,
     keys = {
       { "<leader>ip", "<cmd>ImagePaste<cr>", desc = "Paste image" },
       { "<leader>id", "<cmd>ImageDownload<cr>", desc = "Download image" },

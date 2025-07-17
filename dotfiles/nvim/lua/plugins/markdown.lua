@@ -147,22 +147,36 @@ return {
   -- Markdown image support
   {
     "3rd/image.nvim",
-    opts = {
-      backend = "kitty",
-      integrations = {
-        markdown = {
-          enabled = true,
-          clear_in_insert_mode = false,
-          download_remote_images = true,
-          only_render_image_at_cursor = false,
-          filetypes = { "markdown" },
+    opts = function()
+      -- Detect available backends
+      local backends = {}
+      if vim.fn.executable("ueberzug") == 1 then
+        table.insert(backends, "ueberzug")
+      end
+      if vim.fn.executable("kitten") == 1 then
+        table.insert(backends, "kitty")
+      end
+      if vim.fn.executable("wezterm") == 1 then
+        table.insert(backends, "wezterm")
+      end
+      local backend = backends[1] or "none"
+      return {
+        backend = backend,
+        integrations = {
+          markdown = {
+            enabled = true,
+            clear_in_insert_mode = false,
+            download_remote_images = true,
+            only_render_image_at_cursor = false,
+            filetypes = { "markdown" },
+          },
         },
-      },
-      max_width = nil,
-      max_height = nil,
-      max_width_window_percentage = nil,
-      max_height_window_percentage = 50,
-    },
+        max_width = nil,
+        max_height = nil,
+        max_width_window_percentage = nil,
+        max_height_window_percentage = 50,
+      }
+    end,
   },
 
   -- Markdown link handling

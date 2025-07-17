@@ -132,7 +132,7 @@ log() {
 
 print_header() {
     echo -e "${BLUE} ═════════════════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}║         archriced installer by maurux01                     ║${NC}"
+    echo -e "${BLUE}║                 rAchriced installer by maurux01             ║${NC}"
     echo -e "${BLUE} ═════════════════════════════════════════════════════════════${NC}"
     echo ""
 }
