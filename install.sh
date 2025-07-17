@@ -38,6 +38,7 @@ INSTALL_TMUX=false
 INSTALL_SDDM=false
 INSTALL_FONTS=false
 INSTALL_WALLPAPERS=false
+INSTALL_GRUB=false
 
 # Función para mostrar ayuda
 show_help() {
@@ -52,7 +53,7 @@ show_help() {
     echo "  --tmux                  Instalar solo Tmux"
     echo "  --sddm                  Instalar solo SDDM"
     echo "  --fonts                 Instalar solo fuentes"
-    echo "  --wallpapers            Instalar solo wallpapers"
+    echo "  --wallpapers            Instalar solo wallpapers    echo "  --grub                  Instalar solo GRUB"
     echo "  --help                  Mostrar esta ayuda"
     echo ""
     echo "Ejemplos:"
@@ -105,6 +106,10 @@ process_args() {
                 ;;
             --wallpapers)
                 INSTALL_WALLPAPERS=true
+                shift
+                ;;
+            --grub)
+                INSTALL_GRUB=true
                 shift
                 ;;
             --help)
@@ -701,6 +706,104 @@ install_wallpapers() {
 }
 
 # =============================================================================
+#                           🖥️ CONFIGURACIÓN DE GRUB
+# =============================================================================
+
+install_grub() {
+    print_section "Instalando y configurando GRUB..."
+
+    # Verificar si grub ya está instalado
+    if ! command -v grub-install >/dev/null 2>&1; then
+        print_step "Instalando GRUB..."
+        sudo pacman -S grub efibootmgr --noconfirm --needed
+    else
+        print_success "GRUB ya está instalado."
+    fi
+
+    # Crear backup de configuración original de GRUB
+    print_step "Creando backup de configuración original de GRUB..."
+    if [ -f /etc/default/grub ]; then
+        sudo cp /etc/default/grub /etc/default/grub.backup.$(date +%Y%m%d-%H%M%S)
+        print_success "Backup de GRUB creado."
+    fi
+
+    # Detectar tipo de sistema (BIOS/UEFI)
+    print_step "Detectando tipo de sistema..."
+    if [ -d /sys/firmware/efi ]; then
+        print_info "Sistema UEFI detectado."
+        SYSTEM_TYPE="UEFI"
+    else
+        print_info "Sistema BIOS detectado."
+        SYSTEM_TYPE="BIOS"
+    fi
+
+    # Copiar configuración de GRUB desde dotfiles
+    if [ -d "$DOTFILES_DIR/grub-themes" ]; then
+        print_step "Copiando configuración de GRUB..."
+        # Copiar tema de GRUB si existe
+        if [ -d "$DOTFILES_DIR/grub-themes/arch-silence-master" ]; then
+            print_step "Instalando tema de GRUB..."
+            sudo cp -r "$DOTFILES_DIR/grub-themes/arch-silence-master/theme" /boot/grub/themes/arch-silence
+            print_success "Tema de GRUB instalado."
+        fi
+
+        # Copiar configuración de GRUB
+        if [ -f "$DOTFILES_DIR/grub-themes/grub" ]; then
+            print_step "Aplicando configuración de GRUB..."
+            sudo cp "$DOTFILES_DIR/grub-themes/grub" /etc/default/grub
+            print_success "Configuración de GRUB aplicada."
+        fi
+    else
+        print_warning "No se encontró la carpeta grub-themes en dotfiles."
+    fi
+
+    # Instalar GRUB según el tipo de sistema
+    print_step "Instalando GRUB en el sistema..."
+    if [ "$SYSTEM_TYPE" = "UEFI" ]; then
+        print_info "Instalando GRUB para UEFI..."
+        # Detectar dispositivo EFI
+        EFI_PARTITION=$(findmnt -n -o SOURCE /boot/efi 2>/dev/null || echo )
+        if [ -n "$EFI_PARTITION" ]; then
+            EFI_DEVICE=$(echo $EFI_PARTITION| sed 's/[0-9]*$//')
+            print_info "Dispositivo EFI detectado: $EFI_DEVICE"
+            sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+        else
+            print_warning "No se pudo detectar la partición EFI automáticamente."
+            print_info "Instalando GRUB en /boot/efi..."
+            sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+        fi
+    else
+        print_info "Instalando GRUB para BIOS..."
+        # Detectar dispositivo de arranque principal
+        BOOT_DEVICE=$(lsblk -n -o NAME,MOUNTPOINT | grep "/boot" | head -1awk '{print $1}')
+        if [ -n "$BOOT_DEVICE" ]; then
+            BOOT_DEVICE=/dev/$BOOT_DEVICE
+            print_info "Dispositivo de arranque detectado: $BOOT_DEVICE"
+            sudo grub-install --target=i386-pc "$BOOT_DEVICE"
+        else
+            print_warning "No se pudo detectar el dispositivo de arranque automáticamente."
+            print_info "Instalando GRUB en el dispositivo por defecto..."
+            sudo grub-install --target=i386-pc /dev/sda
+        fi
+    fi
+
+    # Generar configuración de GRUB
+    print_step "Generando configuración de GRUB..."
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    
+    if [ $? -eq 0 ]; then
+        print_success "Configuración de GRUB generada exitosamente."
+    else
+        print_error "Error al generar configuración de GRUB."
+        return 1
+    fi
+
+    print_success "GRUB configurado exitosamente."
+    print_info "Tipo de sistema: $SYSTEM_TYPE"
+    print_info "Backup de configuración original guardado."
+}
+
+# =============================================================================
 #                           🔧 CONFIGURACIONES ADICIONALES
 # =============================================================================
 
@@ -725,8 +828,36 @@ install_core_packages() {
 
     print_step "Instalando paquetes del sistema..."
     sudo pacman -S "${terminal_packages[@]}" "${system_packages[@]}" "${media_packages[@]}" "${dev_packages[@]}" "${utility_packages[@]}" "${additional_packages[@]}" "${security_packages[@]}" "${docker_packages[@]}" "${image_packages[@]}" "${media_player_packages[@]}" "${creation_packages[@]}" "${clipboard_packages[@]}" "${font_packages[@]}" "${gaming_packages[@]}" --noconfirm --needed || print_warning "Algunos paquetes fallaron"
+    print_step Instalando paquetes oficiales adicionales..."
+    local extra_official_packages=("xournalpp" kubectl" remmina"bitwarden" beekeeper-studio" zeal"nanofiglet"toilet fortune-modcava enkins" "lm-studio"missioncenter" "ora parrot-terminal)
+    sudo pacman -S${extra_official_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes oficiales adicionales fallaron"
+    
+    print_step Instalando paquetes AUR adicionales...   local extra_aur_packages=(frog" foliate" ferdiumzen" cavalierhelix" "cacher qownnotes enkit"pulsar-bin")
+    if command -v yay >/dev/null 2&1; then
+        yay -S "${extra_aur_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes AUR adicionales fallaronelse
+        print_warning "yay no está instalado, no se instalarán paquetes AUR adicionales"
+    fi
+    
+    # Paquetes adicionales solicitados por el usuario
+    print_step Instalando paquetes extra del usuario..."
+    local user_extra_packages=(hyprlandwaybar eww swww" mako" swaylock grim slurpxdg-desktop-portal-hyprlandxdg-desktop-portal-gtk)
+    sudo pacman -S${user_extra_packages[@]} --noconfirm --needed || print_warningAlgunos paquetes extra del usuario fallaron"
 
     print_success "Paquetes core instalados."
+}
+
+install_aur_packages() {
+    print_section "Instalando paquetes AUR..."
+    local aur_packages=(
+        hyperlockoss" "nerd-fonts-complete oic-games-launcher       pixelorama" upscayl"appflowy"figma-linux"zeal rello"betterdiscord" opentabletdriver" rmpc" spotify-cligemini-cli" "ytui-music    ferdium-bin" "cacher" beekeeper-studio qownnotes enkit" "pulsar-bin       frog" foliatezen"cavalier" helix )
+
+    print_step "Instalando paquetes AUR..."
+    for pkg in "${aur_packages[@]}"; do
+        print_step "Instalando $pkg..."
+        yay -S $pkg --noconfirm --needed || print_warning "$pkg no se pudo instalar"
+    done
+
+    print_success "Paquetes AUR instalados."
 }
 
 configure_fish_shell() {
@@ -1008,6 +1139,7 @@ main() {
     install_aur_helper
     install_compiler
     install_core_packages
+    install_aur_packages
     
     # Instalación de componentes específicos
     if $INSTALL_KITTY || $INSTALL_ALL; then
@@ -1040,6 +1172,11 @@ main() {
     
     if $INSTALL_WALLPAPERS || $INSTALL_ALL; then
         install_wallpapers
+    fi
+    
+    # Instalar GRUB (solo si se solicita explícitamente o en instalación completa)
+    if $INSTALL_GRUB || $INSTALL_ALL; then
+        install_grub
     fi
     
     # Configuraciones adicionales

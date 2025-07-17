@@ -475,6 +475,37 @@ verify_uninstall() {
 }
 
 # =============================================================================
+#                           🛠️ RESTAURAR GRUB
+# =============================================================================
+restore_grub() {
+    print_section "Restaurando configuración original de GRUB..."
+    local restored=false
+    # Restaurar /etc/default/grub
+    if [ -f "$BACKUP_DIR/grub.backup" ]; then
+        print_step "Restaurando /etc/default/grub..."
+        sudo cp "$BACKUP_DIR/grub.backup" /etc/default/grub
+        restored=true
+    fi
+    # Restaurar temas de GRUB
+    if [ -d "$BACKUP_DIR/grub-themes.backup" ]; then
+        print_step "Restaurando temas de GRUB..."
+        sudo cp -r "$BACKUP_DIR/grub-themes.backup" /boot/grub/themes
+        restored=true
+    fi
+    # Restaurar grub.cfg
+    if [ -f "$BACKUP_DIR/grub.cfg.backup" ]; then
+        print_step "Restaurando /boot/grub/grub.cfg..."
+        sudo cp "$BACKUP_DIR/grub.cfg.backup" /boot/grub/grub.cfg
+        restored=true
+    fi
+    if [ "$restored" = true ]; then
+        print_success "Configuración de GRUB restaurada."
+    else
+        print_warning "No se encontró backup de GRUB para restaurar."
+    fi
+}
+
+# =============================================================================
 #                           📋 FUNCIÓN PRINCIPAL
 # =============================================================================
 
@@ -519,6 +550,7 @@ main() {
     clean_autostart
     restore_default_configs
     verify_uninstall
+    restore_grub
     show_final_info
 }
 
