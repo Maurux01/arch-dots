@@ -128,16 +128,19 @@ return {
         l = { "<cmd>ThemeLoad<cr>", "Cargar último tema" },
         d = { "<cmd>lua require('noice').cmd('dismiss')<cr>", "Descartar notificaciones" },
         -- Temas específicos
-        ["1"] = { "<cmd>lua require('config.theme-toggle').set('tokyonight')<cr>", "Tokyo Night" },
-        ["2"] = { "<cmd>lua require('config.theme-toggle').set('catppuccin')<cr>", "Catppuccin" },
+        ["1"] = { "<cmd>lua require('config.theme-toggle').set('catppuccin')<cr>", "Catppuccin" },
+        ["2"] = { "<cmd>lua require('config.theme-toggle').set('tokyonight')<cr>", "Tokyo Night" },
         ["3"] = { "<cmd>lua require('config.theme-toggle').set('gruvbox')<cr>", "Gruvbox" },
         ["4"] = { "<cmd>lua require('config.theme-toggle').set('dracula')<cr>", "Dracula" },
-        ["5"] = { "<cmd>lua require('config.theme-toggle').set('onedark')<cr>", "OneDark" },
-        ["6"] = { "<cmd>lua require('config.theme-toggle').set('kanagawa')<cr>", "Kanagawa" },
-        ["7"] = { "<cmd>lua require('config.theme-toggle').set('nord')<cr>", "Nord" },
-        ["8"] = { "<cmd>lua require('config.theme-toggle').set('nightfox')<cr>", "Nightfox" },
-        ["9"] = { "<cmd>lua require('config.theme-toggle').set('material')<cr>", "Material" },
-        ["0"] = { "<cmd>lua require('config.theme-toggle').set('monokai-pro')<cr>", "Monokai Pro" },
+        ["5"] = { "<cmd>lua require('config.theme-toggle').set('nord')<cr>", "Nord" },
+        ["6"] = { "<cmd>lua require('config.theme-toggle').set('everforest')<cr>", "Everforest" },
+        ["7"] = { "<cmd>lua require('config.theme-toggle').set('kanagawa')<cr>", "Kanagawa" },
+        ["8"] = { "<cmd>lua require('config.theme-toggle').set('onedarkpro')<cr>", "One Dark Pro" },
+        ["9"] = { "<cmd>lua require('config.theme-toggle').set('rose-pine')<cr>", "Rose Pine" },
+        ["0"] = { "<cmd>lua require('config.theme-toggle').set('nightfox')<cr>", "Nightfox" },
+        ["-"] = { "<cmd>lua require('config.theme-toggle').set('oxocarbon')<cr>", "Oxocarbon" },
+        ["="] = { "<cmd>lua require('config.theme-toggle').set('monokai-pro')<cr>", "Monokai Pro" },
+        ["q"] = { "<cmd>lua require('config.theme-toggle').set('ayu')<cr>", "Ayu Dark" },
       },
       
       -- Sessions
@@ -277,6 +280,18 @@ return {
         c = { "<cmd>tabclose<cr>", "Close tab" },
         l = { "<cmd>tabnext<cr>", "Next tab" },
         h = { "<cmd>tabprevious<cr>", "Previous tab" },
+      },
+      
+      -- Mason package manager
+      M = {
+        name = "Mason",
+        m = { "<cmd>Mason<cr>", "Open Mason" },
+        i = { "<cmd>MasonInstall<cr>", "Install package" },
+        u = { "<cmd>MasonUninstall<cr>", "Uninstall package" },
+        r = { "<cmd>MasonUninstallAll<cr>", "Uninstall all" },
+        l = { "<cmd>MasonLog<cr>", "Show Mason log" },
+        U = { "<cmd>MasonUpdate<cr>", "Update all packages" },
+        c = { "<cmd>MasonCheckHealth<cr>", "Check health" },
       },
       
     }, { prefix = "<leader>" })

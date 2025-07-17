@@ -2,19 +2,19 @@
 -- Sistema de cambio de temas oscuros
 
 local themes = {
-  "tokyonight",
   "catppuccin",
+  "tokyonight",
   "gruvbox",
   "dracula",
-  "onedark",
-  "kanagawa",
   "nord",
+  "everforest",
+  "kanagawa",
+  "onedarkpro",
+  "rose-pine",
   "nightfox",
-  "material",
-  "oceanic-next",
-  "palenight",
+  "oxocarbon",
   "monokai-pro",
-  "github_dark",
+  "ayu",
 }
 
 local current = 1
@@ -30,7 +30,7 @@ local function next_theme()
 end
 
 local function prev_theme()
-  set_theme((current - 2% #themes + 1)
+  set_theme((current - 2) % #themes + 1)
 end
 
 local function pick_theme()
