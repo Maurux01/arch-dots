@@ -844,7 +844,7 @@ install_core_packages() {
     local utility_packages=("lazygit" "lazydocker" "yazi" "feh" "imv" "pcmanfm" "dolphin" "korganizer" "pamac" "polybar" "qalculate-gtk" "gnome-clocks" "w3m" "w3m-img")
     local media_player_packages=("mpv" "vlc" "cava" "oss" "discord" "telegram-desktop" "mpd" "mpc")
     local creation_packages=("obs-studio" "krita" "gimp" "inkscape" "lmms" "pixelorama" "upscayl" "scribus")
-    local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "code")
+    local clipboard_packages=("cliphist" "copyq" "libreoffice" "brave" "vscodium")
     local font_packages=("nerd-fonts-complete" "noto-fonts" "noto-fonts-emoji" "ttf-dejavu" "ttf-liberation" "ttf-jetbrains-mono" "papirus-icon-theme" "bibata-cursor-theme")
     local gaming_packages=("steam" "lutris" "wine" "gamemode" "heroic-games-launcher" "mgba" "snes9x" "fceux")
     local additional_packages=("jq" "curl" "gdm" "atuin" "just" "httpie" "swappy" "swaylock-effects" "hyperlock" "waybar-hyprland" "eww-wayland" "wofi" "mako" "waypaper" "libnotify" "bc")
