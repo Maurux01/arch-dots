@@ -67,8 +67,8 @@ return {
       -- Git operations
       g = {
         name = "Git",
+        c = { "<cmd>LazyGitConfig<cr>", "Git commit" },
         g = { "<cmd>LazyGit<cr>", "LazyGit" },
-        c = { "<cmd>LazyGitConfig<cr>", "LazyGit Config" },
         f = { "<cmd>LazyGitFilter<cr>", "LazyGit Filter" },
         l = { "<cmd>LazyGitFilterCurrentFile<cr>", "LazyGit Filter Current File" },
         b = { "<cmd>Git blame<cr>", "Git blame" },
@@ -94,8 +94,9 @@ return {
       -- File explorer
       e = {
         name = "Explorer",
+        f = { "<cmd>NvimTreeFocus<cr>", "Buscar archivos" },
+        s = { "<cmd>Telescope live_grep<cr>", "Buscar texto" },
         e = { "<cmd>NvimTreeToggle<cr>", "Toggle NvimTree" },
-        f = { "<cmd>NvimTreeFocus<cr>", "Focus file explorer" },
         c = { "<cmd>NvimTreeCollapse<cr>", "Collapse file explorer" },
         r = { "<cmd>NvimTreeRefresh<cr>", "Refresh file explorer" },
         [":"] = { "<cmd>Telescope command_history<cr>", "Command History" },
@@ -198,18 +199,6 @@ return {
         s = { "<cmd>SnipRun<cr>", "Run code snippet" },
         l = { "<cmd>SnipReset<cr>", "Clear snippet output" },
         v = { "<cmd>VBox<cr>", "Draw box around selection" },
-      },
-      
-      -- AI Assistant
-      a = {
-        name = "AI Assistant",
-        i = { "<cmd>ChatGPT<cr>", "Open ChatGPT" },
-        e = { "<cmd>ChatGPTEditWithInstructions<cr>", "Edit with ChatGPT" },
-        t = { "<cmd>ChatGPTRun explain_code<cr>", "Explain code" },
-        f = { "<cmd>ChatGPTRun fix_bug<cr>", "Fix bug" },
-        r = { "<cmd>ChatGPTRun review_code<cr>", "Review code" },
-        o = { "<cmd>ChatGPTRun optimize_code<cr>", "Optimize code" },
-        d = { "<cmd>ChatGPTRun add_tests<cr>", "Add tests" },
       },
       
       -- Refactoring
