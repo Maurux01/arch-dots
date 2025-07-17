@@ -26,36 +26,41 @@ function M.setup()
     
     -- Setup image.nvim only if a backend is available
     if backend ~= "none" then
-        require("image").setup({
-            backend = backend,
-            integrations = {
-                markdown = {
-                    enabled = true,
-                    clear_in_insert_mode = false,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = false,
-                    filetypes = { "markdown", "vimwiki" },
+        local image_ok, image = pcall(require, "image")
+        if image_ok then
+            image.setup({
+                backend = backend,
+                integrations = {
+                    markdown = {
+                        enabled = true,
+                        clear_in_insert_mode = false,
+                        download_remote_images = true,
+                        only_render_image_at_cursor = false,
+                        filetypes = { "markdown", "vimwiki" },
+                    },
+                    neorg = {
+                        enabled = true,
+                        clear_in_insert_mode = false,
+                        download_remote_images = true,
+                        only_render_image_at_cursor = false,
+                        filetypes = { "norg" },
+                    },
                 },
-                neorg = {
-                    enabled = true,
-                    clear_in_insert_mode = false,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = false,
-                    filetypes = { "norg" },
-                },
-            },
-            max_width = nil,
-            max_height = nil,
-            max_width_window_percentage = nil,
-            max_height_window_percentage = 50,
-            window_overlap_clear_enabled = false,
-            window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-            editor_only_render_when_focused = false,
-            tmux_show_only_in_active_window = true,
-            hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
-        })
-        
-        print("Image support configured with backend: " .. backend)
+                max_width = nil,
+                max_height = nil,
+                max_width_window_percentage = nil,
+                max_height_window_percentage = 50,
+                window_overlap_clear_enabled = false,
+                window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+                editor_only_render_when_focused = false,
+                tmux_show_only_in_active_window = true,
+                hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
+            })
+            
+            print("Image support configured with backend: " .. backend)
+        else
+            print("⚠️  Image.nvim plugin not loaded yet")
+        end
     else
         print("No image backend available. Image support disabled.")
         print("Install ueberzug, kitty, or wezterm for image support.")
@@ -141,9 +146,9 @@ function M.setup()
 
     -- Ensure directories exist before using them
     for _, dir in ipairs({img_dir, img_dir_resized, img_dir_backup, img_dir_backup_resized}) do
-      if vim.fn.isdirectory(dir) == 0 then
-        vim.fn.mkdir(dir, "p")
-      end
+        if vim.fn.isdirectory(dir) == 0 then
+            vim.fn.mkdir(dir, "p")
+        end
     end
 
     -- Filetype detection for images
@@ -162,8 +167,5 @@ function M.setup()
 
     print("Image and SVG support configured successfully!")
 end
-
--- Initialize image support
-M.setup()
 
 return M 
