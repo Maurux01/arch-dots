@@ -18,7 +18,7 @@ return {
       separator = "➜",
       group = "+",
     },
-    window = {
+    win = {
       border = "rounded",
       position = "bottom",
       margin = { 1, 0, 1, 0 },
@@ -44,18 +44,14 @@ return {
     
     -- Registrar todas las funciones organizadas por categorías
     wk.register({
-      -- File operations
-      f = {
-        name = "Files",
-        f = { "<cmd>Telescope find_files<cr>", "Find files" },
-        g = { "<cmd>Telescope live_grep<cr>", "Live grep" },
-        b = { "<cmd>Telescope buffers<cr>", "Buffers" },
-        h = { "<cmd>Telescope help_tags<cr>", "Help tags" },
-        o = { "<cmd>Telescope oldfiles<cr>", "Old files" },
-        c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-        r = { "<cmd>Telescope resume<cr>", "Resume last search" },
-        p = { "<cmd>Prettier<cr>", "Format with Prettier" },
-      },
+      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
+      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
+      { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
+      { "<leader>fc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+      { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
+      { "<leader>fp", "<cmd>Prettier<cr>", desc = "Format with Prettier" },
       
       -- Buffer management
       b = {
@@ -290,7 +286,7 @@ return {
         c = { "<cmd>MasonCheckHealth<cr>", "Check health" },
       },
       
-    }, { prefix = "<leader>" })
+    })
     
     -- Registrar teclas sin leader
     wk.register({
