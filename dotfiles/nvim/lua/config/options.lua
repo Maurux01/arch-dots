@@ -54,7 +54,7 @@ opt.termguicolors = true
 opt.showmode = false
 opt.laststatus = 3
 opt.showtabline = 2
-opt.winbar = "%=%m %f"
+-- opt.winbar = "%=%m %f" -- Desactivado para evitar duplicación con bufferline
 
 -- Enhanced behavior settings
 opt.mouse = "a"

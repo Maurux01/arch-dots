@@ -1,28 +1,37 @@
 -- lua/config/theme-toggle.lua
--- Sistema de cambio de temas oscuros
+-- Sistema de cambio de temas oscuros optimizados
 
 local themes = {
   "catppuccin",
   "tokyonight",
   "gruvbox",
   "dracula",
-  "nord",
-  "everforest",
   "kanagawa",
   "onedarkpro",
   "rose-pine",
   "nightfox",
   "oxocarbon",
-  "monokai-pro",
-  "ayu",
 }
 
 local current = 1
+
 local function set_theme(idx)
   current = idx
   vim.cmd.colorscheme(themes[current])
   -- Guardar el tema actual en un archivo
   vim.fn.writefile({themes[current]}, vim.fn.stdpath("config") .. "/current_theme.txt")
+end
+
+-- Función set() que which-key.lua está llamando
+local function set(theme_name)
+  for i, theme in ipairs(themes) do
+    if theme == theme_name then
+      set_theme(i)
+      return
+    end
+  end
+  -- Si no encuentra el tema, usar el primero
+  set_theme(1)
 end
 
 local function next_theme()
@@ -78,5 +87,6 @@ return {
   prev = prev_theme,
   pick = pick_theme,
   load = load_last_theme,
+  set = set, -- Función que faltaba
   themes = themes,
 } 
