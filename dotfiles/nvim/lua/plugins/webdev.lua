@@ -14,33 +14,30 @@ return {
     },
   },
 
-  -- Peticiones HTTP tipo Postman
+  -- REST Client for HTTP requests
   {
     "rest-nvim/rest.nvim",
-    ft = { "http" },
     dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("rest-nvim").setup({
-        result_split_horizontal = false,
-        result_split_in_place = true,
-        skip_ssl_verification = false,
-        encode_url = true,
-        highlight = {
-          enabled = true,
-          timeout = 150,
-        },
-        result = {
-          show_url = true,
-          show_http_info = true,
-          show_headers = true,
-        },
-      })
-    end,
-    keys = {
-      { "<leader>rr", "<Plug>RestNvim", desc = "Ejecutar petición HTTP" },
-      { "<leader>rp", "<Plug>RestNvimPreview", desc = "Previsualizar petición HTTP" },
-      { "<leader>rl", "<Plug>RestNvimLast", desc = "Repetir última petición HTTP" },
+    ft = { "http", "rest" },
+    opts = {
+      -- Puedes personalizar aquí las opciones de rest.nvim
+      result_split_horizontal = false,
+      skip_ssl_verification = false,
+      highlight = {
+        enable = true,
+        timeout = 150,
+      },
+      jump_to_request = false,
+      env_file = ".env",
+      custom_dynamic_variables = {},
+      yank_dry_run = true,
     },
+    config = function(_, opts)
+      require("rest-nvim").setup(opts)
+      -- Keymap para enviar la petición actual
+      vim.keymap.set("n", "<leader>rr", require("rest-nvim").run, { desc = "Enviar petición HTTP" })
+      vim.keymap.set("n", "<leader>rp", require("rest-nvim").run_last, { desc = "Repetir última petición HTTP" })
+    end,
   },
 
   -- Autocompletado y snippets para frameworks modernos
