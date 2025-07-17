@@ -1,8 +1,8 @@
--- Optimized nvim-cmp configuration for autocompletion
--- Includes deduplication, custom formatting, and best practices
+-- Optimized nvim-cmp configuration for modern IDE experience
+-- Enhanced with better visual appearance, performance, and features
 
 return {
-  -- nvim-cmp setup
+  -- nvim-cmp setup with modern IDE features
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -15,51 +15,24 @@ return {
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
-      "onsails/lspkind.nvim"
+      "onsails/lspkind.nvim",
+      "windwp/nvim-autopairs",
     },
     opts = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
       local lspkind = require("lspkind")
 
-      -- Load friendly snippets with deduplication
+      -- Load friendly snippets with better organization
       require("luasnip.loaders.from_vscode").lazy_load({
         exclude = { "global" },
       })
 
-      -- Custom deduplication function
-      local function deduplicate_entries(entries)
-        local seen = {}
-        local result = {}
-        for _, entry in ipairs(entries) do
-          local key = entry.completion_item.label
-          if not seen[key] then
-            seen[key] = true
-            table.insert(result, entry)
-          end
-        end
-        return result
-      end
-
-      -- Command line completion setup (moved from cmp-cmdline)
-      cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = "path" },
-        }, {
-          { name = "cmdline" },
-        }),
-      })
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
-
+      -- Enhanced completion configuration
       return {
         completion = {
           completeopt = "menu,menuone,noinsert,noselect",
+          keyword_length = 1,
         },
         snippet = {
           expand = function(args)
@@ -67,8 +40,8 @@ return {
           end,
         },
         mapping = {
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
@@ -95,36 +68,56 @@ return {
               fallback()
             end
           end, { "i", "s" }),
+          ["<C-j>"] = cmp.mapping(function(fallback)
+            if luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<C-k>"] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", priority = 800, max_item_count = 8 },
-          { name = "luasnip", priority = 750, max_item_count = 3 },
-          { name = "buffer", priority = 500, max_item_count = 5 },
-          { name = "path", priority = 250, max_item_count = 3 },
-          { name = "nvim_lua", priority = 200, max_item_count = 2 },
-          { name = "nvim_lsp_signature_help", priority = 150, max_item_count = 1 },
+          { name = "nvim_lsp", priority = 100, max_item_count = 10 },
+          { name = "luasnip", priority = 750, max_item_count = 5 },
+          { name = "buffer", priority = 50, max_item_count = 8 },
+          { name = "path", priority = 250, max_item_count = 5 },
+          { name = "nvim_lua", priority = 20, max_item_count = 3 },
+          { name = "nvim_lsp_signature_help", priority = 150, max_item_count = 2 },
         },
         formatting = {
           format = lspkind.cmp_format({
             mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
+            maxwidth = 60,
+            ellipsis_char = "…",
             before = function(entry, vim_item)
-              -- Custom menu labels to distinguish sources
+              -- Enhanced menu labels with icons
               vim_item.menu = ({
-                nvim_lsp = "[🔧 LSP]",
-                luasnip = "[📝 Snippet]",
-                buffer = "[📄 Buffer]",
-                path = "[📁 Path]",
-                nvim_lua = "[🐺 Lua]",
-                nvim_lsp_signature_help = "[📋 Signature]",
+                nvim_lsp = "🔧 LSP",
+                luasnip = "📝 Snippet",
+                buffer = "📄 Buffer",
+                path = "📁 Path",
+                nvim_lua = "🐺 Lua",
+                nvim_lsp_signature_help = "📋 Signature",
               })[entry.source.name]
-              -- Add source-specific icons
+              
+              -- Add source-specific styling
               if entry.source.name == "nvim_lsp" then
                 vim_item.kind = "🔧"
               elseif entry.source.name == "luasnip" then
                 vim_item.kind = "📝"
+              elseif entry.source.name == "buffer" then
+                vim_item.kind = "📄"
+              elseif entry.source.name == "path" then
+                vim_item.kind = "📁"
               end
+              
               return vim_item
             end,
           }),
@@ -136,17 +129,30 @@ return {
             col_offset = -3,
             side_padding = 0,
             scrollbar = false,
+            relative = "cursor",
+            row = 1,
+            col = 0,
+            width = 60,
+            height = 10,
           },
           documentation = {
             border = "rounded",
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+            max_width = 80,
+            max_height = 20,
           },
         },
         experimental = {
-          ghost_text = true,
+          ghost_text = {
+            hl_group = "Comment",
+          },
         },
-        -- Enhanced deduplication
-        dedupe = true,
+        -- Enhanced performance settings
+        performance = {
+          debounce = 300,
+          throttle = 500,
+          max_view_entries = 20,
+        },
         -- Smart case matching
         matching = {
           disallow_fuzzy_matching = false,
@@ -155,7 +161,7 @@ return {
           disallow_partial_matching = false,
           disallow_prefix_unmatching = false,
         },
-        -- Custom sorting to prioritize unique entries
+        -- Enhanced sorting
         sorting = {
           comparators = {
             cmp.config.compare.offset,
@@ -170,18 +176,62 @@ return {
         },
       }
     end,
+    config = function(_, opts)
+      local cmp = require("cmp")
+      cmp.setup(opts)
+      
+      -- Command line completion setup
+      cmp.setup.cmdline(":", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = "path" },
+        }, {
+          { name = "cmdline" },
+        }),
+      })
+      cmp.setup.cmdline("/", {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
+      })
+    end,
   },
 
-  -- LuaSnip configuration
+  -- Enhanced LuaSnip configuration
   {
     "L3MON4D3/LuaSnip",
     opts = {
       history = true,
       delete_check_events = "TextChanged,InsertLeave",
       region_check_events = "CursorMoved,CursorHold,InsertEnter",
-      enable_autosnippets = false, -- Disable autosnippets to prevent spam
+      enable_autosnippets = false,
       store_selection_keys = "<Tab>",
       update_events = { "TextChanged", "TextChangedI" },
+      -- Enhanced snippet configuration
+      snip_env = {
+        s = require("luasnip.nodes.snippet").S,
+        sn = require("luasnip.nodes.snippet").SN,
+        t = require("luasnip.nodes.textNode").T,
+        f = require("luasnip.nodes.functionNode").F,
+        i = require("luasnip.nodes.insertNode").I,
+        c = require("luasnip.nodes.choiceNode").C,
+        d = require("luasnip.nodes.dynamicNode").D,
+        r = require("luasnip.nodes.restoreNode").R,
+        l = require(luasnip.extras).lambda,
+        rep = require(luasnip.extras).rep,
+        p = require(luasnip.extras).partial,
+        m = require(luasnip.extras).match,
+        n = require(luasnip.extras).nonempty,
+        dl = require(luasnip.extras).dynamic_lambda,
+        fmt = require("luasnip.extras.fmt").fmt,
+        fmta = require("luasnip.extras.fmt").fmta,
+        conds = require("luasnip.extras.expand_conditions"),
+        postfix = require("luasnip.extras.postfix").postfix,
+        types = require("luasnip.util.types"),
+        parse = require("luasnip.util.parser").parse_snippet,
+        js = require(luasnip.extras).join,
+      },
     },
     keys = {
       {
@@ -202,10 +252,28 @@ return {
         silent = true,
         mode = "i",
       },
+      {
+        "<C-j>",
+        function()
+          if require("luasnip").expand_or_jumpable() then
+            require("luasnip").expand_or_jump()
+          end
+        end,
+        mode = { "i", "s" },
+      },
+      {
+        "<C-k>",
+        function()
+          if require("luasnip").jumpable(-1) then
+            require("luasnip").jump(-1)
+          end
+        end,
+        mode = { "i", "s" },
+      },
     },
   },
 
-  -- Friendly snippets
+  -- Enhanced friendly snippets
   {
     "rafamadriz/friendly-snippets",
     config = function()
@@ -228,12 +296,53 @@ return {
           "php",
           "vue",
           "react",
+          "markdown",
+          "yaml",
+          "toml",
+          "dockerfile",
+          "bash",
+          "sh",
         },
       })
-      local ls = require("luasnip")
-      ls.config.set_config({
-        history = true,
-      })
+    end,
+  },
+
+  -- Enhanced autopairs integration
+  {
+    "windwp/nvim-autopairs",
+    opts = {
+      check_ts = true,
+      ts_config = {
+        lua = { "string", "source" },
+        javascript = { "string", "template_string" },
+        typescript = { "string", "template_string" },
+        java = false,
+      },
+      disable_filetype = { "TelescopePrompt", "spectre_panel" },
+      fast_wrap = {
+        map = "<M-e>",
+        chars = { "{", "(", "[", "<", "$", "`", "'" },
+        pattern = string.gsub([[ [%%%)%>%]%)%}%,] ]], "%s+", "),
+        offset = 0,
+        end_key = "$",
+        keys = "qwertyuiopzxcvbnmasdfghjkl",
+        check_comma = true,
+        highlight = "PmenuSel",
+        highlight_grey = "LineNr",
+      },
+      -- Enhanced autopairs behavior
+      enable_check_bracket_line = true,
+      enable_moveright = true,
+      enable_afterquote = true,
+      enable_endwise = true,
+    },
+    config = function(_, opts)
+      require("nvim-autopairs").setup(opts)
+      
+      -- Integrate with cmp
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      local cmp = require("cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
     end,
   },
 } 
