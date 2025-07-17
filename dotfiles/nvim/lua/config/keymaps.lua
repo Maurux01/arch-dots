@@ -97,7 +97,7 @@ keymap("n", "<leader>snh", "<cmd>lua require('noice').cmd('history')<cr>", { des
 keymap("n", "<leader>sna", "<cmd>lua require('noice').cmd('all')<cr>", { desc = "Noice All" })
 
 -- Notifications
-keymap("n", "<leader>un", "<cmd>lua require('noice').cmd('dismiss')<cr>", { desc = "Dismiss All Notifications" })
+keymap("n", "<leader>ud", "<cmd>lua require('noice').cmd('dismiss')<cr>", { desc = "Descartar notificaciones" })
 
 -- Theme switching
 keymap("n", "<leader>ut", "<cmd>lua require('config.theme-toggle').toggle()<cr>", { desc = "Toggle Theme" })
