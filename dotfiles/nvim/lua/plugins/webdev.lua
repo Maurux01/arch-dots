@@ -58,11 +58,6 @@ return {
     ft = { "javascriptreact", "typescriptreact" },
   },
   {
-    "dsznajder/vscode-es7-javascript-react-snippets",
-    build = "npm install --legacy-peer-deps && npm run build --if-present",
-    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  },
-  {
     "jose-elias-alvarez/typescript.nvim",
     ft = { "typescript", "typescriptreact" },
     config = function()
